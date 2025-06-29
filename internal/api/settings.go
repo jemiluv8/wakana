@@ -4,9 +4,12 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"time"
 
+	datastructure "github.com/duke-git/lancet/v2/datastructure/set"
+	"github.com/duke-git/lancet/v2/slice"
 	"github.com/muety/wakapi/config"
 	"github.com/muety/wakapi/helpers"
 	"github.com/muety/wakapi/middlewares"
@@ -136,4 +139,59 @@ func (a *APIv1) validateWakatimeKey(apiKey string, baseUrl string) bool {
 	}
 
 	return true
+}
+
+func (a *APIv1) RegenerateSummaries(w http.ResponseWriter, r *http.Request) {
+	user := middlewares.GetPrincipal(r)
+
+	go func(user *models.User, r *http.Request) {
+		if err := a.regenerateSummaries(user); err != nil {
+			config.Log().Request(r).Error("failed to regenerate summaries for user", "userID", user.ID, "error", err)
+		}
+	}(user, r)
+
+	message := "summaries are being regenerated - this may take a up to a couple of minutes, please come back later"
+
+	helpers.RespondJSON(w, r, http.StatusAccepted, map[string]string{"message": message})
+}
+
+func (a *APIv1) regenerateSummaries(user *models.User) error {
+	slog.Info("clearing summaries and durations for user", "userID", user.ID)
+
+	if err := a.services.Summary().DeleteByUser(user.ID); err != nil {
+		config.Log().Error("failed to clear summaries", "error", err)
+		return err
+	}
+
+	if err := a.services.Aggregation().AggregateSummaries(datastructure.New(user.ID)); err != nil { // involves regenerating durations as well
+		config.Log().Error("failed to regenerate summaries", "error", err)
+		return err
+	}
+
+	return nil
+}
+
+func (a *APIv1) RegenerateAllUserSummaries() {
+	users, err := a.services.Users().GetAllByReports(true)
+	if err != nil {
+		config.Log().Error("failed to get users for report generation", "error", err)
+		return
+	}
+
+	// filter users who have their email set
+	users = slice.Filter(users, func(i int, u *models.User) bool {
+		return u.Email != ""
+	})
+
+	// schedule jobs, throttled by one job per x seconds
+	slog.Info("regenerating summaries", "userCount", len(users))
+	for _, u := range users {
+		go func(user *models.User) {
+			if err := a.regenerateSummaries(user); err != nil {
+				config.Log().Error("failed to regenerate summaries for user", "userID", user.ID, "error", err)
+			} else {
+				slog.Info("successfully regenerated summaries for user", "userID", user.ID)
+			}
+		}(u)
+	}
 }
