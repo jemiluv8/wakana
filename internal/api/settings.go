@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"sync"
 	"time"
 
 	datastructure "github.com/duke-git/lancet/v2/datastructure/set"
@@ -185,11 +186,20 @@ func (a *APIv1) RegenerateAllUserSummaries() {
 
 	// schedule jobs, throttled by one job per x seconds
 	slog.Info("regenerating summaries", "userCount", len(users))
-	for _, user := range users {
-		if err := a.regenerateSummaries(user); err != nil {
-			config.Log().Error("failed to regenerate summaries for user", "userID", user.ID, "error", err)
-		} else {
-			slog.Info("successfully regenerated summaries for user", "userID", user.ID)
-		}
+	
+	var wg sync.WaitGroup
+	for _, u := range users {
+		wg.Add(1)
+		go func(user *models.User) {
+			defer wg.Done()
+			if err := a.regenerateSummaries(user); err != nil {
+				config.Log().Error("failed to regenerate summaries for user", "userID", user.ID, "error", err)
+			} else {
+				slog.Info("successfully regenerated summaries for user", "userID", user.ID)
+			}
+		}(u)
 	}
+	
+	wg.Wait()
+	slog.Info("completed regenerating summaries for all users")
 }
