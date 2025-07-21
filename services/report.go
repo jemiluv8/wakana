@@ -209,6 +209,11 @@ func (srv *ReportService) SendWeeklyReports() error {
 		return err
 	}
 
+	// filter users who have their email set
+	users = slice.Filter(users, func(i int, u *models.User) bool {
+		return u.Email != ""
+	})
+
 	// schedule jobs, throttled by one job per x seconds
 	slog.Info("scheduling report generation", "userCount", len(users))
 

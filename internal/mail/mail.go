@@ -137,8 +137,9 @@ func (m *MailService) SendImportNotification(recipient *models.User, duration ti
 }
 
 func (m *MailService) SendReport(recipient *models.User, report *models.Report) error {
-	if report.Summary.NumHeartbeats == 0 {
-		conf.Log().Info("the user has no activity for this period", "userID", recipient.ID)
+	// Check if user has any activity in the report period
+	if report.Summary == nil || report.Summary.TotalTime() == 0 {
+		conf.Log().Info("skipping report email - user has no activity for this period", "userID", recipient.ID, "from", report.From, "to", report.To)
 		return nil
 	}
 
