@@ -3,9 +3,10 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/muety/wakapi/models"
 	"io"
 	"net/http"
+
+	"github.com/muety/wakapi/models"
 )
 
 func ParseHeartbeats(r *http.Request) ([]*models.Heartbeat, error) {
@@ -34,6 +35,13 @@ func tryParseBulk(r *http.Request) ([]*models.Heartbeat, error) {
 		return nil, err
 	}
 
+	// Set category to "ai coding" if it's empty/null
+	// for _, hb := range heartbeats {
+	// 	if hb != nil && hb.Category == "" {
+	// 		hb.Category = "ai coding"
+	// 	}
+	// }
+
 	return heartbeats, nil
 }
 
@@ -48,6 +56,11 @@ func tryParseSingle(r *http.Request) ([]*models.Heartbeat, error) {
 	if err := dec.Decode(&heartbeat); err != nil {
 		return nil, err
 	}
+
+	// Set category to "ai coding" if it's empty/null
+	// if heartbeat.Category == "" {
+	// 	heartbeat.Category = "ai coding"
+	// }
 
 	return []*models.Heartbeat{&heartbeat}, nil
 }

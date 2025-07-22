@@ -42,9 +42,15 @@ func (r *SummaryRequest) Validate() error {
 	if r.User == nil {
 		return errors.New("user is required")
 	}
-	if r.From.IsZero() || r.To.IsZero() {
-		return errors.New("from and to times are required")
+	
+	// Set default times if not provided: user's creation date to present
+	if r.From.IsZero() {
+		r.From = time.Time(r.User.CreatedAt)
 	}
+	if r.To.IsZero() {
+		r.To = time.Now()
+	}
+	
 	if !r.To.After(r.From) {
 		return errors.New("to time must be after from time")
 	}
