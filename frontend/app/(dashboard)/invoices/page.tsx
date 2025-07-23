@@ -1,32 +1,22 @@
 import { Metadata } from "next";
-
-import { fetchData } from "@/actions";
-import { ClientsApiResponse } from "@/components/clients-table";
-import { InvoicesTable } from "@/components/invoice-table";
-import { Invoice } from "@/lib/types";
+import { Suspense } from "react";
+import { InvoicesList } from "@/components/invoices/InvoicesList";
+import { Spinner } from "@/components/spinner/spinner";
 
 export const metadata: Metadata = {
   title: "Invoices",
   description: "Wakana invoices, create and track invoices for billable hours.",
 };
 
-export default async function Invoices() {
-  const clients = await fetchData<ClientsApiResponse>(
-    "/v1/users/current/clients"
-  );
-  const invoices = await fetchData<{ data: Invoice[] }>(
-    "/v1/users/current/invoices"
-  );
-
+export default function Invoices() {
   return (
     <div className="my-6">
       <div className="mb-5 flex items-center justify-start">
         <h1 className="text-4xl">Invoices</h1>
       </div>
-      <InvoicesTable
-        clients={clients?.data || []}
-        invoices={invoices?.data || []}
-      />
+      <Suspense fallback={<Spinner />}>
+        <InvoicesList />
+      </Suspense>
     </div>
   );
 }

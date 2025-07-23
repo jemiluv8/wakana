@@ -72,12 +72,20 @@ export function TooltipRow({ payload, total, showPercentage }: TooltipRowProp) {
 
 export function StackedTooltipContent(props: any) {
   if (props.payload.length > 0) {
-    const total =
+    let total =
       props.payload.find((payload: any) => payload["name"] === "total")
         ?.value || 0;
     const selectedPayload = props.payload.filter(
       (p: { name: string }) => !["key", "total"].includes(p.name)
     );
+    if (!total) {
+      total = props.payload.reduce((acc: number, p: any) => {
+        if (typeof p.value === "number") {
+          return acc + p.value;
+        }
+        return acc;
+      }, 0);
+    }
     return (
       <div className="custom-tooltip">
         <div
@@ -108,7 +116,10 @@ export function StackedTooltipContentForCategories(props: any) {
 
     props.payload.forEach((payload: any) => {
       Object.keys(payload).forEach((key: any) => {
-        if (typeof payload[key] === "number") {
+        if (
+          typeof payload[key] === "number" &&
+          !["name", "key", "total"].includes(key)
+        ) {
           total += payload[key];
         }
       });

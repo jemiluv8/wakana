@@ -344,8 +344,7 @@ export function makeCategorySummaryDataForWeekdays(
     const daySummary: Record<string, any> = getDaySummary(summary.categories);
     Object.keys(daySummary).forEach((key) => {
       if (groupedTotals[key]) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        groupedTotals[key] + daySummary[key];
+        groupedTotals[key] += daySummary[key];
       } else {
         groupedTotals[key] = daySummary[key];
       }
@@ -358,10 +357,15 @@ export function makeCategorySummaryDataForWeekdays(
     }
   }
 
-  const grouped = Object.entries(summaryByDay).map(([key, value]) => ({
-    name: key,
-    ...value,
-  }));
+  const grouped = Object.entries(summaryByDay).map(([key, value]) => {
+    // Calculate total for this day
+    const total = Object.values(value as Record<string, number>).reduce((sum, val) => sum + val, 0);
+    return {
+      name: key,
+      total,
+      ...value,
+    };
+  });
   return [grouped, groupedTotals];
 }
 

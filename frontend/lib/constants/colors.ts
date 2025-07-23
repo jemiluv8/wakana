@@ -733,6 +733,8 @@ export const COLORS: ColorCategoryRecord = {
     "writing docs": "#36e3ff",
     writing_tests: "#3cec76",
     "ai coding": "#4a4ffe",
+    unknown: "#6b7280",
+    Unknown: "#6b7280",
   },
 };
 

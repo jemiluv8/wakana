@@ -1,0 +1,53 @@
+.chartBox {
+  @apply rounded-lg;
+  padding: 10px 5px 1.5rem 5px;
+  min-height: 13rem;
+  color: #8a8e91;
+  border: 240 5.9% 90%;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 7px 25px 0 rgba(0, 0, 0, 0.03),
+    0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  background-color: #e8f4f8;
+}
+
+.chartBox:hover {
+  text-decoration: none;
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.1),
+    0 12px 35px 0 rgba(0, 0, 0, 0.05),
+    0 6px 40px rgba(0, 0, 0, 0.15);
+}
+
+.chartBox.noBorder {
+  border: none;
+}
+
+.chartBox.smallPadding {
+  padding: 10px 5px 1.5rem 5px;
+}
+
+.chartBox.mediumPadding {
+  padding: 1.5rem;
+}
+
+.chartBox.largePadding {
+  padding: 2rem;
+}
+
+.chartBox.extraLargePadding {
+  padding: 2.5rem;
+}
+
+:global(.dark) .chartBox {
+  background-color: unset;
+  border: 1px solid #4f5b69;
+  border-color: hsl(0, 0%, 17%);
+  background-color: hsl(0, 0%, 7%);
+}
+
+:global(.dark) .chartBox:hover {
+  border-color: rgb(79 91 105 / 0.15);
+  background-color: rgb(255 255 255 / 4%);
+}
