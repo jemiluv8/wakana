@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
-import styles from "./ChartBox.module.css";
+
 import { cn } from "@/lib/utils";
+
+import styles from "./ChartBox.module.css";
 
 export interface ChartBoxProps {
   children: ReactNode;

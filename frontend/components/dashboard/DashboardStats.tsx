@@ -1,7 +1,8 @@
+import { format, subDays } from "date-fns";
+
 import { fetchData } from "@/actions";
 import DashboardStatsSummary from "@/components/dashboard-stats-summary";
 import { SummariesApiResponse } from "@/lib/types";
-import { format, subDays } from "date-fns";
 
 interface DashboardStatsProps {
   searchParams: Record<string, any>;
@@ -14,7 +15,7 @@ export async function DashboardStats({ searchParams }: DashboardStatsProps) {
   const url = `/v1/users/current/summaries?${new URLSearchParams({ start, end })}`;
 
   const durationData = await fetchData<SummariesApiResponse>(url, true);
-  
+
   if (!durationData) {
     return (
       <div className="text-center text-red-500">
@@ -24,9 +25,6 @@ export async function DashboardStats({ searchParams }: DashboardStatsProps) {
   }
 
   return (
-    <DashboardStatsSummary
-      searchParams={searchParams}
-      data={durationData}
-    />
+    <DashboardStatsSummary searchParams={searchParams} data={durationData} />
   );
 }

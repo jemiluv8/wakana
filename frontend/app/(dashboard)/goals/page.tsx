@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
+
 import { GoalsList } from "@/components/goals/GoalsList";
 import { Spinner } from "@/components/spinner/spinner";
 

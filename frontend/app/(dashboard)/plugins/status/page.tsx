@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
+
 import { PluginStatusList } from "@/components/plugins/PluginStatusList";
 import { PluginStatusSkeleton } from "@/components/ui/SectionSkeleton";
 

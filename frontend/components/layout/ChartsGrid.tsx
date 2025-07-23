@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
-import styles from "./ChartsGrid.module.css";
+
 import { cn } from "@/lib/utils";
+
+import styles from "./ChartsGrid.module.css";
 
 export interface ChartsGridProps {
   children: ReactNode;
@@ -15,7 +17,8 @@ export function ChartsGrid({
   variant = "default",
   withBorder = false,
 }: ChartsGridProps) {
-  const gridClass = variant === "top" ? styles.chartsGridTop : styles.chartsGrid;
+  const gridClass =
+    variant === "top" ? styles.chartsGridTop : styles.chartsGrid;
 
   return (
     <div

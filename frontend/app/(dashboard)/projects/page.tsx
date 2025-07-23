@@ -1,5 +1,6 @@
-import { Suspense } from "react";
 import { Metadata } from "next";
+import { Suspense } from "react";
+
 import { ProjectsList } from "@/components/projects/ProjectsList";
 import { ProjectsSkeleton } from "@/components/ui/SectionSkeleton";
 

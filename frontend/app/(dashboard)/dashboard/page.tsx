@@ -1,14 +1,15 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
-import { DashboardStats } from "@/components/dashboard/DashboardStats";
-import { DashboardTopCharts } from "@/components/dashboard/DashboardTopCharts";
+
 import { DashboardCharts } from "@/components/dashboard/DashboardCharts";
 import { DashboardProjects } from "@/components/dashboard/DashboardProjects";
+import { DashboardStats } from "@/components/dashboard/DashboardStats";
+import { DashboardTopCharts } from "@/components/dashboard/DashboardTopCharts";
 import {
-  StatsSkeleton,
-  TopChartsSkeleton,
   ChartsSkeleton,
   ProjectsSkeleton,
+  StatsSkeleton,
+  TopChartsSkeleton,
 } from "@/components/ui/SectionSkeleton";
 
 export const metadata: Metadata = {

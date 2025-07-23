@@ -359,7 +359,10 @@ export function makeCategorySummaryDataForWeekdays(
 
   const grouped = Object.entries(summaryByDay).map(([key, value]) => {
     // Calculate total for this day
-    const total = Object.values(value as Record<string, number>).reduce((sum, val) => sum + val, 0);
+    const total = Object.values(value as Record<string, number>).reduce(
+      (sum, val) => sum + val,
+      0
+    );
     return {
       name: key,
       total,

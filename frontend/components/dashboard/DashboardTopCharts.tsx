@@ -1,10 +1,10 @@
+import { format, subDays } from "date-fns";
+
 import { fetchData } from "@/actions";
 import { DailyCodingSummaryOverTime } from "@/components/charts/DailyCodingSummaryOverTime";
 import { WGaugeChart } from "@/components/charts/WGaugeChart";
 import DeveloperActivityChart from "@/components/developer-activity-chart-v2";
-import { ChartBox } from "@/components/layout/ChartBox";
 import { SummariesApiResponse } from "@/lib/types";
-import { format, subDays } from "date-fns";
 
 interface DashboardTopChartsProps {
   searchParams: Record<string, any>;

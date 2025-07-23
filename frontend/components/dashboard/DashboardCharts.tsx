@@ -1,11 +1,11 @@
+import { format, subDays } from "date-fns";
+
 import { fetchData } from "@/actions";
 import { ActivityCategoriesChart } from "@/components/charts/ActivityCategoriesChart";
 import { WBarChart } from "@/components/charts/WBarChart";
 import { WeekdaysBarChart } from "@/components/charts/WeekdaysBarChart";
-import { ChartBox } from "@/components/layout/ChartBox";
 import { SummariesApiResponse } from "@/lib/types";
 import { makePieChartDataFromRawApiResponse } from "@/lib/utils";
-import { format, subDays } from "date-fns";
 
 interface DashboardChartsProps {
   searchParams: Record<string, any>;

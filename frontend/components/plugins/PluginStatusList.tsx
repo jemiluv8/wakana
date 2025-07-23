@@ -56,8 +56,8 @@ export async function PluginStatusList() {
       {userAgents.data.length === 0 && (
         <p className="text-center text-lg">
           We have not received any plugin activity for your account. <br />{" "}
-          Check your plugin setup to ensure it is working correctly, code a
-          bit and come back to check again.
+          Check your plugin setup to ensure it is working correctly, code a bit
+          and come back to check again.
         </p>
       )}
     </div>

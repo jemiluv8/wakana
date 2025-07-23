@@ -1,4 +1,6 @@
+import { format, subDays } from "date-fns";
 import Link from "next/link";
+
 import { fetchData } from "@/actions";
 import { ProjectCard } from "@/components/project-card";
 import { SummariesApiResponse } from "@/lib/types";
@@ -6,20 +8,21 @@ import {
   convertSecondsToHoursAndMinutes,
   makePieChartDataFromRawApiResponse,
 } from "@/lib/utils";
-import { format, subDays } from "date-fns";
 
 interface DashboardProjectsProps {
   searchParams: Record<string, any>;
 }
 
-export async function DashboardProjects({ searchParams }: DashboardProjectsProps) {
+export async function DashboardProjects({
+  searchParams,
+}: DashboardProjectsProps) {
   const start =
     searchParams.start || format(subDays(new Date(), 6), "yyyy-MM-dd");
   const end = searchParams.end || format(new Date(), "yyyy-MM-dd");
   const url = `/v1/users/current/summaries?${new URLSearchParams({ start, end })}`;
 
   const durationData = await fetchData<SummariesApiResponse>(url, true);
-  
+
   if (!durationData) {
     return (
       <div className="text-center text-red-500">
@@ -44,10 +47,7 @@ export async function DashboardProjects({ searchParams }: DashboardProjectsProps
             <ProjectCard
               key={project.key}
               title={project.key}
-              duration={convertSecondsToHoursAndMinutes(
-                project.total,
-                true
-              )}
+              duration={convertSecondsToHoursAndMinutes(project.total, true)}
             />
           ))}
           {projects.length === 0 && (
@@ -56,8 +56,8 @@ export async function DashboardProjects({ searchParams }: DashboardProjectsProps
                 <div className="project-content">
                   <h3>No projects available yet</h3>
                   <p>
-                    Check your plugin status to see if any of your plugins
-                    have been detected.
+                    Check your plugin status to see if any of your plugins have
+                    been detected.
                   </p>
                   <p className="mt-2 cursor-pointer">
                     You may also checkout{" "}

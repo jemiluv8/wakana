@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
+
 import { InvoicesList } from "@/components/invoices/InvoicesList";
 import { Spinner } from "@/components/spinner/spinner";
 
