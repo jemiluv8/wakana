@@ -1,12 +1,12 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-export interface InputProps
+export interface SimpleInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const SimpleInput = React.forwardRef<HTMLInputElement, SimpleInputProps>(
   ({ className, type, error, ...props }, ref) => {
     const [isFocused, setIsFocused] = React.useState(false);
 
@@ -16,7 +16,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type}
           className={cn(
-            "flex w-full rounded-lg border-2 bg-muted/50 px-4 transition-all duration-200 ease-in-out",
+            "flex w-full rounded-lg border-2 bg-background px-4 transition-all duration-200 ease-in-out",
             "text-base sm:text-sm text-foreground",
             "placeholder:text-muted-foreground",
             "focus:ring-0",
@@ -28,15 +28,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             error 
               ? "border-destructive focus:border-destructive" 
               : isFocused 
-                ? "border-primary" 
+                ? "border-primary shadow-sm" 
                 : "border-border hover:border-border/80",
             // Dark mode support
-            "dark:bg-muted/50 dark:border-border dark:text-foreground",
+            "dark:bg-background dark:border-border dark:text-foreground",
             "dark:hover:border-border/60 dark:focus:border-primary",
             "dark:placeholder:text-muted-foreground",
-            // Legacy styles for compatibility
-            "shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
-            "disabled:cursor-not-allowed disabled:opacity-50",
             className
           )}
           ref={ref}
@@ -62,6 +59,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-Input.displayName = "Input";
+SimpleInput.displayName = "SimpleInput";
 
-export { Input };
+export { SimpleInput };
