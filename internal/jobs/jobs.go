@@ -16,6 +16,9 @@ import (
 )
 
 var EVERY_MONDAY_MORNING, _ = cron.ParseStandard("0 6 * * 1")
+var EVERY_SUNDAY_MIDNIGHT, _ = cron.ParseStandard("0 0 * * 0")
+var DAILY_AGGREGATION, _ = cron.ParseStandard("15 2 * * *")      // 2:15 AM daily
+var WEEKLY_HOUSEKEEPING, _ = cron.ParseStandard("0 6 * * 0")     // 6 AM Sunday
 
 type Jobs struct {
 	DB *gorm.DB

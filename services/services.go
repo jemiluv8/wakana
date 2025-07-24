@@ -119,6 +119,7 @@ type IReportService interface {
 type IHousekeepingService interface {
 	Schedule()
 	CleanUserDataBefore(*models.User, time.Time) error
+	CleanInactiveUsers(time.Time) error
 }
 
 type ILeaderboardService interface {
