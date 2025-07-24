@@ -46,11 +46,6 @@ func NewTestHousekeepingService(userService IUserService, heartbeatService IHear
 	}
 }
 
-func (s *HousekeepingService) Schedule() {
-	s.scheduleDataCleanups()
-	s.scheduleInactiveUsersCleanup()
-	s.scheduleProjectStatsCacheWarming()
-}
 
 func (s *HousekeepingService) CleanUserDataBefore(user *models.User, before time.Time) error {
 	slog.Warn("cleaning up user data older than", "userID", user.ID, "date", before)
@@ -174,46 +169,3 @@ func (s *HousekeepingService) runCleanInactiveUsers() {
 	})
 }
 
-// individual scheduling functions
-
-func (s *HousekeepingService) scheduleDataCleanups() {
-	if s.config.App.DataRetentionMonths <= 0 {
-		return
-	}
-
-	slog.Info("scheduling data cleanup")
-
-	_, err := s.queueDefault.DispatchCron(s.runCleanData, s.config.App.DataCleanupTime)
-	if err != nil {
-		config.Log().Error("failed to dispatch data cleanup jobs", "error", err)
-	}
-}
-
-func (s *HousekeepingService) scheduleInactiveUsersCleanup() {
-	if s.config.App.MaxInactiveMonths <= 0 {
-		return
-	}
-
-	slog.Info("scheduling inactive users cleanup")
-
-	_, err := s.queueDefault.DispatchCron(s.runCleanInactiveUsers, s.config.App.DataCleanupTime)
-	if err != nil {
-		config.Log().Error("failed to dispatch inactive users cleanup job", "error", err)
-	}
-}
-
-func (s *HousekeepingService) scheduleProjectStatsCacheWarming() {
-	slog.Info("scheduling project stats cache pre-warming")
-
-	_, err := s.queueDefault.DispatchEvery(s.runWarmProjectStatsCache, 12*time.Hour)
-	if err != nil {
-		config.Log().Error("failed to dispatch pre-warming project stats cache", "error", err)
-	}
-
-	// run once initially, 1 min after start
-	if !s.config.QuickStart {
-		if err := s.queueDefault.DispatchIn(s.runWarmProjectStatsCache, 1*time.Minute); err != nil {
-			config.Log().Error("failed to dispatch pre-warming project stats cache", "error", err)
-		}
-	}
-}

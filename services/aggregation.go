@@ -54,18 +54,6 @@ type AggregationJob struct {
 	To   time.Time
 }
 
-// Schedule a job to (re-)generate summaries every day shortly after midnight
-func (srv *AggregationService) Schedule() {
-	slog.Info("scheduling summary aggregation")
-
-	if _, err := srv.queueDefault.DispatchCron(func() {
-		if err := srv.AggregateSummaries(datastructure.New[string]()); err != nil {
-			config.Log().Error("failed to generate summaries", "error", err)
-		}
-	}, srv.config.App.GetAggregationTimeCron()); err != nil {
-		config.Log().Error("failed to schedule summary generation", "error", err)
-	}
-}
 
 func (srv *AggregationService) AggregateSummaries(userIds datastructure.Set[string]) error {
 	if err := srv.lockUsers(userIds); err != nil {

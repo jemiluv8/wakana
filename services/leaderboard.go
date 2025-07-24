@@ -85,24 +85,6 @@ func (srv *LeaderboardService) GetDefaultScope() *models.IntervalKey {
 	return srv.defaultScope
 }
 
-func (srv *LeaderboardService) Schedule() {
-	slog.Info("scheduling leaderboard generation")
-
-	generate := func() {
-		users, err := srv.userService.GetAllByLeaderboard(true)
-		if err != nil {
-			config.Log().Error("failed to get users for leaderboard generation", "error", err)
-			return
-		}
-		srv.ComputeLeaderboard(users, srv.defaultScope, []uint8{models.SummaryLanguage})
-	}
-
-	for _, cronExp := range srv.config.App.GetLeaderboardGenerationTimeCron() {
-		if _, err := srv.queueDefault.DispatchCron(generate, cronExp); err != nil {
-			config.Log().Error("failed to schedule leaderboard generation", "cronExpression", cronExp, "error", err)
-		}
-	}
-}
 
 func (srv *LeaderboardService) ComputeLeaderboard(users []*models.User, interval *models.IntervalKey, by []uint8) error {
 	slog.Info("generating leaderboard", "interval", (*interval)[0], "userCount", len(users), "aggregationCount", len(by))

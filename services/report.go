@@ -101,11 +101,6 @@ func NewReportService(db *gorm.DB) *ReportService {
 	return srv
 }
 
-// Legacy method - now handled by River periodic jobs in api.go
-// Kept for backward compatibility but no longer schedules cron jobs
-func (srv *ReportService) Schedule() {
-	slog.Info("report scheduling is now handled by River periodic jobs")
-}
 
 func (srv *ReportService) SendReport(user *models.User, duration time.Duration) error {
 	if user.Email == "" {
