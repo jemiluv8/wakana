@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
-import { ClaudeOTPSignIn } from "@/components/claude-otp-signin";
-import { ClaudeSocialLogin } from "@/components/claude-social-login";
+import { OTPSignIn } from "@/components/otp-signin";
+import { SocialLogin } from "@/components/social-login";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -23,23 +23,23 @@ export default async function LoginPage() {
 
       {/* Login Form */}
       <div className="space-y-4 sm:space-y-6">
-        <ClaudeSocialLogin />
-        <ClaudeOTPSignIn />
+        <SocialLogin />
+        <OTPSignIn />
       </div>
 
       {/* Legal Text - Only show on mobile in main content, hidden on desktop (shown in footer) */}
       <div className="mt-6 text-center sm:hidden">
         <p className="text-xs text-muted-foreground leading-relaxed px-2">
           By continuing, you acknowledge that you have read and agree to our{" "}
-          <a 
-            href="https://wakana.io/terms" 
+          <a
+            href="https://wakana.io/terms"
             className="text-primary hover:text-primary/80 transition-colors underline underline-offset-2"
           >
             Terms of Service
           </a>{" "}
           and{" "}
-          <a 
-            href="https://wakana.io/policy" 
+          <a
+            href="https://wakana.io/policy"
             className="text-primary hover:text-primary/80 transition-colors underline underline-offset-2"
           >
             Privacy Policy
@@ -52,15 +52,15 @@ export default async function LoginPage() {
       <div className="hidden sm:block mt-8 text-center">
         <p className="text-xs text-muted-foreground leading-relaxed">
           By continuing, you acknowledge that you have read and agree to our{" "}
-          <a 
-            href="https://wakana.io/terms" 
+          <a
+            href="https://wakana.io/terms"
             className="text-primary hover:text-primary/80 transition-colors underline underline-offset-2"
           >
             Terms of Service
           </a>{" "}
           and{" "}
-          <a 
-            href="https://wakana.io/policy" 
+          <a
+            href="https://wakana.io/policy"
             className="text-primary hover:text-primary/80 transition-colors underline underline-offset-2"
           >
             Privacy Policy

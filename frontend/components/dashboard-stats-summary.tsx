@@ -21,6 +21,39 @@ export default function DashboardStatsSummary({
   const formattedActiveCodingTime =
     convertSecondsToHoursAndMinutes(activeCodingTime);
 
+  const totalAiCodingTime = data.data.reduce((total, day) => {
+    const aiCategory = day.categories.find(
+      (category) => category.name.toLowerCase() === "ai coding"
+    );
+    return total + (aiCategory?.total_seconds || 0);
+  }, 0);
+
+  const aiCodingPercentage =
+    data.cumulative_total.seconds > 0
+      ? (totalAiCodingTime / data.cumulative_total.seconds) * 100
+      : 0;
+
+  const formattedAiCodingTime =
+    convertSecondsToHoursAndMinutes(totalAiCodingTime);
+
+  // Count days with non-zero activity for more accurate averages
+  const nonZeroDays = data.data.filter(
+    (day) => day.grand_total.total_seconds > 0
+  ).length;
+  const nonZeroAiDays = data.data.filter((day) => {
+    const aiCategory = day.categories.find(
+      (category) => category.name.toLowerCase() === "ai coding"
+    );
+    return (aiCategory?.total_seconds || 0) > 0;
+  }).length;
+
+  // Calculate average AI coding time per day (only non-zero AI days)
+  const averageAiCodingTime =
+    nonZeroAiDays > 0 ? totalAiCodingTime / nonZeroAiDays : 0;
+
+  const formattedAverageAiTime =
+    convertSecondsToHoursAndMinutes(averageAiCodingTime);
+
   return (
     <div className="w-full text-white">
       <div className="mx-auto">
@@ -41,6 +74,17 @@ export default function DashboardStatsSummary({
                     in your editor
                   </span>
                 </div>
+                <div className="flex items-baseline mt-1">
+                  <span className="text-sm text-gray-500">
+                    Avg:{" "}
+                    {convertSecondsToHoursAndMinutes(
+                      nonZeroDays > 0
+                        ? data.cumulative_total.seconds / nonZeroDays
+                        : 0
+                    )}
+                    /day
+                  </span>
+                </div>
               </div>
 
               <div className="border-l border-border md:pl-4">
@@ -53,6 +97,38 @@ export default function DashboardStatsSummary({
                   </span>
                   <span className="text-gray-400 ml-2 text-sm">
                     writing code
+                  </span>
+                </div>
+                <div className="flex items-baseline mt-1">
+                  <span className="text-sm text-gray-500">
+                    Avg:{" "}
+                    {convertSecondsToHoursAndMinutes(
+                      nonZeroDays > 0
+                        ? (data.cumulative_total.seconds *
+                            (data.write_percentage / 100)) /
+                            nonZeroDays
+                        : 0
+                    )}
+                    /day
+                  </span>
+                </div>
+              </div>
+
+              <div className="border-l border-border md:pl-4">
+                <h2 className="text-gray-400 text-sm font-medium mb-1">
+                  AI Usage
+                </h2>
+                <div className="flex items-baseline">
+                  <span className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                    {formattedAiCodingTime}
+                  </span>
+                  <span className="text-gray-400 ml-2 text-sm">
+                    ({aiCodingPercentage.toFixed(1)}% of total)
+                  </span>
+                </div>
+                <div className="flex items-baseline mt-1">
+                  <span className="text-sm text-gray-500">
+                    Avg: {formattedAverageAiTime}/day
                   </span>
                 </div>
               </div>

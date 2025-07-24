@@ -26,12 +26,11 @@ export default async function LoginLayout({
             </div>
 
             {/* Login Form - Card styling with border and shadow */}
-            <div className="sm:p-8 sm:rounded-lg sm:shadow-lg sm:border sm:border-border">
+            <div className="sm:p-8 sm:rounded-[2rem] sm:shadow-lg sm:border sm:border-border">
               {children}
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

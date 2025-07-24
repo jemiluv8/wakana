@@ -9,13 +9,13 @@ import { z } from "zod";
 
 import { initiateOTPLoginAction, processLoginWithOTP } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
-import { SimpleInput } from "@/components/ui/simple-input";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { SimpleInput } from "@/components/ui/simple-input";
 import { toast } from "@/components/ui/use-toast";
 import { PKCEGenerator, PKCEResult } from "@/lib/oauth/pkce";
 import { cn } from "@/lib/utils";
@@ -28,10 +28,16 @@ type Props = {
   className?: string;
 };
 
-const SubmitButton = ({ onClick, loading }: { onClick: any; loading: boolean }) => {
+const SubmitButton = ({
+  onClick,
+  loading,
+}: {
+  onClick: any;
+  loading: boolean;
+}) => {
   const { pending } = useFormStatus();
   const isLoading = pending || loading;
-  
+
   return (
     <Button
       type="submit"
@@ -45,7 +51,7 @@ const SubmitButton = ({ onClick, loading }: { onClick: any; loading: boolean }) 
   );
 };
 
-export function ClaudeOTPSignIn({ className }: Props) {
+export function OTPSignIn({ className }: Props) {
   const [state, formAction] = useFormState(initiateOTPLoginAction, {
     message: null,
   });
@@ -94,9 +100,9 @@ export function ClaudeOTPSignIn({ className }: Props) {
   useEffect(() => {
     if (isSent && resendCountdown > 0) {
       const timer = setTimeout(() => {
-        setResendCountdown(prev => prev - 1);
+        setResendCountdown((prev) => prev - 1);
       }, 1000);
-      
+
       return () => clearTimeout(timer);
     } else if (resendCountdown === 0) {
       setCanResend(true);
@@ -125,7 +131,7 @@ export function ClaudeOTPSignIn({ className }: Props) {
   const formatCountdown = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
   // Handle resend functionality
@@ -286,7 +292,7 @@ export function ClaudeOTPSignIn({ className }: Props) {
                 </FormItem>
               )}
             />
-            
+
             <input
               type="hidden"
               name="code_challenge"
@@ -297,7 +303,7 @@ export function ClaudeOTPSignIn({ className }: Props) {
               name="challenge_method"
               value={pkce?.challenge_method || ""}
             />
-            
+
             <SubmitButton onClick={loginHandler} loading={isLoading} />
           </div>
         </form>
