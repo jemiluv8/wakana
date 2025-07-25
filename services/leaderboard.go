@@ -91,13 +91,13 @@ func (srv *LeaderboardService) GenerateLeaderboards() error {
 }
 
 func (srv *LeaderboardService) GenerateLeaderboardsForInterval(interval *models.IntervalKey) error {
-	users, err := srv.userService.GetAllByLeaderboard(true)
+	users, err := srv.userService.GetAll()
 	if err != nil {
 		config.Log().Error("failed to get users for leaderboard generation", "error", err)
 		return err
 	}
 	
-	slog.Info("generating leaderboards for all users", "userCount", len(users), "interval", (*interval)[0])
+	slog.Info("generating leaderboards for all users regardless of settings", "userCount", len(users), "interval", (*interval)[0])
 	return srv.ComputeLeaderboard(users, interval, []uint8{models.SummaryLanguage})
 }
 

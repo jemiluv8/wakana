@@ -16,13 +16,14 @@ import (
 var generateLeaderboardsCmd = &cobra.Command{
 	Use:   "generate-leaderboards",
 	Short: "Generate leaderboards for the 7-day period ending on the most recent Sunday",
-	Long: `Generate leaderboards for all users who have leaderboards enabled.
+	Long: `Generate leaderboards for ALL users regardless of their leaderboard settings.
 
 This command generates leaderboards for a 7-day period that ends on the most recent Sunday at 23:59:59.
 For example, if run on a Wednesday, it will generate leaderboards for the 7-day period ending on the previous Sunday.
 If run on a Sunday, it will generate leaderboards for the 7-day period ending on the previous Sunday.
 
-This ensures consistent weekly leaderboard periods that align with calendar weeks.`,
+This ensures consistent weekly leaderboard periods that align with calendar weeks.
+All users are included in the leaderboard generation, even if they have disabled leaderboards in their settings.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		generateLeaderboards()
 	},
@@ -74,7 +75,7 @@ func generateLeaderboards() {
 	startTime := endTime.AddDate(0, 0, -6).
 		Truncate(24 * time.Hour)
 
-	fmt.Printf("Generating leaderboards for period: %s to %s (7 days until recent Sunday)\n", 
+	fmt.Printf("Generating leaderboards for ALL users for period: %s to %s (7 days until recent Sunday)\n", 
 		startTime.Format("2006-01-02 15:04:05"), 
 		endTime.Format("2006-01-02 15:04:05"))
 
