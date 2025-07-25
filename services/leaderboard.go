@@ -85,23 +85,59 @@ func (srv *LeaderboardService) GetDefaultScope() *models.IntervalKey {
 	return srv.defaultScope
 }
 
-func (srv *LeaderboardService) Schedule() {
-	slog.Info("scheduling leaderboard generation")
 
-	generate := func() {
-		users, err := srv.userService.GetAllByLeaderboard(true)
-		if err != nil {
-			config.Log().Error("failed to get users for leaderboard generation", "error", err)
-			return
-		}
-		srv.ComputeLeaderboard(users, srv.defaultScope, []uint8{models.SummaryLanguage})
-	}
+func (srv *LeaderboardService) GenerateLeaderboards() error {
+	return srv.GenerateLeaderboardsForInterval(srv.defaultScope)
+}
 
-	for _, cronExp := range srv.config.App.GetLeaderboardGenerationTimeCron() {
-		if _, err := srv.queueDefault.DispatchCron(generate, cronExp); err != nil {
-			config.Log().Error("failed to schedule leaderboard generation", "cronExpression", cronExp, "error", err)
-		}
+func (srv *LeaderboardService) GenerateLeaderboardsForInterval(interval *models.IntervalKey) error {
+	users, err := srv.userService.GetAll()
+	if err != nil {
+		config.Log().Error("failed to get users for leaderboard generation", "error", err)
+		return err
 	}
+	
+	slog.Info("generating leaderboards for all users regardless of settings", "userCount", len(users), "interval", (*interval)[0])
+	return srv.ComputeLeaderboard(users, interval, []uint8{models.SummaryLanguage})
+}
+
+// GenerateWeeklyLeaderboards generates leaderboards for a 7-day period ending on the most recent Sunday at 23:59:59
+// This method matches the logic used by the CLI command and background workers
+func (srv *LeaderboardService) GenerateWeeklyLeaderboards() error {
+	users, err := srv.userService.GetAll()
+	if err != nil {
+		config.Log().Error("failed to get users for leaderboard generation", "error", err)
+		return err
+	}
+	
+	// Calculate the same interval as the CLI command: 7 days until the most recent Sunday 23:59
+	now := time.Now()
+	
+	// Find the most recent Sunday
+	daysFromSunday := int(now.Weekday()) // Sunday = 0, Monday = 1, etc.
+	if daysFromSunday == 0 {
+		// If today is Sunday, use last Sunday
+		daysFromSunday = 7
+	}
+	
+	// Get the most recent Sunday at 23:59:59
+	endTime := now.AddDate(0, 0, -daysFromSunday).
+		Truncate(24 * time.Hour).
+		Add(23*time.Hour + 59*time.Minute + 59*time.Second)
+	
+	// Start time is 7 days before the end time at 00:00:00
+	startTime := endTime.AddDate(0, 0, -6).
+		Truncate(24 * time.Hour)
+
+	slog.Info("generating weekly leaderboards for all users regardless of settings", 
+		"userCount", len(users),
+		"startTime", startTime.Format("2006-01-02 15:04:05"),
+		"endTime", endTime.Format("2006-01-02 15:04:05"))
+	
+	// Use the Past 7 Days interval
+	intervalKey := models.IntervalPast7Days
+	
+	return srv.ComputeLeaderboard(users, intervalKey, []uint8{models.SummaryLanguage})
 }
 
 func (srv *LeaderboardService) ComputeLeaderboard(users []*models.User, interval *models.IntervalKey, by []uint8) error {

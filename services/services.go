@@ -11,7 +11,6 @@ import (
 )
 
 type IAggregationService interface {
-	Schedule()
 	AggregateSummaries(set datastructure.Set[string]) error
 }
 
@@ -111,19 +110,20 @@ type IActivityService interface {
 }
 
 type IReportService interface {
-	Schedule()
 	SendReport(*models.User, time.Duration) error
 	SendWeeklyReports() error
 }
 
 type IHousekeepingService interface {
-	Schedule()
 	CleanUserDataBefore(*models.User, time.Time) error
+	CleanInactiveUsers(time.Time) error
 }
 
 type ILeaderboardService interface {
 	GetDefaultScope() *models.IntervalKey
-	Schedule()
+	GenerateLeaderboards() error
+	GenerateLeaderboardsForInterval(*models.IntervalKey) error
+	GenerateWeeklyLeaderboards() error
 	ComputeLeaderboard([]*models.User, *models.IntervalKey, []uint8) error
 	ExistsAnyByUser(string) (bool, error)
 	CountUsers(bool) (int64, error)

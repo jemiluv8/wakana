@@ -2,10 +2,9 @@ package models
 
 import "time"
 
-// UserReportSent represents a record indicating that a report has been sent
-// for a specific user on a specific date. Used to prevent duplicate emails
-// in a distributed environment. This is just duct-tape - until I actually can think of something better.
-// reports are to be sent within the next 5 hours. I need to patch this asap
+// UserReportSent represents a record indicating that a weekly report has been sent
+// for a specific user for a specific week (identified by the Monday date).
+// Used to prevent duplicate emails in a distributed environment.
 type UserReportSent struct {
 	ID         uint      `gorm:"primaryKey"`
 	UserID     string    `gorm:"not null;uniqueIndex:idx_user_report_date"`

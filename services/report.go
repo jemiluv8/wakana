@@ -35,8 +35,7 @@ type ReportService struct {
 	db             *gorm.DB
 }
 
-// a special type used to perform business logic that ensures a report is not sent multiple times
-// for the same user on the same day. This is non-invasive
+// ReportDeduplicator ensures a report is not sent multiple times for the same user in the same week
 type ReportDeduplicator struct {
 	db         *gorm.DB
 	user       *models.User
@@ -44,10 +43,19 @@ type ReportDeduplicator struct {
 }
 
 func ReportSentTracker(db *gorm.DB, user *models.User) *ReportDeduplicator {
+	// Calculate the start of the current week (Monday) in the user's timezone
+	now := time.Now().In(user.TZ())
+	weekday := int(now.Weekday())
+	if weekday == 0 { // Sunday = 0, make it 7 for easier calculation
+		weekday = 7
+	}
+	daysFromMonday := weekday - 1 // Monday = 0 days from Monday
+	startOfWeek := now.AddDate(0, 0, -daysFromMonday).Truncate(24 * time.Hour)
+	
 	return &ReportDeduplicator{
 		db:         db,
 		user:       user,
-		reportDate: time.Now().Truncate(24 * time.Hour),
+		reportDate: startOfWeek,
 	}
 }
 
@@ -60,7 +68,7 @@ func (rst *ReportDeduplicator) IsReportSent() bool {
 func (rst *ReportDeduplicator) MarkReportAsSent() error {
 	reportSent := &models.UserReportSent{
 		UserID:     rst.user.ID,
-		ReportDate: rst.reportDate, // Use server's local date
+		ReportDate: rst.reportDate,
 		SentAt:     time.Now(),
 	}
 	if err := rst.db.Create(reportSent).Error; err != nil {
@@ -93,51 +101,6 @@ func NewReportService(db *gorm.DB) *ReportService {
 	return srv
 }
 
-func (srv *ReportService) Schedule() {
-	slog.Info("scheduling report generation")
-
-	scheduleUserReport := func(u *models.User) {
-		if err := srv.queueWorkers.Dispatch(func() {
-			t0 := time.Now()
-
-			if err := srv.SendReport(u, reportRange); err != nil {
-				config.Log().Error("failed to generate report", "userID", u.ID, "error", err)
-			}
-
-			// make the job take at least reportDelay seconds
-			if diff := reportDelay - time.Since(t0); diff > 0 {
-				slog.Debug("waiting before sending next report", "duration", diff)
-				time.Sleep(diff)
-			}
-		}); err != nil {
-			config.Log().Error("failed to dispatch report generation job for user", "userID", u.ID, "error", err)
-		}
-	}
-
-	_, err := srv.queueDefault.DispatchCron(func() {
-		// fetch all users with reports enabled
-		users, err := srv.userService.GetAllByReports(true)
-		if err != nil {
-			config.Log().Error("failed to get users for report generation", "error", err)
-			return
-		}
-
-		// filter users who have their email set
-		users = slice.Filter(users, func(i int, u *models.User) bool {
-			return u.Email != ""
-		})
-
-		// schedule jobs, throttled by one job per x seconds
-		slog.Info("scheduling report generation", "userCount", len(users))
-		for _, u := range users {
-			scheduleUserReport(u)
-		}
-	}, "0 0 6 * * 1")
-
-	if err != nil {
-		config.Log().Error("failed to dispatch report generation jobs", "error", err)
-	}
-}
 
 func (srv *ReportService) SendReport(user *models.User, duration time.Duration) error {
 	if user.Email == "" {
@@ -147,7 +110,7 @@ func (srv *ReportService) SendReport(user *models.User, duration time.Duration) 
 
 	tracker := ReportSentTracker(srv.db, user)
 	if tracker.IsReportSent() {
-		slog.Debug("report already sent for today, skipping", "userID", user.ID)
+		slog.Debug("report already sent for this week, skipping", "userID", user.ID)
 		return nil
 	}
 
@@ -214,14 +177,22 @@ func (srv *ReportService) SendWeeklyReports() error {
 		return u.Email != ""
 	})
 
-	// schedule jobs, throttled by one job per x seconds
-	slog.Info("scheduling report generation", "userCount", len(users))
+	slog.Info("sending weekly reports", "userCount", len(users))
 
-	// this is where I kinda wonder if it makes sense to create a separate job to send these emails or just ...
+	var errors []error
 	for _, user := range users {
 		if err := srv.SendReport(user, reportRange); err != nil {
 			config.Log().Error("failed to send report for user", "userID", user.ID, "error", err)
+			errors = append(errors, err)
 		}
+		
+		// Brief delay between sends to avoid overwhelming email service
+		time.Sleep(1 * time.Second)
 	}
+	
+	if len(errors) > 0 {
+		slog.Warn("some reports failed to send", "failedCount", len(errors), "totalCount", len(users))
+	}
+	
 	return nil
 }
