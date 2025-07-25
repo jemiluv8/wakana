@@ -18,9 +18,9 @@ export default async function LoginLayout({
                 <Image
                   src="/white-logo.svg"
                   alt="Wakana"
-                  width={120}
-                  height={28}
-                  className="h-8 w-auto dark:brightness-0 dark:invert"
+                  width={180}
+                  height={42}
+                  className="h-12 w-auto dark:brightness-0 dark:invert"
                 />
               </Link>
             </div>
