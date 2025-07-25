@@ -121,6 +121,8 @@ type IHousekeepingService interface {
 
 type ILeaderboardService interface {
 	GetDefaultScope() *models.IntervalKey
+	GenerateLeaderboards() error
+	GenerateLeaderboardsForInterval(*models.IntervalKey) error
 	ComputeLeaderboard([]*models.User, *models.IntervalKey, []uint8) error
 	ExistsAnyByUser(string) (bool, error)
 	CountUsers(bool) (int64, error)

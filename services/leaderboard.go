@@ -86,6 +86,21 @@ func (srv *LeaderboardService) GetDefaultScope() *models.IntervalKey {
 }
 
 
+func (srv *LeaderboardService) GenerateLeaderboards() error {
+	return srv.GenerateLeaderboardsForInterval(srv.defaultScope)
+}
+
+func (srv *LeaderboardService) GenerateLeaderboardsForInterval(interval *models.IntervalKey) error {
+	users, err := srv.userService.GetAllByLeaderboard(true)
+	if err != nil {
+		config.Log().Error("failed to get users for leaderboard generation", "error", err)
+		return err
+	}
+	
+	slog.Info("generating leaderboards for all users", "userCount", len(users), "interval", (*interval)[0])
+	return srv.ComputeLeaderboard(users, interval, []uint8{models.SummaryLanguage})
+}
+
 func (srv *LeaderboardService) ComputeLeaderboard(users []*models.User, interval *models.IntervalKey, by []uint8) error {
 	slog.Info("generating leaderboard", "interval", (*interval)[0], "userCount", len(users), "aggregationCount", len(by))
 
