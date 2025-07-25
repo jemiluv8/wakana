@@ -9,7 +9,6 @@ import (
 
 	conf "github.com/muety/wakapi/config"
 	"github.com/muety/wakapi/internal/utilities"
-	"github.com/muety/wakapi/models"
 	"github.com/muety/wakapi/services"
 )
 
@@ -56,34 +55,8 @@ func generateLeaderboards() {
 	services := services.NewServices(db)
 	leaderboardService := services.LeaderBoard()
 
-	// Calculate the date range: 7 days until the most recent Sunday 23:59
-	now := time.Now()
-	
-	// Find the most recent Sunday
-	daysFromSunday := int(now.Weekday()) // Sunday = 0, Monday = 1, etc.
-	if daysFromSunday == 0 {
-		// If today is Sunday, use last Sunday
-		daysFromSunday = 7
-	}
-	
-	// Get the most recent Sunday at 23:59:59
-	endTime := now.AddDate(0, 0, -daysFromSunday).
-		Truncate(24 * time.Hour).
-		Add(23*time.Hour + 59*time.Minute + 59*time.Second)
-	
-	// Start time is 7 days before the end time at 00:00:00
-	startTime := endTime.AddDate(0, 0, -6).
-		Truncate(24 * time.Hour)
-
-	fmt.Printf("Generating leaderboards for ALL users for period: %s to %s (7 days until recent Sunday)\n", 
-		startTime.Format("2006-01-02 15:04:05"), 
-		endTime.Format("2006-01-02 15:04:05"))
-
-	// Use the Past 7 Days interval which is the closest to what we want
-	intervalKey := models.IntervalPast7Days
-	
 	executionStart := time.Now()
-	if err := leaderboardService.GenerateLeaderboardsForInterval(intervalKey); err != nil {
+	if err := leaderboardService.GenerateWeeklyLeaderboards(); err != nil {
 		conf.Log().Error("failed to generate leaderboards", "error", err)
 		fmt.Printf("Error: Failed to generate leaderboards: %v\n", err)
 		os.Exit(1)

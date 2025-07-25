@@ -123,6 +123,7 @@ type ILeaderboardService interface {
 	GetDefaultScope() *models.IntervalKey
 	GenerateLeaderboards() error
 	GenerateLeaderboardsForInterval(*models.IntervalKey) error
+	GenerateWeeklyLeaderboards() error
 	ComputeLeaderboard([]*models.User, *models.IntervalKey, []uint8) error
 	ExistsAnyByUser(string) (bool, error)
 	CountUsers(bool) (int64, error)
