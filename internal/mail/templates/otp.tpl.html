@@ -11,20 +11,47 @@
             {{ template "theader.tpl.html" . }}
 
             <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;">
-                <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;">
+                <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                     <tr>
-                        <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;">
+                        <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 40px 20px;">
                             <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
                                 <tr>
-                                    <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
-                                        Use the following one-time password (OTP) to sign in to your account.
-                                        <br>
-                                        This OTP is valid for 3 minutes til <b>{{ .ExpiryTime }}</b>.
+                                    <td style="font-family: sans-serif; font-size: 16px; vertical-align: top; text-align: center; padding-bottom: 20px;">
+                                        <h2 style="margin: 0; font-size: 24px; font-weight: 600; color: #333333;">Sign in to Wakana</h2>
                                     </td>
                                 </tr>
-                                <tr  style="margin-top: 20px;">
-                                    <td style="margin-top: 20px; font-size:22px;line-height:24px;font-family:'Open Sans', 'Trebuchet MS', sans-serif;">
-                                        <b>{{ .Otp }}</b>
+                                <tr>
+                                    <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; text-align: center; color: #666666; padding-bottom: 30px;">
+                                        Enter this verification code to complete your sign in:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center; padding-bottom: 30px;">
+                                        <div style="display: inline-block; background-color: #f8f9fa; border: 2px solid #e9ecef; border-radius: 8px; padding: 20px 40px;">
+                                            <span style="font-size: 36px; font-weight: bold; color: #333333; letter-spacing: 8px; font-family: 'Courier New', monospace;">{{ .Otp }}</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: sans-serif; font-size: 13px; vertical-align: top; text-align: center; color: #666666; padding-bottom: 20px;">
+                                        <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; padding: 12px; margin-bottom: 20px;">
+                                            <strong style="color: #856404;">⏱️ This code expires at {{ .ExpiryTime }}</strong>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; color: #666666; border-top: 1px solid #e9ecef; padding-top: 30px;">
+                                        <h3 style="margin: 0 0 10px 0; font-size: 16px; font-weight: 600; color: #333333;">Security Information:</h3>
+                                        <ul style="margin: 10px 0; padding-left: 20px; color: #666666;">
+                                            <li style="margin-bottom: 8px;">This login was requested from your device</li>
+                                            <li style="margin-bottom: 8px;">If you didn't request this code, please ignore this email</li>
+                                            <li style="margin-bottom: 8px;">Never share this code with anyone - Wakana staff will never ask for it</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: sans-serif; font-size: 12px; vertical-align: top; text-align: center; color: #999999; padding-top: 30px;">
+                                        <p style="margin: 0;">Need help? Contact us at <a href="mailto:support@wakana.io" style="color: #3498db; text-decoration: none;">support@wakana.io</a></p>
                                     </td>
                                 </tr>
                             </table>
