@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/duke-git/lancet/v2/strutil"
 	"github.com/muety/wakapi/helpers"
@@ -34,6 +35,9 @@ func DefaultTemplateFuncs() template.FuncMap {
 		"entityTypes":    models.SummaryTypes,
 		"strslice":       utils.SubSlice[string],
 		"typeName":       typeName,
+		"weekday": func(date time.Time) string {
+			return date.Format("Mon")
+		},
 		"frontendUri": func() string {
 			return config.Get().Server.FrontendUri
 		},

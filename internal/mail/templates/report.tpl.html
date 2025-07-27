@@ -11,160 +11,159 @@
             {{ template "theader.tpl.html" . }}
 
             <div class="content" style="max-width: 580px; padding: 10px;">
-                <table width="100%" align="center" class="main" style="background: #ffffff; border-radius: 3px;">
+                <table width="100%" align="center" class="main" style="background: #ffffff; border-radius: 8px; border: 1px solid #e0e0e0;">
                     <tr>
-                        <td width="41">&nbsp;</td>
-                        <td height="36">&nbsp;</td>
-                        <td width="41">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td width="41">&nbsp;</td>
-                        <td class="wrapper" style="font-family:'Proxima Nova', Calibri, Helvetica, sans-serif;font-size:16px;color:#505050;text-align:left;line-height:25.6px;">
+                        <td class="wrapper" style="padding: 40px 30px;">
                             <table width="100%">
                                 <tr>
                                     <td>
-                                        <p style="font-size:14px;margin-top:0px;margin-bottom:10px;">
-                                            Weekly code stats for
-                                            <a href="{{ frontendUri }}/dashboard?start={{ .Report.From | simpledate | urlSafe }}&end={{ .Report.To | simpledate | urlSafe }}">
-                                                {{ .Report.From | simpledate }} - {{ .Report.To | simpledate }}
-                                            </a>
+                                        <!-- Header Section -->
+                                        <h1 style="margin: 0 0 10px 0; font-size: 24px; font-weight: 600; color: #000000; text-align: center;">Your Weekly Coding Summary</h1>
+                                        <p style="margin: 0 0 30px 0; font-size: 14px; color: #666666; text-align: center;">
+                                            {{ .Report.From | simpledate }} - {{ .Report.To | simpledate }}
                                         </p>
 
-                                        <table style="width:100%;margin-top: 20px; margin-bottom: 20px;">
-                                            <tbody>
-                                              <tr>
-                                                <td style="white-space:nowrap;padding-right:8px;">
-                                                  <div style="font-size:22px;font-weight:bold;">{{ .Report.Summary.TotalTime | duration }}</div>
-                                                  <div style="font-size:16px;color:#838383;padding-left:2px;">total</div>
-                                                </td>
-                                                <td style="white-space:nowrap;padding-left:8px;">
-                                                  <div style="font-size:22px;font-weight:bold;">{{ .Report.DailyAverage | duration }}</div>
-                                                  <div style="font-size:16px;color:#838383;padding-left:2px;">daily average</div>
-                                                </td>
-                                              </tr>
-                                            </tbody>
-                                        </table>
+                                        <!-- Total Time Hero Section -->
+                                        <div style="background: #000000; border-radius: 8px; padding: 30px; text-align: center; margin-bottom: 30px;">
+                                            <h2 style="margin: 0 0 5px 0; font-size: 16px; font-weight: 400; color: #ffffff;">Total Coding Time</h2>
+                                            <p style="margin: 0 0 20px 0; font-size: 48px; font-weight: bold; color: #ffffff;">{{ .Report.Summary.TotalTime | duration }}</p>
+                                            
+                                            <table width="100%" style="margin: 0;">
+                                                <tr>
+                                                    <td style="text-align: center; border-right: 1px solid #333333; padding-right: 20px;">
+                                                        <p style="margin: 0; font-size: 24px; font-weight: 600; color: #ffffff;">{{ .Report.DailyAverage | duration }}</p>
+                                                        <p style="margin: 0; font-size: 12px; color: #cccccc; white-space: nowrap;">Daily Average</p>
+                                                    </td>
+                                                    <td style="text-align: center; padding-left: 20px;">
+                                                        <p style="margin: 0; font-size: 24px; font-weight: 600; color: #ffffff;">{{ len .Report.DailySummaries }}&nbsp;days</p>
+                                                        <p style="margin: 0; font-size: 12px; color: #cccccc; white-space: nowrap;">Active Days</p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
 
-                                        <table style="border:0px;">
-                                            <thead>
-                                                <tr>
-                                                    <th colspan="2" style="text-align:left;"><h3 style="margin-top:0;margin-bottom:2px;text-decoration:underline;">Categories:</h3></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {{ range $i, $item := .Report.Summary.Categories }}
-                                                <tr>
-                                                    <td style="padding-right:6px; text-transform: capitalize;"><b>{{ $item.Key }}</b></td>
-                                                    <td>{{ $item.TotalFixed | duration }}</td>
-                                                </tr>
-                                                {{ end }}
-                                            </tbody>
-                                        </table>
-
-                                        <table style="border:0px;">
-                                            <thead>
-                                                <tr>
-                                                    <th colspan="2" style="text-align:left;"><h3 style="margin-top:30px;margin-bottom:2px;text-decoration:underline;">Projects:</h3></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {{ range $i, $item := .Report.Summary.Projects }}
-                                                <tr>
-                                                    <td style="padding-right:6px;"><b>{{ $item.Key }}</b></td>
-                                                    <td>{{ $item.TotalFixed | duration }}</td>
-                                                </tr>
-                                                {{ end }}
-                                            </tbody>
-                                        </table>
-
+                                        <!-- Week Overview Graph -->
                                         {{ if len .Report.DailySummaries }}
-                                        <table style="border:0px;">
-                                            <thead>
+                                        <div style="background-color: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                                            <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #000000; text-align: center;">📅 Week at a Glance</h3>
+                                            <table width="100%" style="border-collapse: collapse;">
                                                 <tr>
-                                                    <th colspan="2" style="text-align:left;"><h3 style="margin-top:30px;margin-bottom:2px;text-decoration:underline;">Weekdays:</h3></th>
+                                                    {{ range $i, $summary := .Report.DailySummaries }}
+                                                    <td style="padding: 0 3px; text-align: center; vertical-align: bottom;">
+                                                        <div style="height: 120px; display: flex; flex-direction: column; justify-content: flex-end;">
+                                                            <div style="width: 100%; background-color: #3498db; border-radius: 3px 3px 0 0; margin-bottom: 5px; height: {{ $.Report.DailyPercentage $summary }}px; min-height: 5px; max-height: 100px;">
+                                                            </div>
+                                                        </div>
+                                                        <p style="margin: 5px 0 0 0; font-size: 11px; color: #666666; font-weight: 500;">{{ $summary.FromTime.T | weekday }}</p>
+                                                    </td>
+                                                    {{ end }}
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                {{ range $i, $summary := .Report.DailySummaries }}
-                                                <tr>
-                                                    <td style="padding-right:6px; text-transform: capitalize;"><b>{{ $summary.FromTime.T | date }}</b></td>
-                                                    <td>{{ $summary.TotalTime | duration }}</td>
-                                                </tr>
-                                                {{ end }}
-                                            </tbody>
-                                        </table>
+                                            </table>
+                                        </div>
                                         {{ end }}
 
-                                        <table style="border:0px;">
-                                            <thead>
-                                                <tr>
-                                                    <th colspan="2" style="text-align:left;"><h3 style="margin-top:30px;margin-bottom:2px;text-decoration:underline;">Languages:</h3></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+                                        <!-- Projects Summary -->
+                                        {{ if .Report.Summary.Projects }}
+                                        <div style="background-color: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                                            <h3 style="margin: 0 0 15px 0; font-size: 18px; font-weight: 600; color: #000000;">🚀 Projects</h3>
+                                            <table width="100%" style="border-collapse: collapse;">
+                                                {{ range $i, $item := .Report.Summary.Projects }}
+                                                    <tr>
+                                                        <td style="padding: 8px 0; font-size: 14px; color: #333333;">{{ $item.Key }}</td>
+                                                        <td style="padding: 8px 0; font-size: 14px; font-weight: 600; color: #3498db; text-align: right;">{{ $item.TotalFixed | duration }}</td>
+                                                    </tr>
+                                                {{ end }}
+                                            </table>
+                                        </div>
+                                        {{ end }}
+
+                                        <!-- Languages -->
+                                        {{ if .Report.Summary.Languages }}
+                                        <div style="background-color: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                                            <h3 style="margin: 0 0 15px 0; font-size: 18px; font-weight: 600; color: #000000;">💻 Languages</h3>
+                                            <table width="100%" style="border-collapse: collapse;">
                                                 {{ range $i, $item := .Report.Summary.Languages }}
+                                                    <tr>
+                                                        <td style="padding: 8px 0; font-size: 14px; color: #333333; text-transform: capitalize;">{{ $item.Key }}</td>
+                                                        <td style="padding: 8px 0; font-size: 14px; font-weight: 600; color: #3498db; text-align: right;">{{ $item.TotalFixed | duration }}</td>
+                                                    </tr>
+                                                {{ end }}
+                                            </table>
+                                        </div>
+                                        {{ end }}
+
+                                        <!-- Daily Activity Graph -->
+                                        {{ if len .Report.DailySummaries }}
+                                        <div style="background-color: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                                            <h3 style="margin: 0 0 15px 0; font-size: 18px; font-weight: 600; color: #000000;">📊 Daily Activity</h3>
+                                            <table width="100%" style="border-collapse: collapse;">
+                                                {{ range $i, $summary := .Report.DailySummaries }}
                                                 <tr>
-                                                    <td style="padding-right:6px; text-transform: capitalize;"><b>{{ $item.Key }}</b></td>
-                                                    <td>{{ $item.TotalFixed | duration }}</td>
+                                                    <td style="padding: 8px 0; font-size: 13px; color: #666666; width: 80px; vertical-align: middle;">{{ $summary.FromTime.T | weekday }}</td>
+                                                    <td style="padding: 8px 10px 8px 0; vertical-align: middle;">
+                                                        <table style="width: 100%; border-collapse: collapse;">
+                                                            <tr>
+                                                                <td style="width: 60%;">
+                                                                    <div style="background-color: #e0e0e0; height: 20px; border-radius: 3px; overflow: hidden;">
+                                                                        <div style="background-color: #3498db; height: 100%; border-radius: 3px; min-width: 20px; width: {{ $.Report.DailyPercentage $summary }}%;"></div>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="width: 40%; padding-left: 10px; text-align: right;">
+                                                                    <span style="font-size: 14px; font-weight: 600; color: #000000;">{{ $summary.TotalTime | duration }}</span>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
                                                 </tr>
                                                 {{ end }}
-                                            </tbody>
-                                        </table>
+                                            </table>
+                                        </div>
+                                        {{ end }}
 
-                                        <table style="border:0px;">
-                                            <thead>
+                                        <!-- Detailed Stats Grid -->
+                                        <div style="margin-bottom: 30px;">
+                                            <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #000000;">📈 Detailed Statistics</h3>
+                                            
+                                            <table width="100%" style="border-collapse: separate; border-spacing: 10px;">
                                                 <tr>
-                                                    <th colspan="2" style="text-align:left;"><h3 style="margin-top:30px;margin-bottom:2px;text-decoration:underline;">Editors:</h3></th>
+                                                    <!-- Categories -->
+                                                    {{ if .Report.Summary.Categories }}
+                                                    <td style="background-color: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; vertical-align: top;">
+                                                        <h4 style="margin: 0 0 10px 0; font-size: 14px; font-weight: 600; color: #333333;">Categories</h4>
+                                                        {{ range $i, $item := .Report.Summary.Categories }}
+                                                            {{ if lt $i 5 }}
+                                                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                                                <span style="font-size: 13px; color: #333333; text-transform: capitalize;">{{ $item.Key }}</span>
+                                                                <span style="font-size: 13px; font-weight: 500; color: #3498db;">{{ $item.TotalFixed | duration }}</span>
+                                                            </div>
+                                                            {{ end }}
+                                                        {{ end }}
+                                                    </td>
+                                                    {{ end }}
+                                                    
+                                                    <!-- Editors -->
+                                                    {{ if .Report.Summary.Editors }}
+                                                    <td style="background-color: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; vertical-align: top;">
+                                                        <h4 style="margin: 0 0 10px 0; font-size: 14px; font-weight: 600; color: #333333;">Editors</h4>
+                                                        {{ range $i, $item := .Report.Summary.Editors }}
+                                                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                                                <span style="font-size: 13px; color: #333333; text-transform: capitalize;">{{ $item.Key }}</span>
+                                                                <span style="font-size: 13px; font-weight: 500; color: #3498db;">{{ $item.TotalFixed | duration }}</span>
+                                                            </div>
+                                                        {{ end }}
+                                                    </td>
+                                                    {{ end }}
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                {{ range $i, $item := .Report.Summary.Editors }}
-                                                <tr>
-                                                    <td style="padding-right:6px; text-transform: capitalize;"><b>{{ $item.Key }}</b></td>
-                                                    <td>{{ $item.TotalFixed | duration }}</td>
-                                                </tr>
-                                                {{ end }}
-                                            </tbody>
-                                        </table>
+                                            </table>
+                                        </div>
 
-                                        <table style="border:0px;">
-                                            <thead>
-                                                <tr>
-                                                    <th colspan="2" style="text-align:left;"><h3 style="margin-top:30px;margin-bottom:2px;text-decoration:underline;">Operating Systems:</h3></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {{ range $i, $item := .Report.Summary.OperatingSystems }}
-                                                <tr>
-                                                    <td style="padding-right:6px; text-transform: capitalize;"><b>{{ $item.Key }}</b></td>
-                                                    <td>{{ $item.TotalFixed | duration }}</td>
-                                                </tr>
-                                                {{ end }}
-                                            </tbody>
-                                        </table>
-
-                                        <table style="border:0px;">
-                                            <thead>
-                                                <tr>
-                                                    <th colspan="2" style="text-align:left;"><h3 style="margin-top:30px;margin-bottom:2px;text-decoration:underline;">Machines:</h3></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {{ range $i, $item := .Report.Summary.Machines }}
-                                                <tr>
-                                                    <td style="padding-right:6px; text-transform: capitalize;"><b>{{ $item.Key }}</b></td>
-                                                    <td>{{ $item.TotalFixed | duration }}</td>
-                                                </tr>
-                                                {{ end }}
-                                            </tbody>
-                                        </table>
-
-                                        <p style="font-size:14px; margin-top:30px;">If you do not want to receive e-mail reports anymore, please log in to your dashboard and go to
-                                            <a href="{{ frontendUri }}/settings/preferences">
-                                                <i>Settings</i>
-                                            </a>
-                                            to disable them.
-                                        </p>
+                                        <!-- Footer -->
+                                        <div style="border-top: 1px solid #e0e0e0; margin-top: 40px; padding-top: 20px;">
+                                            <p style="margin: 0; font-size: 12px; color: #666666; text-align: center;">
+                                                <a href="{{ frontendUri }}/dashboard" style="color: #000000; text-decoration: underline;">View full dashboard</a> • 
+                                                <a href="{{ frontendUri }}/settings/preferences" style="color: #000000; text-decoration: underline;">Manage email preferences</a>
+                                            </p>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
