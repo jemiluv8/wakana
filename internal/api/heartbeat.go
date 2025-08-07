@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/duke-git/lancet/v2/condition"
 	"github.com/go-chi/chi/v5"
@@ -116,6 +117,11 @@ func (a *APIv1) ProcessHeartBeat(w http.ResponseWriter, r *http.Request) {
 		hb.OperatingSystem = opSys
 		hb.Editor = editor
 		hb.UserAgent = userAgent
+
+		// Override category to "meeting" for Signal editor (case-insensitive)
+		if strings.EqualFold(hb.Editor, "signal") {
+			hb.Category = "meeting"
+		}
 
 		if !hb.Valid() || !hb.Timely(a.config.App.HeartbeatsMaxAge()) {
 			w.WriteHeader(http.StatusBadRequest)

@@ -59,7 +59,9 @@ func ResolveIntervalTZ(interval *models.IntervalKey, tz *time.Location) (err err
 	case models.IntervalThisYear:
 		from = utils.BeginOfThisYear(tz)
 	case models.IntervalPast7Days:
-		from = now.AddDate(0, 0, -7)
+		// 7 full days ending at the beginning of today
+		from = utils.BeginOfToday(tz).AddDate(0, 0, -7)
+		to = utils.BeginOfToday(tz)
 	case models.IntervalPast7DaysYesterday:
 		from = utils.BeginOfToday(tz).AddDate(0, 0, -1).AddDate(0, 0, -7)
 		to = utils.BeginOfToday(tz).AddDate(0, 0, -1)

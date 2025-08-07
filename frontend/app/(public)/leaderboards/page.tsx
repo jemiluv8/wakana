@@ -1,5 +1,6 @@
 import { ApiClient } from "@/actions/api";
 import { LeaderBoardTable } from "@/components/leaderboard-table";
+import { LeaderBoardTableV2 } from "@/components/leaderboard-table-v2";
 import { LeaderboardApiResponse } from "@/lib/types";
 
 export default async function Leaderboards({
@@ -25,10 +26,10 @@ export default async function Leaderboards({
   }
 
   return (
-    <LeaderBoardTable
+    <LeaderBoardTableV2
       data={durationData.data}
       title="Top Coders"
-      titleClass="text-center mb-8 text-5xl underline"
+      titleClass=""
       searchParams={searchParams}
     />
   );
