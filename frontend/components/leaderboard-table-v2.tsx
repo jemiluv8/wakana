@@ -1,11 +1,12 @@
 "use client";
 
-import { LeaderboardApiResponse } from "@/lib/types";
-import { cn } from "@/lib/utils";
 import { Crown } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import { COLORS } from "@/lib/constants/colors";
+import { LeaderboardApiResponse } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 function getLanguageColor(language: string): string {
   const color = COLORS.languages?.[language];
@@ -50,7 +51,6 @@ interface iProps {
   titleClass?: string;
   searchParams?: Record<string, any>;
 }
-
 
 export function LeaderBoardTableV2({
   title,
