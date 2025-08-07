@@ -1,7 +1,6 @@
 import { ApiClient } from "@/actions/api";
-import { LeaderBoardTable } from "@/components/leaderboard-table";
-import { LeaderBoardTableV2 } from "@/components/leaderboard-table-v2";
 import { LeaderboardApiResponse } from "@/lib/types";
+import { LeaderBoardTableV2 } from "@/components/leaderboard-table-v2";
 
 export default async function Leaderboards({
   searchParams,
