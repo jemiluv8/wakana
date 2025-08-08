@@ -18,23 +18,31 @@ function LanguageBadge({
   language,
   time,
   href,
+  compact = false,
 }: {
   language: string;
   time?: string;
   href?: string;
+  compact?: boolean;
 }) {
   const colorClass = getLanguageColor(language);
+
+  // Truncate language name for compact mode
+  const displayName =
+    compact && language.length > 10 ? language.substring(0, 9) + "…" : language;
 
   const badge = (
     <span
       className={cn(
-        "inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium transition-opacity text-white",
+        "inline-flex items-center rounded font-medium transition-opacity text-white",
+        compact ? "px-1.5 py-0.5 text-[10px]" : "px-2 py-0.5 text-xs",
         href && "hover:opacity-80 cursor-pointer"
       )}
       style={{ backgroundColor: colorClass }}
+      title={language} // Show full name on hover
     >
-      {language}
-      {time && ` - ${time}`}
+      {displayName}
+      {time && !compact && ` - ${time}`}
     </span>
   );
 
@@ -43,6 +51,78 @@ function LanguageBadge({
   }
 
   return badge;
+}
+
+// Mobile Card Component
+function LeaderboardCard({
+  leader,
+  pathname,
+}: {
+  leader: any;
+  pathname: string;
+}) {
+  return (
+    <div className="bg-background border border-border rounded-lg p-4 hover:bg-muted/50 transition-colors">
+      <div className="flex items-start justify-between mb-3">
+        <div className="flex items-center gap-3">
+          {/* Rank */}
+          <div className="flex-shrink-0">
+            {leader.rank === 1 ? (
+              <div className="flex items-center gap-1 font-bold text-yellow-500">
+                <Crown className="w-5 h-5" />
+                <span className="text-lg">#1</span>
+              </div>
+            ) : (
+              <span className="text-lg font-bold text-muted-foreground">
+                #{leader.rank}
+              </span>
+            )}
+          </div>
+
+          {/* Avatar and Name */}
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
+              {leader.user.display_name?.[0]?.toUpperCase() || "?"}
+            </div>
+            <div className="min-w-0">
+              <div className="font-medium truncate">
+                {leader.user.display_name || "Anonymous"}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 gap-3 mb-3">
+        <div>
+          <div className="text-xs text-muted-foreground mb-1">Hours Coded</div>
+          <div className="font-mono font-semibold text-base">
+            {leader.totalTime}
+          </div>
+        </div>
+        <div>
+          <div className="text-xs text-muted-foreground mb-1">Daily Avg</div>
+          <div className="font-mono text-base">{leader.dailyAverage}</div>
+        </div>
+      </div>
+
+      {/* Languages */}
+      <div>
+        <div className="text-xs text-muted-foreground mb-1">Top Languages</div>
+        <div className="flex gap-1 flex-wrap">
+          {leader.languages.slice(0, 3).map((lang: any, idx: number) => (
+            <LanguageBadge
+              key={idx}
+              language={lang.name}
+              href={`${pathname}?language=${encodeURIComponent(lang.name)}`}
+              compact={true}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 interface iProps {
@@ -80,7 +160,7 @@ export function LeaderBoardTableV2({
   const subtitle = searchParams?.language ? `- ${searchParams.language}` : "";
 
   return (
-    <div className="w-full max-w-6xl mx-auto">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mb-6 text-center">
         <h1 className={cn("text-3xl font-bold", titleClass)}>
           {title} {subtitle}
@@ -90,23 +170,35 @@ export function LeaderBoardTableV2({
         </p>
       </div>
 
-      <div className="bg-background border border-border rounded-lg overflow-hidden">
+      {/* Mobile View - Cards */}
+      <div className="md:hidden space-y-3">
+        {leaderboard.map((leader) => (
+          <LeaderboardCard
+            key={leader.rank}
+            leader={leader}
+            pathname={pathname}
+          />
+        ))}
+      </div>
+
+      {/* Desktop View - Table */}
+      <div className="hidden md:block bg-background border border-border rounded-lg overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-border">
-              <th className="text-left p-4 font-medium text-muted-foreground">
-                Position
+              <th className="text-left p-3 font-medium text-muted-foreground text-sm">
+                Rank
               </th>
-              <th className="text-left p-4 font-medium text-muted-foreground">
+              <th className="text-left p-3 font-medium text-muted-foreground text-sm">
                 User
               </th>
-              <th className="text-right p-4 font-medium text-muted-foreground">
+              <th className="text-left p-3 font-medium text-muted-foreground whitespace-nowrap text-sm">
                 Hours Coded
               </th>
-              <th className="text-right p-4 font-medium text-muted-foreground">
-                Daily Average
+              <th className="text-left p-3 font-medium text-muted-foreground whitespace-nowrap text-sm">
+                Daily Avg
               </th>
-              <th className="text-left p-4 font-medium text-muted-foreground">
+              <th className="text-left p-3 font-medium text-muted-foreground text-sm">
                 Languages
               </th>
             </tr>
@@ -117,57 +209,50 @@ export function LeaderBoardTableV2({
                 key={leader.rank}
                 className="border-b border-border hover:bg-muted/50 transition-colors"
               >
-                <td className="p-4">
-                  <div className="flex items-center gap-2">
+                <td className="p-3">
+                  <div className="flex items-center gap-1">
                     {leader.rank === 1 ? (
                       <div className="flex items-center gap-1 font-bold text-yellow-500">
                         <Crown className="w-4 h-4" />
-                        <span>#1</span>
+                        <span className="text-base">#1</span>
                       </div>
                     ) : (
-                      <span className="font-medium">#{leader.rank}</span>
+                      <span className="font-medium text-base">
+                        #{leader.rank}
+                      </span>
                     )}
                   </div>
                 </td>
-                <td className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
+                <td className="p-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium flex-shrink-0">
                       {leader.user.display_name?.[0]?.toUpperCase() || "?"}
                     </div>
-                    <div>
-                      <div className="font-medium">
+                    <div className="min-w-0">
+                      <div className="font-medium text-base truncate">
                         {leader.user.display_name || "Anonymous"}
                       </div>
-                      {leader.user.username && (
-                        <div className="text-sm text-muted-foreground">
-                          @{leader.user.username}
-                        </div>
-                      )}
                     </div>
                   </div>
                 </td>
-                <td className="p-4 text-right">
-                  <span className="font-mono font-medium">
+                <td className="p-3 text-left whitespace-nowrap">
+                  <span className="font-mono font-semibold text-base">
                     {leader.totalTime}
                   </span>
                 </td>
-                <td className="p-4 text-right">
-                  <span className="font-mono text-muted-foreground">
+                <td className="p-3 text-left whitespace-nowrap">
+                  <span className="font-mono text-muted-foreground text-base">
                     {leader.dailyAverage}
                   </span>
                 </td>
-                <td className="p-4">
-                  <div className="flex gap-2 flex-wrap">
+                <td className="p-3">
+                  <div className="flex gap-1 flex-wrap">
                     {leader.languages.map((lang, idx) => (
                       <LanguageBadge
                         key={idx}
                         language={lang.name}
-                        time={
-                          lang.total_seconds > 3600
-                            ? `${Math.floor(lang.total_seconds / 3600)} h ${Math.floor((lang.total_seconds % 3600) / 60)} m`
-                            : `${Math.floor(lang.total_seconds / 60)} m`
-                        }
                         href={`${pathname}?language=${encodeURIComponent(lang.name)}`}
+                        compact={true}
                       />
                     ))}
                   </div>

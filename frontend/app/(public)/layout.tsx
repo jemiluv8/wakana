@@ -66,7 +66,7 @@ export default async function Page({ children }: MarketingLayoutProps) {
     <div className="flex flex-col min-h-screen">
       <Header />
       <PublicMobileHeader />
-      <main className="m-auto md:mx-14 flex flex-1 flex-col px-12 md:px-14 align-middle">
+      <main className="m-auto md:mx-14 flex flex-1 flex-col px-4 md:px-14 align-middle">
         <FadeOnView>{children}</FadeOnView>
       </main>
       <PublicFooter />
