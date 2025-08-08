@@ -6,10 +6,12 @@ interface LeaderboardContentProps {
   searchParams: Record<string, any>;
 }
 
-export async function LeaderboardContent({ searchParams }: LeaderboardContentProps) {
+export async function LeaderboardContent({
+  searchParams,
+}: LeaderboardContentProps) {
   const queryParams = new URLSearchParams(searchParams);
   const url = `/v1/leaders?${queryParams.toString()}`;
-  
+
   const durationData = await fetchData<LeaderboardApiResponse>(url, false);
 
   if (!durationData) {
