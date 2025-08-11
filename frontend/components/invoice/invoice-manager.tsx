@@ -1,7 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
-import { LucidePlusCircle, LucideTrash2 } from "lucide-react";
+import { Eye, LucidePlusCircle, LucideTrash2, Save } from "lucide-react";
 import React from "react";
 
 import { ApiClient } from "@/actions/api";
@@ -11,6 +11,7 @@ import { cn, formatNumber, getHours } from "@/lib/utils";
 
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
+import { Switch } from "../ui/switch";
 import { toast } from "../ui/use-toast";
 import styles from "./invoice-manager.module.css";
 import { InvoicePreview } from "./invoice-preview";
@@ -44,7 +45,7 @@ export function InvoiceManager({ data }: iProps) {
     data.invoice_summary || defaultInvoiceSubtitle()
   );
   const [preview, setPreview] = React.useState(true);
-  const [refreshIndex, setRefreshIndex] = React.useState(0);
+  const [showTax, setShowTax] = React.useState(!data.exclude_tax);
 
   const totalInvoice = React.useMemo(() => {
     return lineItems.reduce((acc, item) => {
@@ -53,12 +54,15 @@ export function InvoiceManager({ data }: iProps) {
   }, [lineItems, client.hourly_rate]);
 
   const taxTotal = React.useMemo(() => {
+    if (!showTax) {
+      return 0;
+    }
     const parsedTax = parseInt(tax.toString());
     if (isNaN(parsedTax)) {
       return 0;
     }
     return totalInvoice * (parsedTax / 100);
-  }, [totalInvoice, tax]);
+  }, [totalInvoice, tax, showTax]);
 
   const netTotal = React.useMemo(() => {
     return totalInvoice + taxTotal;
@@ -85,15 +89,19 @@ export function InvoiceManager({ data }: iProps) {
 
   const saveInvoice = async () => {
     try {
-      const payload: Record<string, string | number | InvoiceLineItem[]> = {
+      const payload: Record<
+        string,
+        string | number | boolean | InvoiceLineItem[]
+      > = {
         origin,
         destination,
         heading,
         final_message: finalMessage,
         invoice_summary: invoiceSummary,
         line_items: lineItems,
+        exclude_tax: !showTax,
       };
-      if (tax) {
+      if (tax && showTax) {
         payload.tax = +tax;
       }
       setLoading(true);
@@ -126,7 +134,8 @@ export function InvoiceManager({ data }: iProps) {
           heading,
           final_message: finalMessage,
           invoice_summary: invoiceSummary,
-          tax: +tax,
+          tax: showTax ? +tax : 0,
+          exclude_tax: !showTax,
         }}
         onTogglePreview={() => setPreview(!preview)}
       />
@@ -177,12 +186,12 @@ export function InvoiceManager({ data }: iProps) {
           </div>
           <div className="flex">
             <div className="mr-1 flex flex-col items-end justify-items-end">
-              <h1 className="font-bold">Invoice #: </h1>
+              <h1 className="font-bold">Invoice : </h1>
               <h1 className="font-bold">Date: </h1>
             </div>
             <div>
               <p>INV-0001</p>
-              <p>{format(date, "MMM dd, yyyy")}</p>
+              <p>{format(new Date(date), "MMM dd, yyyy")}</p>
             </div>
           </div>
         </div>
@@ -215,7 +224,11 @@ export function InvoiceManager({ data }: iProps) {
                       className={cn(styles.invoiceInput, styles.inputOutlined)}
                       placeholder="Invoice Item"
                       defaultValue={item.title}
-                      onChange={(event) => (item.title = event.target.value)}
+                      onChange={(event) => {
+                        const newItems = [...lineItems];
+                        newItems[index].title = event.target.value;
+                        setLineItems(newItems);
+                      }}
                     />
                   </td>
                   <td>{client.hourly_rate.toFixed(2)}</td>
@@ -223,12 +236,13 @@ export function InvoiceManager({ data }: iProps) {
                     {!(item as InvoiceLineItem).auto_generated ? (
                       <input
                         className={cn(styles.invoiceInput, "text-center")}
-                        placeholder="Invoice Item"
+                        placeholder="Hours"
                         defaultValue={getHours(item.total_seconds || 0)}
                         onChange={(event) => {
-                          item.total_seconds =
-                            parseFloat(event.target.value) * 3600;
-                          setRefreshIndex(refreshIndex + 1);
+                          const newItems = [...lineItems];
+                          newItems[index].total_seconds =
+                            parseFloat(event.target.value || "0") * 3600;
+                          setLineItems(newItems);
                         }}
                       />
                     ) : (
@@ -280,23 +294,45 @@ export function InvoiceManager({ data }: iProps) {
           <div className="flex gap-3">
             <div className="mr-1 flex flex-col items-end justify-center gap-1">
               <h1 className="font-bold">Total </h1>
-              <h1 className="font-bold">
-                Tax{" "}
-                <input
-                  className={cn(styles.invoiceInput, styles.taxInput)}
-                  defaultValue={tax}
-                  onInput={(e) => setTax(e.currentTarget.value)}
-                />
-                (%)
-              </h1>
-              <h1 className="font-bold">Total After Tax </h1>
+              {showTax && (
+                <>
+                  <h1 className="font-bold">
+                    Tax{" "}
+                    <input
+                      className={cn(styles.invoiceInput, styles.taxInput)}
+                      defaultValue={tax}
+                      onInput={(e) => setTax(e.currentTarget.value)}
+                    />
+                    (%)
+                  </h1>
+                  <h1 className="font-bold">Total After Tax </h1>
+                </>
+              )}
             </div>
-            <div className="flex flex-col items-end justify-end gap-1">
+            <div className="flex flex-col items-end justify-end gap-1 text-black">
               <p>{formatNumber(totalInvoice, { currency: client.currency })}</p>
-              <p>{formatNumber(taxTotal, { currency: client.currency })}</p>
-              <p>{formatNumber(netTotal, { currency: client.currency })}</p>
+              {showTax && (
+                <>
+                  <p>{formatNumber(taxTotal, { currency: client.currency })}</p>
+                  <p>{formatNumber(netTotal, { currency: client.currency })}</p>
+                </>
+              )}
             </div>
           </div>
+        </div>
+
+        <div className="my-3 flex items-center justify-end gap-2">
+          <Switch
+            id="show-tax"
+            checked={showTax}
+            onCheckedChange={setShowTax}
+          />
+          <label
+            htmlFor="show-tax"
+            className="text-sm font-medium cursor-pointer"
+          >
+            {showTax ? "Include Tax" : "Exclude Tax"}
+          </label>
         </div>
         {/* </div> */}
 
@@ -306,17 +342,33 @@ export function InvoiceManager({ data }: iProps) {
           defaultValue={finalMessage}
           onChange={(event) => setMainMessage(event.target.value)}
         ></textarea>
-        <div className={styles.invoiceFooter}>
-          <Button onClick={saveInvoice}>
+        <div
+          className={cn(
+            styles.invoiceFooter,
+            "flex justify-between items-center"
+          )}
+        >
+          <Button
+            variant="ghost"
+            onClick={() => setPreview(true)}
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+            size="sm"
+          >
+            <Eye className="h-4 w-4" />
+            Preview
+          </Button>
+          <Button onClick={saveInvoice} size="lg" className="font-semibold">
             {loading ? (
               <div className="flex items-center gap-2">
                 <Icons.spinner className="animate-spin" />
                 Saving...
               </div>
             ) : (
-              "Save Invoice"
+              <div className="flex items-center gap-2">
+                <Save className="h-5 w-5" />
+                Save Invoice
+              </div>
             )}
-            {/* Save Invoice */}
           </Button>
         </div>
       </main>

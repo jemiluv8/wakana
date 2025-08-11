@@ -185,6 +185,7 @@ export interface Invoice {
   start_date: string;
   end_date: string;
   tax: number;
+  exclude_tax: boolean;
   line_items: InvoiceLineItem[];
 }
 

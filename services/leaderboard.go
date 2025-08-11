@@ -82,7 +82,7 @@ func NewLeaderboardService(db *gorm.DB) *LeaderboardService {
 }
 
 func (srv *LeaderboardService) GetDefaultScope() *models.IntervalKey {
-	return srv.defaultScope
+	return models.IntervalPreviousWeek
 }
 
 func (srv *LeaderboardService) GenerateLeaderboards() error {
@@ -100,8 +100,8 @@ func (srv *LeaderboardService) GenerateLeaderboardsForInterval(interval *models.
 	return srv.ComputeLeaderboard(users, interval, []uint8{models.SummaryLanguage})
 }
 
-// GenerateWeeklyLeaderboards generates leaderboards for the past 7 full days
-// This method now properly uses the IntervalPast7Days which calculates 7 full days ending at the beginning of today
+// GenerateWeeklyLeaderboards generates leaderboards for the previous complete week (Monday 00:00 to Sunday 23:59:59)
+// This always computes for the previous week, so if run on any day, it calculates last Monday to last Sunday
 func (srv *LeaderboardService) GenerateWeeklyLeaderboards() error {
 	users, err := srv.userService.GetAll()
 	if err != nil {
@@ -109,14 +109,8 @@ func (srv *LeaderboardService) GenerateWeeklyLeaderboards() error {
 		return err
 	}
 
-	// Use the Past 7 Days interval which now properly calculates 7 full days
-	intervalKey := models.IntervalPast7Days
-
-	slog.Info("generating weekly leaderboards for all users regardless of settings",
-		"userCount", len(users),
-		"interval", "past_7_days")
-
-	return srv.ComputeLeaderboard(users, intervalKey, []uint8{models.SummaryLanguage})
+	// Use the unified ComputeLeaderboard method with IntervalPreviousWeek
+	return srv.ComputeLeaderboard(users, models.IntervalPreviousWeek, []uint8{models.SummaryLanguage})
 }
 
 func (srv *LeaderboardService) ComputeLeaderboard(users []*models.User, interval *models.IntervalKey, by []uint8) error {

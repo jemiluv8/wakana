@@ -14,12 +14,14 @@ import (
 
 var generateLeaderboardsCmd = &cobra.Command{
 	Use:   "generate-leaderboards",
-	Short: "Generate leaderboards for the 7-day period ending on the most recent Sunday",
+	Short: "Generate leaderboards for the previous complete week (Monday to Sunday)",
 	Long: `Generate leaderboards for ALL users regardless of their leaderboard settings.
 
-This command generates leaderboards for a 7-day period that ends on the most recent Sunday at 23:59:59.
-For example, if run on a Wednesday, it will generate leaderboards for the 7-day period ending on the previous Sunday.
-If run on a Sunday, it will generate leaderboards for the 7-day period ending on the previous Sunday.
+This command generates leaderboards for the previous complete week from Monday 00:00:00 to Sunday 23:59:59.
+For example:
+- If run on a Wednesday, it generates leaderboards for last Monday to last Sunday
+- If run on a Sunday, it generates leaderboards for last Monday to last Sunday (not the current week)
+- If run on a Monday, it generates leaderboards for the week that just ended (last Monday to yesterday)
 
 This ensures consistent weekly leaderboard periods that align with calendar weeks.
 All users are included in the leaderboard generation, even if they have disabled leaderboards in their settings.`,

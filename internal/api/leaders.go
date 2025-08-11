@@ -85,7 +85,7 @@ func (a *APIv1) GetLeaderboard(w http.ResponseWriter, r *http.Request) {
 		// no need to fetch language-leaderboard for user, because not using pagination above
 	}
 
-	vm := a.buildLeadersViewModel(primaryLeaderboard, languageLeaderboard, user, a.services.LeaderBoard().GetDefaultScope(), pageParams)
+	vm := a.buildLeadersViewModel(primaryLeaderboard, languageLeaderboard, user, models.IntervalPreviousWeek, pageParams)
 	vm.Language = languageParam
 	helpers.RespondJSON(w, r, http.StatusOK, vm)
 }

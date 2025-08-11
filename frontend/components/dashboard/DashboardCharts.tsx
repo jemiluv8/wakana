@@ -17,11 +17,25 @@ export async function DashboardCharts({ searchParams }: DashboardChartsProps) {
   const end = searchParams.end || format(new Date(), "yyyy-MM-dd");
   const url = `/v1/users/current/summaries?${new URLSearchParams({ start, end })}`;
 
-  const durationData = await fetchData<SummariesApiResponse>(url, true);
+  let durationData: SummariesApiResponse | null = null;
+
+  try {
+    durationData = await fetchData<SummariesApiResponse>(url, true);
+  } catch (error) {
+    console.error("Failed to fetch dashboard chart data:", error);
+    return (
+      <div className="text-center text-red-500">
+        Error fetching chart data:{" "}
+        {error instanceof Error ? error.message : "Unknown error"}
+        <br />
+        <small>URL: {url}</small>
+      </div>
+    );
+  }
 
   if (!durationData) {
     return (
-      <div className="text-center text-red-500">Error fetching chart data</div>
+      <div className="text-center text-red-500">No chart data available</div>
     );
   }
 

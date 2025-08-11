@@ -17,7 +17,7 @@ export const preserveNewLine = (
   fallback = ""
 ) => {
   if (!text) return fallback;
-  return text.replace("\n", "<br />");
+  return text.replace(/\n/g, "<br />");
 };
 
 export function cn(...inputs: ClassValue[]) {

@@ -48,12 +48,12 @@ export const InvoicePDFViewer = ({ invoiceData }: iProps) => {
       </View>
       <View style={styles.flexRow}>
         <View>
-          <Text style={{ fontSize: 12, fontWeight: 700 }}>Invoice #:</Text>
+          <Text style={{ fontSize: 12, fontWeight: 700 }}>Invoice :</Text>
           <Text style={{ fontSize: 12, fontWeight: 700 }}>Date:</Text>
         </View>
         <View style={styles.flexColEnd}>
           <Text style={{ fontSize: 11, ...styles.mutedText }}>
-            INV-{invoiceData.invoice_id}
+            {invoiceData.invoice_id}
           </Text>
           <Text style={{ fontSize: 11, ...styles.mutedText }}>
             {format(date, "MMM dd, yyyy")}

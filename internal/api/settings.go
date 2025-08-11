@@ -7,7 +7,6 @@ import (
 	"log/slog"
 	"net/http"
 	"sync"
-	"time"
 
 	datastructure "github.com/duke-git/lancet/v2/datastructure/set"
 	"github.com/duke-git/lancet/v2/slice"
@@ -84,8 +83,7 @@ func (a *APIv1) GetProfile(w http.ResponseWriter, r *http.Request) {
 
 func (a *APIv1) SendReport(w http.ResponseWriter, r *http.Request) {
 	user := middlewares.GetPrincipal(r)
-	const reportRange = 7 * 24 * time.Hour
-	err := a.services.Report().SendReport(user, reportRange)
+	err := a.services.Report().SendReport(user, true)
 	helpers.RespondJSON(w, r, 200, map[string]any{
 		"success": err == nil,
 		"message": "report sent",
@@ -186,7 +184,7 @@ func (a *APIv1) RegenerateAllUserSummaries() {
 
 	// schedule jobs, throttled by one job per x seconds
 	slog.Info("regenerating summaries", "userCount", len(users))
-	
+
 	var wg sync.WaitGroup
 	for _, u := range users {
 		wg.Add(1)
@@ -199,7 +197,7 @@ func (a *APIv1) RegenerateAllUserSummaries() {
 			}
 		}(u)
 	}
-	
+
 	wg.Wait()
 	slog.Info("completed regenerating summaries for all users")
 }

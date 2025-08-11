@@ -79,7 +79,7 @@ func setupGlobalMiddleware(r *chi.Mux, globalConfig *conf.Config) {
 func (a *APIv1) StartRiverJobs() {
 	if err := a.river.Start(context.Background()); err != nil {
 		// handle error
-		slog.Error("error starting riverClient to add worker", err)
+		slog.Error("error starting riverClient to add worker", "error", err)
 	}
 	slog.Info("👉 Worker Client started", "name", "river-jobs")
 	<-make(chan any, 1)
@@ -106,19 +106,19 @@ func NewAPIv1(globalConfig *conf.Config, db *gorm.DB) *APIv1 {
 	if err := river.AddWorkerSafely(api.workers, river.WorkFunc(api.weeklyReportWorker)); err != nil {
 		fmt.Println(fmt.Errorf("failed to add worker: %w", err))
 	}
-	
+
 	if err := river.AddWorkerSafely(api.workers, river.WorkFunc(api.leaderboardWorker)); err != nil {
 		fmt.Println(fmt.Errorf("failed to add leaderboard worker: %w", err))
 	}
-	
+
 	if err := river.AddWorkerSafely(api.workers, river.WorkFunc(api.aggregationWorker)); err != nil {
 		fmt.Println(fmt.Errorf("failed to add aggregation worker: %w", err))
 	}
-	
+
 	if err := river.AddWorkerSafely(api.workers, river.WorkFunc(api.housekeepingDataCleanupWorker)); err != nil {
 		fmt.Println(fmt.Errorf("failed to add housekeeping data cleanup worker: %w", err))
 	}
-	
+
 	if err := river.AddWorkerSafely(api.workers, river.WorkFunc(api.housekeepingInactiveUsersWorker)); err != nil {
 		fmt.Println(fmt.Errorf("failed to add housekeeping inactive users worker: %w", err))
 	}
@@ -143,7 +143,7 @@ func (a *APIv1) RegisterPeriodicJobs() error {
 			&river.PeriodicJobOpts{RunOnStart: true},
 		),
 	}
-	
+
 	// Add leaderboard job if leaderboards are enabled
 	if a.config.App.LeaderboardEnabled {
 		leaderboardJob := river.NewPeriodicJob(
@@ -155,7 +155,7 @@ func (a *APIv1) RegisterPeriodicJobs() error {
 		)
 		periodicJobs = append(periodicJobs, leaderboardJob)
 	}
-	
+
 	// Add aggregation job (daily summary generation)
 	aggregationJob := river.NewPeriodicJob(
 		jobs.DAILY_AGGREGATION,
@@ -165,7 +165,7 @@ func (a *APIv1) RegisterPeriodicJobs() error {
 		&river.PeriodicJobOpts{RunOnStart: false},
 	)
 	periodicJobs = append(periodicJobs, aggregationJob)
-	
+
 	// Add housekeeping jobs (data cleanup and inactive users)
 	housekeepingDataJob := river.NewPeriodicJob(
 		jobs.WEEKLY_HOUSEKEEPING,
@@ -175,7 +175,7 @@ func (a *APIv1) RegisterPeriodicJobs() error {
 		&river.PeriodicJobOpts{RunOnStart: false},
 	)
 	periodicJobs = append(periodicJobs, housekeepingDataJob)
-	
+
 	housekeepingUsersJob := river.NewPeriodicJob(
 		jobs.WEEKLY_HOUSEKEEPING,
 		func() (river.JobArgs, *river.InsertOpts) {
@@ -184,7 +184,7 @@ func (a *APIv1) RegisterPeriodicJobs() error {
 		&river.PeriodicJobOpts{RunOnStart: false},
 	)
 	periodicJobs = append(periodicJobs, housekeepingUsersJob)
-	
+
 	a.river.PeriodicJobs().AddMany(periodicJobs)
 	return nil
 }
@@ -193,19 +193,18 @@ func (a *APIv1) initializeJobs() {
 	// Schedule background tasks
 	// migrate all cron jobs to periodic river jobs
 	go conf.StartJobs()
-	
+
 	// Legacy cron jobs (TODO: migrate remaining to River)
-	go a.services.Misc().Schedule()
-	
+
 	// Migrated to River periodic jobs:
 	// - Weekly reports: ✅ Migrated
-	// - Leaderboard: ✅ Migrated  
+	// - Leaderboard: ✅ Migrated
 	// - Aggregation: ✅ Migrated
 	// - Housekeeping: ✅ Migrated
 
 	err := a.RegisterPeriodicJobs()
 	if err != nil {
-		slog.Error("error setting up river jobs", err)
+		slog.Error("error setting up river jobs", "error", err)
 	}
 	go a.StartRiverJobs()
 }
@@ -235,7 +234,7 @@ func StartApiRiverClient(config *conf.Config) {
 	api := NewAPIv1(config, db)
 	err = api.RegisterPeriodicJobs()
 	if err != nil {
-		slog.Error("error setting up river jobs", err)
+		slog.Error("error setting up river jobs", "error", err)
 	}
 	api.StartRiverJobs()
 }

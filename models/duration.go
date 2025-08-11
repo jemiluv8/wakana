@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"fmt"
 	"log/slog"
 	"sort"
@@ -37,6 +38,17 @@ type Duration struct {
 	excludeEntity   bool          `json:"-" hash:"ignore"`
 	Color           *string       `json:"color" hash:"ignore"`
 	DurationSecs    float64       `json:"duration" hash:"ignore"`
+}
+
+func (d *Duration) MarshalJSON() ([]byte, error) {
+	type Alias Duration
+	return json.Marshal(&struct {
+		Time float64 `json:"time"`
+		*Alias
+	}{
+		Time:  float64(time.Time(d.Time).Unix()),
+		Alias: (*Alias)(d),
+	})
 }
 
 func (d *Duration) HashInclude(field string, v interface{}) (bool, error) {

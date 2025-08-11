@@ -2,9 +2,10 @@ package helpers
 
 import (
 	"errors"
+	"time"
+
 	"github.com/muety/wakapi/models"
 	"github.com/muety/wakapi/utils"
-	"time"
 )
 
 func ParseInterval(interval string) (*models.IntervalKey, error) {
@@ -75,6 +76,14 @@ func ResolveIntervalTZ(interval *models.IntervalKey, tz *time.Location) (err err
 		from = now.AddDate(0, -12, 0)
 	case models.IntervalAny:
 		from = time.Time{}
+	case models.IntervalCurrentWeek:
+		// Use GetLastCompletedWeek to get the previous complete week (Monday to Sunday)
+		from, to = utils.GetLastCompletedWeek(now)
+		// Convert to the user's timezone
+	case models.IntervalPreviousWeek:
+		// Use GetLastCompletedWeek to get the previous complete week (Monday to Sunday)
+		from, to = utils.GetLastCompletedWeek(now)
+		// Convert to the user's timezone
 	default:
 		err = errors.New("invalid interval")
 	}

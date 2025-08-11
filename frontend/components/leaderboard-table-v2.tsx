@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { COLORS } from "@/lib/constants/colors";
 import { LeaderboardApiResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { convertSecondsToHoursAndMinutes } from "@/lib/utils/utils";
 
 function getLanguageColor(language: string): string {
   const color = COLORS.languages?.[language];
@@ -42,7 +43,7 @@ function LanguageBadge({
       title={language} // Show full name on hover
     >
       {displayName}
-      {time && !compact && ` - ${time}`}
+      {time && ` - ${time}`}
     </span>
   );
 
@@ -82,11 +83,11 @@ function LeaderboardCard({
           {/* Avatar and Name */}
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
-              {leader.user.display_name?.[0]?.toUpperCase() || "?"}
+              {/* {leader.user.display_name?.[0]?.toUpperCase() || "?"} */}NA
             </div>
             <div className="min-w-0">
               <div className="font-medium truncate">
-                {leader.user.display_name || "Anonymous"}
+                {/* {leader.user.display_name || "Anonymous"} */}NA
               </div>
             </div>
           </div>
@@ -115,6 +116,7 @@ function LeaderboardCard({
             <LanguageBadge
               key={idx}
               language={lang.name}
+              time={convertSecondsToHoursAndMinutes(lang.total_seconds)}
               href={`${pathname}?language=${encodeURIComponent(lang.name)}`}
               compact={true}
             />
@@ -251,8 +253,11 @@ export function LeaderBoardTableV2({
                       <LanguageBadge
                         key={idx}
                         language={lang.name}
+                        time={convertSecondsToHoursAndMinutes(
+                          lang.total_seconds
+                        )}
                         href={`${pathname}?language=${encodeURIComponent(lang.name)}`}
-                        compact={true}
+                        compact={false}
                       />
                     ))}
                   </div>

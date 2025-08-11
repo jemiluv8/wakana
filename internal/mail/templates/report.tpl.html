@@ -49,11 +49,14 @@
                                             <table width="100%" style="border-collapse: collapse;">
                                                 <tr>
                                                     {{ range $i, $summary := .Report.DailySummaries }}
-                                                    <td style="padding: 0 3px; text-align: center; vertical-align: bottom;">
-                                                        <div style="height: 120px; display: flex; flex-direction: column; justify-content: flex-end;">
-                                                            <div style="width: 100%; background-color: #3498db; border-radius: 3px 3px 0 0; margin-bottom: 5px; height: {{ $.Report.DailyPercentage $summary }}px; min-height: 5px; max-height: 100px;">
-                                                            </div>
-                                                        </div>
+                                                    <td style="padding: 0 3px; text-align: center; vertical-align: bottom; height: 120px;">
+                                                        <table style="width: 100%; height: 120px; border-collapse: collapse;">
+                                                            <tr>
+                                                                <td style="vertical-align: bottom; height: 120px;">
+                                                                    <div style="width: 100%; background-color: #3498db; border-radius: 3px 3px 0 0; height: {{ $.Report.DailyPercentage $summary }}px; min-height: 5px; max-height: 100px;"></div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
                                                         <p style="margin: 5px 0 0 0; font-size: 11px; color: #666666; font-weight: 500;">{{ $summary.FromTime.T | weekday }}</p>
                                                     </td>
                                                     {{ end }}
@@ -100,19 +103,16 @@
                                                 {{ range $i, $summary := .Report.DailySummaries }}
                                                 <tr>
                                                     <td style="padding: 8px 0; font-size: 13px; color: #666666; width: 80px; vertical-align: middle;">{{ $summary.FromTime.T | weekday }}</td>
-                                                    <td style="padding: 8px 10px 8px 0; vertical-align: middle;">
-                                                        <table style="width: 100%; border-collapse: collapse;">
+                                                    <td style="padding: 8px 0; vertical-align: middle; width: 200px;">
+                                                        <table cellpadding="0" cellspacing="0" style="width: 100%; background-color: #e0e0e0; height: 20px;">
                                                             <tr>
-                                                                <td style="width: 60%;">
-                                                                    <div style="background-color: #e0e0e0; height: 20px; border-radius: 3px; overflow: hidden;">
-                                                                        <div style="background-color: #3498db; height: 100%; border-radius: 3px; min-width: 20px; width: {{ $.Report.DailyPercentage $summary }}%;"></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td style="width: 40%; padding-left: 10px; text-align: right;">
-                                                                    <span style="font-size: 14px; font-weight: 600; color: #000000;">{{ $summary.TotalTime | duration }}</span>
-                                                                </td>
+                                                                <td style="background-color: #3498db; width: {{ $.Report.DailyPercentage $summary }}%; height: 20px;"></td>
+                                                                <td style="background-color: #e0e0e0;"></td>
                                                             </tr>
                                                         </table>
+                                                    </td>
+                                                    <td style="padding: 8px 0 8px 10px; text-align: right;">
+                                                        <span style="font-size: 14px; font-weight: 600; color: #000000;">{{ $summary.TotalTime | duration }}</span>
                                                     </td>
                                                 </tr>
                                                 {{ end }}

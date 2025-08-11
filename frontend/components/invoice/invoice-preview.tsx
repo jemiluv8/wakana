@@ -18,7 +18,9 @@ interface iProps {
 }
 
 export function InvoicePreview({ data, onTogglePreview }: iProps) {
-  const { client, tax, line_items } = data;
+  const { client, tax, line_items, exclude_tax } = data;
+
+  const showTax = !exclude_tax && tax > 0;
 
   const totalInvoice = React.useMemo(() => {
     return line_items.reduce((acc, item) => {
@@ -27,11 +29,11 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
   }, [line_items, client.hourly_rate]);
 
   const taxTotal = React.useMemo(() => {
-    if (isNaN(tax)) {
+    if (!showTax || isNaN(tax)) {
       return 0;
     }
     return totalInvoice * (tax / 100);
-  }, [totalInvoice, tax]);
+  }, [totalInvoice, tax, showTax]);
 
   const netTotal = React.useMemo(() => {
     return totalInvoice + taxTotal;
@@ -72,7 +74,7 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
           <div>
             <div className="flex">
               <div className="mr-1 flex flex-col items-end justify-items-end">
-                <h1 className="font-bold">Invoice #: </h1>
+                <h1 className="font-bold">Invoice : </h1>
                 <h1 className="font-bold">Date: </h1>
               </div>
               <div>
@@ -115,6 +117,24 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
                   </td>
                 </tr>
               ))}
+              <tr className={cn(styles.invoiceRow)}>
+                <td>{/* Empty cell under Item column */}</td>
+                <td className="font-bold">Total:</td>
+                <td className="font-bold">
+                  {line_items
+                    .reduce(
+                      (acc, item) => acc + getHours(item.total_seconds),
+                      0
+                    )
+                    .toFixed(2)}
+                </td>
+                <td className="font-bold">
+                  {formatNumber(totalInvoice, {
+                    currency: client.currency,
+                    style: "currency",
+                  })}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -122,13 +142,21 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
           <div className="flex gap-4">
             <div className="mr-1 flex flex-col items-end justify-center gap-1 text-lg">
               <h1 className="font-semibold">Total </h1>
-              <h1 className="font-semibold">Tax ({tax || ""}%) </h1>
-              <h1 className="font-semibold">Net Total </h1>
+              {showTax && (
+                <>
+                  <h1 className="font-semibold">Tax ({tax || ""}%) </h1>
+                  <h1 className="font-semibold">Net Total </h1>
+                </>
+              )}
             </div>
             <div className="flex flex-col items-end justify-end gap-1 text-lg">
               <p>{formatCurrency(totalInvoice, currencySymbol)}</p>
-              <p>{formatCurrency(taxTotal, currencySymbol)}</p>
-              <p>{formatCurrency(netTotal, currencySymbol)}</p>
+              {showTax && (
+                <>
+                  <p>{formatCurrency(taxTotal, currencySymbol)}</p>
+                  <p>{formatCurrency(netTotal, currencySymbol)}</p>
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -88,15 +88,15 @@ type IDurationService interface {
 type ISummaryService interface {
 	// Core summary generation - tells the complete story
 	Generate(request *summarytypes.SummaryRequest, options *summarytypes.ProcessingOptions) (*models.Summary, error)
-	
-	// Convenience methods for common scenarios  
+
+	// Convenience methods for common scenarios
 	QuickSummary(from, to time.Time, user *models.User) (*models.Summary, error)
 	DetailedSummary(request *summarytypes.SummaryRequest) (*models.Summary, error)
-	
+
 	// Strategy-specific methods
 	RetrieveFromStorage(request *summarytypes.SummaryRequest) (*models.Summary, error)
 	ComputeFromDurations(request *summarytypes.SummaryRequest) (*models.Summary, error)
-	
+
 	// CRUD operations
 	GetLatestByUser() ([]*models.TimeByUser, error)
 	DeleteByUser(string) error
@@ -110,7 +110,7 @@ type IActivityService interface {
 }
 
 type IReportService interface {
-	SendReport(*models.User, time.Duration) error
+	SendReport(*models.User, bool) error
 	SendWeeklyReports() error
 }
 

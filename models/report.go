@@ -27,10 +27,17 @@ func (r *Report) DailyPercentage(summary *Summary) int {
 
 	maxTime := Summaries(r.DailySummaries).MaxTotalTime()
 	if maxTime == 0 {
-		return 0
+		// If no time tracked, still show minimal bar
+		return 5
 	}
 
-	percentage := int((summary.TotalTime() * 100) / maxTime)
+	summaryTime := summary.TotalTime()
+	if summaryTime == 0 {
+		// Show minimal bar even for days with no activity
+		return 5
+	}
+
+	percentage := int((summaryTime * 100) / maxTime)
 	if percentage < 5 {
 		return 5 // Minimum 5% to ensure visibility
 	}

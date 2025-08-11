@@ -10,6 +10,7 @@ import (
 	"github.com/leandro-lugaresi/hub"
 	"github.com/muety/artifex/v2"
 	"github.com/muety/wakapi/config"
+	"github.com/muety/wakapi/helpers"
 	"github.com/muety/wakapi/internal/mail"
 	"github.com/muety/wakapi/models"
 	summarytypes "github.com/muety/wakapi/types"
@@ -51,7 +52,7 @@ func ReportSentTracker(db *gorm.DB, user *models.User) *ReportDeduplicator {
 	}
 	daysFromMonday := weekday - 1 // Monday = 0 days from Monday
 	startOfWeek := now.AddDate(0, 0, -daysFromMonday).Truncate(24 * time.Hour)
-	
+
 	return &ReportDeduplicator{
 		db:         db,
 		user:       user,
@@ -101,22 +102,28 @@ func NewReportService(db *gorm.DB) *ReportService {
 	return srv
 }
 
-
-func (srv *ReportService) SendReport(user *models.User, duration time.Duration) error {
+func (srv *ReportService) SendReport(user *models.User, skipTracking bool) error {
 	if user.Email == "" {
 		slog.Warn("not generating report as no e-mail address is set", "userID", user.ID)
 		return nil
 	}
 
-	tracker := ReportSentTracker(srv.db, user)
-	if tracker.IsReportSent() {
-		slog.Debug("report already sent for this week, skipping", "userID", user.ID)
-		return nil
+	if !skipTracking {
+		tracker := ReportSentTracker(srv.db, user)
+		if tracker.IsReportSent() {
+			slog.Debug("report already sent for this week, skipping", "userID", user.ID)
+			return nil
+		}
 	}
 
 	slog.Info("generating report for user", "userID", user.ID)
-	end := datetime.EndOfDay(time.Now().Add(-24 * time.Hour).In(user.TZ()))
-	start := end.Add(-1 * duration).Add(1 * time.Second)
+
+	// Use previous week interval
+	err, start, end := helpers.ResolveIntervalTZ(models.IntervalPreviousWeek, user.TZ())
+	if err != nil {
+		config.Log().Error("failed to resolve previous week interval", "userID", user.ID, "error", err)
+		return err
+	}
 
 	request := summarytypes.NewSummaryRequest(start, end, user)
 	options := summarytypes.DefaultProcessingOptions()
@@ -158,9 +165,12 @@ func (srv *ReportService) SendReport(user *models.User, duration time.Duration) 
 	}
 
 	slog.Info("sent report to user", "userID", user.ID)
-	err = tracker.MarkReportAsSent()
-	if err != nil {
-		slog.Debug("error marking report as sent", "userID", user.ID, err.Error(), err)
+	if !skipTracking {
+		tracker := ReportSentTracker(srv.db, user)
+		err = tracker.MarkReportAsSent()
+		if err != nil {
+			slog.Debug("error marking report as sent", "userID", user.ID, err.Error(), err)
+		}
 	}
 	return nil
 }
@@ -181,18 +191,18 @@ func (srv *ReportService) SendWeeklyReports() error {
 
 	var errors []error
 	for _, user := range users {
-		if err := srv.SendReport(user, reportRange); err != nil {
+		if err := srv.SendReport(user, false); err != nil {
 			config.Log().Error("failed to send report for user", "userID", user.ID, "error", err)
 			errors = append(errors, err)
 		}
-		
+
 		// Brief delay between sends to avoid overwhelming email service
 		time.Sleep(1 * time.Second)
 	}
-	
+
 	if len(errors) > 0 {
 		slog.Warn("some reports failed to send", "failedCount", len(errors), "totalCount", len(users))
 	}
-	
+
 	return nil
 }
