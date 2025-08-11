@@ -83,11 +83,11 @@ function LeaderboardCard({
           {/* Avatar and Name */}
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
-              {/* {leader.user.display_name?.[0]?.toUpperCase() || "?"} */}NA
+              {leader.user.display_name?.[0]?.toUpperCase() || "?"}
             </div>
             <div className="min-w-0">
               <div className="font-medium truncate">
-                {/* {leader.user.display_name || "Anonymous"} */}NA
+                {leader.user.display_name || "Anonymous"}
               </div>
             </div>
           </div>
