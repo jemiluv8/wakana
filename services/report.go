@@ -18,12 +18,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// delay between evey report generation task (to throttle email sending frequency)
-const reportDelay = 10 * time.Second
-
-// past time range to cover in the report
-const reportRange = 7 * 24 * time.Hour
-
 type ReportService struct {
 	config         *config.Config
 	eventBus       *hub.Hub
