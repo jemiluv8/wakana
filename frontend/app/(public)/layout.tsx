@@ -75,7 +75,7 @@ async function Header() {
           ) : (
             <a
               href="/login"
-              className="text-sm font-medium"
+              className="inline-flex h-8 items-center justify-center px-3 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
             >
               Sign in
             </a>

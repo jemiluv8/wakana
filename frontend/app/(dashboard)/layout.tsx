@@ -26,7 +26,7 @@ export default async function Layout({
         {/* <MobileHeader /> */}
         <Suspense fallback={<Loading />}>
           <main
-            className="min-h-full md:px-5 w-full"
+            className="min-h-full md:px-5 w-full pb-8"
             style={{ minHeight: "50vh" }}
           >
             {children}
