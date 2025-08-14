@@ -1,4 +1,5 @@
 import {
+  BookOpen,
   FolderGit2,
   Goal,
   Info,
@@ -33,6 +34,11 @@ const SIMPLE_MENU_ITEMS = [
     title: "Leaderboards",
     url: "/dashboard/leaderboards",
     icon: Trophy,
+  },
+  {
+    title: "Blog",
+    url: "/blog",
+    icon: BookOpen,
   },
   {
     title: "FAQ",

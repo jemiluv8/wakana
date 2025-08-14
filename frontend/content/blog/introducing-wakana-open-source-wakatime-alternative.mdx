@@ -1,0 +1,140 @@
+---
+title: "Introducing Wakana: Your Open Source, Self-Hosted WakaTime Alternative"
+date: "2025-01-13"
+excerpt: "Meet Wakana, an open source alternative to WakaTime that leverages the existing plugin ecosystem while giving you complete control over your coding statistics and data privacy."
+author: "Wakana Team"
+tags: ["open-source", "self-hosted", "privacy", "developer-tools", "time-tracking"]
+---
+
+# Introducing Wakana: Your Open Source, Self-Hosted WakaTime Alternative
+
+As developers, we're constantly seeking ways to understand and improve our productivity. Time tracking tools have become essential for gaining insights into our coding habits, project allocation, and overall work patterns. While WakaTime has been a popular choice in this space, many developers have been looking for alternatives that offer more control, privacy, and customization options.
+
+Today, we're excited to introduce **Wakana** – an open source, self-hosted alternative to WakaTime that puts you in complete control of your data while leveraging the rich ecosystem of existing editor plugins.
+
+## The Problem with Closed-Source Analytics
+
+Traditional time tracking solutions often come with significant limitations:
+
+- **Data Privacy Concerns**: Your coding statistics are stored on external servers, raising questions about data ownership and privacy
+- **Limited Customization**: Closed-source solutions restrict your ability to modify features or add custom functionality
+- **Vendor Lock-in**: You're dependent on a single service provider for your data and analytics
+- **Cost Considerations**: Premium features often require ongoing subscriptions
+- **Data Portability**: Exporting your historical data can be difficult or impossible
+
+## Enter Wakana: A Different Approach
+
+Wakana was built from the ground up with a simple philosophy: **your data should belong to you**. As an open source, self-hosted solution, Wakana addresses these concerns while providing a familiar, powerful experience for developers who want to track their coding activity.
+
+### Key Advantages of Wakana
+
+#### 🔒 **Complete Data Ownership**
+When you self-host Wakana, your coding statistics never leave your infrastructure. Whether you run it on your local machine, a VPS, or your company's servers, you maintain complete control over who has access to your data and how it's used.
+
+#### 🔧 **Leverage Existing Plugins**
+One of Wakana's most powerful features is its compatibility with the WakaTime plugin ecosystem. Instead of building plugins from scratch for every editor and IDE, Wakana works seamlessly with existing WakaTime plugins by providing a compatible API endpoint.
+
+This means you can use Wakana with:
+- **VS Code** via the WakaTime extension
+- **IntelliJ IDEA** and other JetBrains IDEs
+- **Vim/Neovim** with WakaTime plugins
+- **Sublime Text, Atom, Emacs** and dozens of other editors
+- **Terminal applications** and command-line tools
+
+Simply point your existing WakaTime plugin to your Wakana instance, and you're ready to go.
+
+#### 🎯 **Built for Developers, by Developers**
+Wakana understands the developer workflow. Our dashboard provides insights that matter:
+
+- **Project-based tracking** with automatic categorization
+- **Goal setting and monitoring** for productivity targets
+- **Language and technology analytics** to understand your stack usage
+- **Time distribution analysis** across different types of work
+- **Public leaderboards** for team motivation (optional)
+
+#### 💰 **Cost-Effective and Transparent**
+As an open source solution, Wakana eliminates ongoing subscription costs. You pay only for the infrastructure you choose to run it on, whether that's a $5/month VPS or your existing home server.
+
+#### 🚀 **Easy Migration from WakaTime**
+Already using WakaTime? Wakana makes migration straightforward. You can even run both systems simultaneously during a transition period, allowing you to compare data and ensure everything is working correctly before fully switching over.
+
+## Real-World Use Cases
+
+### Individual Developers
+- **Freelancers** can track billable hours across multiple client projects
+- **Open source contributors** can monitor time spent on different repositories
+- **Students** can track coding practice and study patterns
+- **Remote workers** can provide transparent activity reports to employers
+
+### Development Teams
+- **Startups** can understand team productivity patterns without external data sharing
+- **Enterprise teams** can maintain coding statistics within their security perimeter
+- **Consulting firms** can track project allocation across team members
+- **Educational institutions** can monitor student progress in coding courses
+
+### Organizations with Strict Privacy Requirements
+- **Financial institutions** that cannot send data to external services
+- **Healthcare companies** with HIPAA compliance requirements
+- **Government contractors** with security clearance restrictions
+- **Any organization** that prioritizes data sovereignty
+
+## Technical Architecture
+
+Wakana is built with modern technologies that prioritize performance, scalability, and developer experience:
+
+- **Backend**: Go-based API server with high performance and low resource usage
+- **Frontend**: Next.js application with server-side rendering for optimal performance
+- **Database**: Support for PostgreSQL, MySQL, and SQLite for flexibility
+- **Authentication**: Secure session-based auth with GitHub integration
+- **API Compatibility**: Drop-in replacement for WakaTime's API endpoints
+
+The entire stack is containerized for easy deployment via Docker, with comprehensive documentation for various hosting scenarios.
+
+## Getting Started with Wakana
+
+Setting up Wakana is designed to be straightforward:
+
+1. **Deploy Wakana** using Docker or build from source
+2. **Configure your editor plugins** to point to your Wakana instance instead of WakaTime
+3. **Start coding** – statistics begin flowing immediately
+4. **Access your dashboard** to view insights and set goals
+
+For those who want to try before committing to self-hosting, we also offer a hosted version at [wakana.io](https://wakana.io) that you can use to evaluate the platform.
+
+## The Future of Wakana
+
+As an open source project, Wakana's roadmap is driven by community needs and contributions. Some exciting features on our horizon include:
+
+- **Advanced team analytics** with privacy-preserving aggregation
+- **Custom dashboard widgets** for personalized insights
+- **Integration APIs** for connecting with other developer tools
+- **Mobile applications** for on-the-go access to statistics
+- **Advanced reporting** with exportable insights
+
+## Join the Community
+
+Wakana represents more than just a tool – it's a community-driven approach to developer productivity tracking. We believe that by giving developers control over their data and tools, we can build something better together.
+
+### How You Can Get Involved
+
+- **⭐ Star the project** on [GitHub](https://github.com/jemiluv8/wakana) to show your support
+- **🐛 Report issues** or suggest features through GitHub issues
+- **🔧 Contribute code** – we welcome pull requests of all sizes
+- **📖 Improve documentation** to help other developers get started
+- **💬 Join discussions** about features and best practices
+
+## Privacy-First Development Analytics
+
+In an era where data privacy is increasingly important, Wakana offers a compelling alternative to traditional SaaS analytics tools. By combining the familiarity of the WakaTime ecosystem with the control and transparency of open source software, Wakana empowers developers to gain insights into their productivity without compromising on privacy or data ownership.
+
+Whether you're a solo developer looking to understand your coding patterns, a team lead wanting to optimize workflows, or an organization with strict data requirements, Wakana provides the flexibility and control you need.
+
+## Ready to Take Control?
+
+Getting started with Wakana is free and takes just a few minutes. Visit our [setup guide](https://wakana.io/setup) to begin tracking your coding activity on your terms, or try our hosted version to experience the platform before self-hosting.
+
+Your code, your data, your insights – exactly as it should be.
+
+---
+
+*Wakana is open source software released under the MIT license. Learn more and contribute at [github.com/jemiluv8/wakana](https://github.com/jemiluv8/wakana).*
