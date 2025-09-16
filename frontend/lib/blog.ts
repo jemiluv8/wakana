@@ -1,6 +1,6 @@
 import fs from "fs";
-import path from "path";
 import matter from "gray-matter";
+import path from "path";
 import readingTime from "reading-time";
 
 const postsDirectory = path.join(process.cwd(), "content/blog");
@@ -19,7 +19,9 @@ export type BlogPost = {
 export function getPostSlugs() {
   try {
     const files = fs.readdirSync(postsDirectory);
-    return files.filter((file) => file.endsWith(".mdx") || file.endsWith(".md"));
+    return files.filter(
+      (file) => file.endsWith(".mdx") || file.endsWith(".md")
+    );
   } catch (error) {
     console.error("Error reading blog posts directory:", error);
     return [];
@@ -31,7 +33,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
     const realSlug = slug.replace(/\.(mdx|md)$/, "");
     const fullPath = path.join(postsDirectory, `${realSlug}.mdx`);
     let fileContents: string;
-    
+
     // Try .mdx first, then .md
     if (fs.existsSync(fullPath)) {
       fileContents = fs.readFileSync(fullPath, "utf8");

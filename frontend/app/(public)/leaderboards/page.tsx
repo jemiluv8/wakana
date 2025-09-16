@@ -5,7 +5,8 @@ import { Spinner } from "@/components/spinner/spinner";
 
 export const metadata = {
   title: "Leaderboards | Wakana",
-  description: "See how you rank among developers worldwide. Compare coding time, languages, and productivity metrics.",
+  description:
+    "See how you rank among developers worldwide. Compare coding time, languages, and productivity metrics.",
 };
 
 export default function LeaderboardsPage({
@@ -15,11 +16,13 @@ export default function LeaderboardsPage({
 }) {
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
-      <Suspense fallback={
-        <div className="flex justify-center py-12">
-          <Spinner />
-        </div>
-      }>
+      <Suspense
+        fallback={
+          <div className="flex justify-center py-12">
+            <Spinner />
+          </div>
+        }
+      >
         <LeaderboardContent searchParams={searchParams} />
       </Suspense>
     </div>

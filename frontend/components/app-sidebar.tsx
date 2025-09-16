@@ -1,5 +1,4 @@
 import {
-  BookOpen,
   FolderGit2,
   Goal,
   Info,

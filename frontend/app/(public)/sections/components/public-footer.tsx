@@ -1,25 +1,56 @@
-import { Github, Heart, ExternalLink, BookOpen, Users, BarChart3, Settings, Trophy, Clock, Code, LogIn, HelpCircle } from "lucide-react";
+import {
+  Clock,
+  Code,
+  ExternalLink,
+  Github,
+  Heart,
+  HelpCircle,
+  LogIn,
+  Settings,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const footerSections = [
+type Links = {
+  name: string;
+  href: string;
+  icon: React.ComponentType<any> | null;
+  external?: boolean;
+};
+
+type FooterSection = {
+  title: string;
+  links: Links[];
+};
+
+const footerSections: FooterSection[] = [
   {
     title: "Get Started",
     links: [
-      { name: "Setup Guide", href: "/setup", icon: Settings },
+      { name: "Setup Guide", href: "/setup", icon: Settings, external: true },
       { name: "Login", href: "/login", icon: LogIn },
       { name: "FAQ", href: "/faqs", icon: HelpCircle },
       { name: "Plugins", href: "/plugins", icon: Code },
-    ]
+    ],
   },
   {
     title: "Resources",
     links: [
       // { name: "Blog", href: "/blog", icon: BookOpen },
-      { name: "GitHub", href: "https://github.com/jemiluv8/wakana", icon: Github, external: true },
-      { name: "WakaTime Plugins", href: "https://wakatime.com/plugins", icon: null, external: true },
+      {
+        name: "GitHub",
+        href: "https://github.com/jemiluv8/wakana",
+        icon: Github,
+        external: true,
+      },
+      {
+        name: "WakaTime Plugins",
+        href: "https://wakatime.com/plugins",
+        icon: null,
+        external: true,
+      },
       { name: "API Documentation", href: "/api/docs", icon: null },
-    ]
+    ],
   },
   {
     title: "Legal",
@@ -27,8 +58,8 @@ const footerSections = [
       { name: "Privacy Policy", href: "/policy", icon: null },
       { name: "Terms of Service", href: "/terms", icon: null },
       { name: "About", href: "/about", icon: null },
-    ]
-  }
+    ],
+  },
 ];
 
 export default function PublicFooter() {
@@ -45,19 +76,19 @@ export default function PublicFooter() {
           {/* Brand section */}
           <div className="lg:col-span-6">
             <div className="flex items-center gap-3 mb-4 lg:mb-6">
-              <Image 
-                width={120} 
-                height={60} 
-                src="/white-logo.png" 
+              <Image
+                width={120}
+                height={60}
+                src="/white-logo.png"
                 alt="Wakana Logo"
                 className="dark:invert-0 invert"
               />
             </div>
             <p className="text-gray-600 dark:text-gray-300 mb-4 lg:mb-6 max-w-md leading-relaxed text-sm lg:text-base">
-              Observe your work habits in real time with developer dashboards 
+              Observe your work habits in real time with developer dashboards
               for insights into your coding patterns and productivity.
             </p>
-            
+
             {/* Social links - hidden on mobile */}
             <div className="hidden lg:flex items-center gap-4">
               <a
@@ -76,28 +107,37 @@ export default function PublicFooter() {
           <div className="lg:col-span-6">
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
               {footerSections.map((section, index) => (
-                <div key={index} className={index === 2 ? "hidden lg:block" : ""}>
+                <div
+                  key={index}
+                  className={index === 2 ? "hidden lg:block" : ""}
+                >
                   <h3 className="text-xs lg:text-sm font-semibold text-gray-900 dark:text-white mb-3 lg:mb-4 uppercase tracking-wider">
                     {section.title}
                   </h3>
                   <ul className="space-y-2 lg:space-y-3">
-                    {section.links.slice(0, index === 0 ? 3 : 2).map((link, linkIndex) => (
-                      <li key={linkIndex}>
-                        <Link
-                          href={link.href}
-                          {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                          className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors group"
-                        >
-                          {link.icon && (
-                            <link.icon className="h-3 w-3 lg:h-3.5 lg:w-3.5 opacity-70 group-hover:opacity-100" />
-                          )}
-                          <span className="text-xs lg:text-sm">{link.name}</span>
-                          {link.external && (
-                            <ExternalLink className="h-2.5 w-2.5 lg:h-3 lg:w-3 opacity-50" />
-                          )}
-                        </Link>
-                      </li>
-                    ))}
+                    {section.links
+                      .slice(0, index === 0 ? 3 : 2)
+                      .map((link, linkIndex) => (
+                        <li key={linkIndex}>
+                          <Link
+                            href={link.href}
+                            {...(link.external
+                              ? { target: "_blank", rel: "noopener noreferrer" }
+                              : {})}
+                            className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors group"
+                          >
+                            {link.icon && (
+                              <link.icon className="h-3 w-3 lg:h-3.5 lg:w-3.5 opacity-70 group-hover:opacity-100" />
+                            )}
+                            <span className="text-xs lg:text-sm">
+                              {link.name}
+                            </span>
+                            {link.external && (
+                              <ExternalLink className="h-2.5 w-2.5 lg:h-3 lg:w-3 opacity-50" />
+                            )}
+                          </Link>
+                        </li>
+                      ))}
                   </ul>
                 </div>
               ))}
@@ -111,10 +151,12 @@ export default function PublicFooter() {
             <div className="flex items-center gap-2 text-xs lg:text-sm text-gray-600 dark:text-gray-300">
               <span>Made with</span>
               <Heart className="h-3 w-3 lg:h-4 lg:w-4 text-red-500 fill-current" />
-              <span className="hidden lg:inline">by developers, for developers</span>
+              <span className="hidden lg:inline">
+                by developers, for developers
+              </span>
               <span className="lg:hidden">for developers</span>
             </div>
-            
+
             <div className="flex items-center gap-4 lg:gap-6 text-xs lg:text-sm text-gray-600 dark:text-gray-300">
               <span>© 2024 Wakana</span>
               <div className="hidden lg:flex items-center gap-1">

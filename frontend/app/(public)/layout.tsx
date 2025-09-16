@@ -1,8 +1,8 @@
+import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
 
 import { FadeOnView } from "@/components/fade-on-view";
 import { SessionData, sessionOptions } from "@/lib/session/options";
@@ -17,7 +17,7 @@ interface MarketingLayoutProps {
 async function Header() {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
   const isLoggedIn = session.isLoggedIn;
-  
+
   return (
     <header className="sticky top-8 z-50 mb-20 mt-8 hidden justify-center rounded-lg px-2 md:flex md:px-4">
       <nav className="z-20 flex h-[50px] items-center rounded-full border border-border bg-[#FFFFFF] bg-opacity-70 px-4 backdrop-blur-xl dark:bg-[#121212]">
@@ -37,12 +37,12 @@ async function Header() {
           >
             Installation
           </a>
-          <a
+          <Link
             href="/blog"
             className="inline-flex h-8 items-center justify-center px-3 py-2 text-sm font-medium text-secondary-foreground transition-opacity duration-200 hover:opacity-70"
           >
             Blog
-          </a>
+          </Link>
           <a
             href="/faqs"
             className="inline-flex h-8 items-center justify-center px-4 py-2 text-sm font-medium text-secondary-foreground transition-opacity duration-200 hover:opacity-70"

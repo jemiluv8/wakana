@@ -1,4 +1,5 @@
 import { LucideGithub, LucideTwitter } from "lucide-react";
+import Link from "next/link";
 
 export function SimpleFooter() {
   return (
@@ -18,7 +19,7 @@ export function SimpleFooter() {
               <a href="/about">About</a>
             </li>
             <li>
-              <a href="/blog">Blog</a>
+              <Link href="/blog">Blog</Link>
             </li>
           </ul>
         </div>
