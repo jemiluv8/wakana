@@ -18,9 +18,9 @@ export function SimpleFooter() {
             <li>
               <a href="/about">About</a>
             </li>
-            <li>
+            {/* <li>
               <Link href="/blog">Blog</Link>
-            </li>
+            </li> */}
           </ul>
         </div>
         <div className="hidden justify-start md:flex md:justify-center">

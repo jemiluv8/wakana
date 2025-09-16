@@ -37,12 +37,12 @@ async function Header() {
           >
             Installation
           </a>
-          <Link
+          {/* <Link
             href="/blog"
             className="inline-flex h-8 items-center justify-center px-3 py-2 text-sm font-medium text-secondary-foreground transition-opacity duration-200 hover:opacity-70"
           >
             Blog
-          </Link>
+          </Link> */}
           <a
             href="/faqs"
             className="inline-flex h-8 items-center justify-center px-4 py-2 text-sm font-medium text-secondary-foreground transition-opacity duration-200 hover:opacity-70"
