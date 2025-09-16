@@ -1,4 +1,5 @@
 import {
+  BookOpen,
   FolderGit2,
   Goal,
   Info,
@@ -29,14 +30,14 @@ import { AppSidebarLogo } from "./app-sidebar-logo";
 import { NavUser } from "./nav-user";
 
 const SIMPLE_MENU_ITEMS = [
-  {
-    title: "Leaderboards",
-    url: "/dashboard/leaderboards",
-    icon: Trophy,
-  },
+  // {
+  //   title: "Blog",
+  //   url: "/blog",
+  //   icon: BookOpen,
+  // },
   {
     title: "FAQ",
-    url: "/faq",
+    url: "/faqs",
     icon: Quote,
   },
   {
@@ -45,13 +46,18 @@ const SIMPLE_MENU_ITEMS = [
     icon: Info,
   },
   {
+    title: "Leaderboards",
+    url: "/leaderboards",
+    icon: Trophy,
+  },
+  {
     title: "Plugin Status",
     url: "/plugins/status",
     icon: SquareActivity,
   },
   {
     title: "Setup Guide",
-    url: "/installation",
+    url: "/setup",
     icon: Settings2,
   },
 ];

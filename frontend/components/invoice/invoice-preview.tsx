@@ -139,8 +139,8 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
           </table>
         </div>
         <div className="mt-12 flex justify-end">
-          <div className="flex gap-4">
-            <div className="mr-1 flex flex-col items-end justify-center gap-1 text-lg">
+          <div className="flex gap-8">
+            <div className="flex flex-col items-end justify-center gap-2 text-lg">
               <h1 className="font-semibold">Total </h1>
               {showTax && (
                 <>
@@ -149,7 +149,7 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
                 </>
               )}
             </div>
-            <div className="flex flex-col items-end justify-end gap-1 text-lg">
+            <div className="flex flex-col items-end justify-center gap-2 text-lg">
               <p>{formatCurrency(totalInvoice, currencySymbol)}</p>
               {showTax && (
                 <>

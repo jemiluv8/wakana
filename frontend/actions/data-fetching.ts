@@ -46,13 +46,26 @@ export async function fetchData<T>(
       },
       cache: "no-store",
     });
-    if (apiResponse.status > 202) {
-      throw new Error("Error fetching clients");
+
+    if (!apiResponse.ok) {
+      const errorText = await apiResponse.text();
+      console.error(`API Error [${apiResponse.status}] for ${url}:`, errorText);
+      throw new Error(
+        `API Error ${apiResponse.status}: ${errorText || apiResponse.statusText}`
+      );
     }
+
     const json = await apiResponse.json();
     return json;
   } catch (error) {
-    console.log("Error logging in", error);
+    console.error("Error fetching data:", error, "URL:", url);
+    // Re-throw the error so components can handle it properly
+    // instead of silently returning null
+    if (redirectToLogin) {
+      redirect("/login");
+    } else {
+      throw error;
+    }
   } finally {
     if (redirectToLogin) {
       redirect("/login");
