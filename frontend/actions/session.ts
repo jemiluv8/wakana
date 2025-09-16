@@ -13,7 +13,12 @@ export async function getSession(redirectIfNotLoggedIn = true) {
     redirect("/login");
   }
 
-  return session;
+  // Return only serializable data, not the iron-session object with methods
+  return {
+    isLoggedIn: session.isLoggedIn,
+    user: session.user,
+    token: session.token,
+  };
 }
 
 export async function getSessionUser() {

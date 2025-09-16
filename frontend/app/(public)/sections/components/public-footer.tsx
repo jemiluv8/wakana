@@ -15,7 +15,7 @@ const footerSections = [
   {
     title: "Resources",
     links: [
-      { name: "Blog", href: "/blog", icon: BookOpen },
+      // { name: "Blog", href: "/blog", icon: BookOpen },
       { name: "GitHub", href: "https://github.com/jemiluv8/wakana", icon: Github, external: true },
       { name: "WakaTime Plugins", href: "https://wakatime.com/plugins", icon: null, external: true },
       { name: "API Documentation", href: "/api/docs", icon: null },

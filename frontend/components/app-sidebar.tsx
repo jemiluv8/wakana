@@ -30,11 +30,11 @@ import { AppSidebarLogo } from "./app-sidebar-logo";
 import { NavUser } from "./nav-user";
 
 const SIMPLE_MENU_ITEMS = [
-  {
-    title: "Blog",
-    url: "/blog",
-    icon: BookOpen,
-  },
+  // {
+  //   title: "Blog",
+  //   url: "/blog",
+  //   icon: BookOpen,
+  // },
   {
     title: "FAQ",
     url: "/faqs",
