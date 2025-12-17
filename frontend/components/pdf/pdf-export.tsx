@@ -1,35 +1,34 @@
+"use client";
+
 import dynamic from "next/dynamic";
-
-// Dynamically import PDFDownloadLink with SSR disabled
-const PDFDownloadLink = dynamic(
-  () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
-  { ssr: false }
-);
-
 import { LucidePrinter } from "lucide-react";
 
 import { Invoice } from "@/lib/types";
 
 import { Button } from "../ui/button";
-import { InvoicePDFViewer } from "./invoice-pdf-viewer";
 
 interface iProps {
   invoiceData: Invoice;
 }
 
-export const InvoicePDF = (props: iProps) => {
-  return (
-    <PDFDownloadLink
-      fileName="invoice.pdf"
-      document={<InvoicePDFViewer invoiceData={props.invoiceData} />}
-    >
+// Dynamically import the entire PDF component with SSR disabled
+const PDFDownloadButton = dynamic(
+  () => import("./pdf-download-button").then((mod) => mod.PDFDownloadButton),
+  { 
+    ssr: false,
+    loading: () => (
       <Button
         variant="outline"
         size="icon"
         className="h-10 w-10 bg-transparent border-gray-300"
+        disabled
       >
         <LucidePrinter className="h-4 w-4 text-black" />
       </Button>
-    </PDFDownloadLink>
-  );
+    )
+  }
+);
+
+export const InvoicePDF = (props: iProps) => {
+  return <PDFDownloadButton invoiceData={props.invoiceData} />;
 };

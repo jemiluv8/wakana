@@ -1,25 +1,11 @@
-import { Document, Page, StyleSheet, Text, View, Font } from "@react-pdf/renderer";
+import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import { format } from "date-fns";
 import React from "react";
 
 import { Invoice } from "@/lib/types";
-import { formatCurrency, formatNumber, getHours } from "@/lib/utils";
+import { formatCurrency, getHours } from "@/lib/utils";
 
-// Register Google Sans Flex fonts
-Font.register({
-  family: 'GoogleSansFlexRegular',
-  src: 'https://fonts.gstatic.com/s/googlesans/v17/4UaGrENHsxJlGDuGo1OIlL3Owp5eKQtGBlc.ttf'
-});
-
-Font.register({
-  family: 'GoogleSansFlexMedium',
-  src: 'https://fonts.gstatic.com/s/googlesans/v17/4UagrENHsxJlGDuGo1OIlLU94YtzCwZsPF4o.ttf'
-});
-
-Font.register({
-  family: 'GoogleSansFlexBold',
-  src: 'https://fonts.gstatic.com/s/googlesans/v17/4UagrENHsxJlGDuGo1OIlLU94Yd_CwZsPF4o.ttf'
-});
+// Use built-in Helvetica font family (no registration needed)
 
 interface iProps {
   invoiceData: Invoice;
@@ -56,7 +42,15 @@ export const InvoicePDFViewer = ({ invoiceData }: iProps) => {
 
   const Header = () => (
     <View style={styles.header}>
-      <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 32 }}>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginBottom: 32,
+        }}
+      >
         <View>
           <Text style={styles.invoiceTitle}>INVOICE</Text>
           <Text style={{ fontSize: 11, color: "#666", marginTop: 4 }}>
@@ -67,95 +61,209 @@ export const InvoicePDFViewer = ({ invoiceData }: iProps) => {
     </View>
   );
 
-  const TitleContent = ({
-    title,
-    content,
-  }: {
-    title: string;
-    content: string;
-  }) => (
-    <View
-      style={{
-        display: "flex",
-        alignItems: "flex-start",
-        gap: 6,
-        marginBottom: 20,
-      }}
-    >
-      <Text style={{ fontSize: 9, fontWeight: 700, color: "#6B7280", letterSpacing: 0.5, fontFamily: "GoogleSansFlexMedium" }}>{title}</Text>
-      <Text style={{ fontSize: 11, color: "#111827" }}>{content}</Text>
-    </View>
-  );
-
   return (
     <Document title="Invoice">
       <Page size="A4" style={styles.page}>
         <View style={styles.main}>
           <Header />
-          
+
           {/* Content layout */}
-          <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginBottom: 40 }}>
-            <View style={{ maxWidth: "50%" }}>
-              <View style={{ marginBottom: 16 }}>
-                <Text style={{ fontSize: 10, fontWeight: 700, color: "#000", marginBottom: 6, fontFamily: "GoogleSansFlexMedium", letterSpacing: 0.5 }}>FROM</Text>
-                <Text style={{ fontSize: 10, color: "#000", lineHeight: 1.5 }}>{origin}</Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginBottom: 40,
+            }}
+          >
+            <View style={{ maxWidth: "50%", flexDirection: "column", gap: 10 }}>
+              <View style={{ marginBottom: 32 }}>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 500,
+                    color: "#000",
+                    marginBottom: 15,
+                    fontFamily: "Helvetica",
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  FROM
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    color: "#000",
+                    lineHeight: 1.5,
+                    paddingBottom: 10,
+                  }}
+                >
+                  {origin}
+                </Text>
               </View>
-              
+
               <View>
-                <Text style={{ fontSize: 10, fontWeight: 700, color: "#000", marginBottom: 6, fontFamily: "GoogleSansFlexMedium", letterSpacing: 0.5 }}>BILL TO</Text>
-                <Text style={{ fontSize: 10, color: "#000", lineHeight: 1.5 }}>{destination}</Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 500,
+                    color: "#000",
+                    marginBottom: 15,
+                    fontFamily: "Helvetica",
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  BILL TO
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    color: "#000",
+                    lineHeight: 1.5,
+                    paddingBottom: 10,
+                  }}
+                >
+                  {destination}
+                </Text>
               </View>
             </View>
-            
+
             <View style={{ textAlign: "right" }}>
               <View style={{ marginBottom: 16 }}>
-                <Text style={{ fontSize: 10, fontWeight: 700, color: "#000", marginBottom: 4, fontFamily: "GoogleSansFlexMedium", letterSpacing: 0.5 }}>INVOICE</Text>
-                <Text style={{ fontSize: 11, color: "#000", fontWeight: 600 }}>{invoiceData.invoice_id}</Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 500,
+                    color: "#000",
+                    marginBottom: 4,
+                    fontFamily: "Helvetica",
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  INVOICE
+                </Text>
+                <Text style={{ fontSize: 11, color: "#000", fontWeight: 600 }}>
+                  {invoiceData.invoice_id}
+                </Text>
               </View>
-              
+
               <View>
-                <Text style={{ fontSize: 10, fontWeight: 700, color: "#000", marginBottom: 4, fontFamily: "GoogleSansFlexMedium", letterSpacing: 0.5 }}>DATE</Text>
-                <Text style={{ fontSize: 10, color: "#000" }}>{format(date, "MMM dd, yyyy")}</Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 500,
+                    color: "#000",
+                    marginBottom: 4,
+                    fontFamily: "Helvetica",
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  DATE
+                </Text>
+                <Text style={{ fontSize: 10, color: "#000" }}>
+                  {format(date, "MMM dd, yyyy")}
+                </Text>
               </View>
             </View>
           </View>
-          
+
           {heading && (
-            <View style={{ marginBottom: 32, backgroundColor: "#F5F5F5", padding: 16, borderRadius: 4 }}>
-              <Text style={{ fontSize: 10, color: "#333", lineHeight: 1.4 }}>{heading}</Text>
+            <View
+              style={{
+                marginBottom: 32,
+                backgroundColor: "#F5F5F5",
+                padding: 16,
+                borderRadius: 4,
+              }}
+            >
+              <Text style={{ fontSize: 10, color: "#333", lineHeight: 1.4 }}>
+                {heading}
+              </Text>
             </View>
           )}
           <View style={styles.cleanTable}>
             <View style={styles.cleanTableHeader}>
-              <View style={[styles.cleanTableCol, { width: "40%" }]}>
-                <Text style={styles.cleanTableHeaderText}>Item</Text>
+              <View
+                style={[
+                  styles.cleanTableCol,
+                  { width: "40%", justifyContent: "space-evenly" },
+                ]}
+              >
+                <Text style={[styles.cleanTableHeaderText]}>Item</Text>
               </View>
-              <View style={[styles.cleanTableCol, { width: "20%" }]}>
-                <Text style={styles.cleanTableHeaderText}>Price ({client.currency})</Text>
+              <View
+                style={[
+                  styles.cleanTableCol,
+                  styles.cleanTableColRight,
+                  { width: "20%" },
+                ]}
+              >
+                <Text style={styles.cleanTableHeaderText}>
+                  Price ({client.currency})
+                </Text>
               </View>
-              <View style={[styles.cleanTableCol, { width: "20%" }]}>
+              <View
+                style={[
+                  styles.cleanTableCol,
+                  styles.cleanTableColRight,
+                  { width: "20%" },
+                ]}
+              >
                 <Text style={styles.cleanTableHeaderText}>Qty (Hrs)</Text>
               </View>
-              <View style={[styles.cleanTableCol, { width: "20%" }]}>
-                <Text style={styles.cleanTableHeaderText}>Amount ({client.currency})</Text>
+              <View
+                style={[
+                  styles.cleanTableCol,
+                  styles.cleanTableColRight,
+                  { width: "20%" },
+                ]}
+              >
+                <Text style={styles.cleanTableHeaderText}>
+                  Amount ({client.currency})
+                </Text>
               </View>
             </View>
-            {line_items?.map((item, index) => (
+            {line_items?.map((item) => (
               <View style={styles.cleanTableRow} key={item.title}>
-                <View style={[styles.cleanTableCol, { width: "40%" }]}>
-                  <Text style={styles.cleanTableCell}>{item.title}</Text>
+                <View
+                  style={[
+                    styles.cleanTableCol,
+                    { width: "40%", justifyContent: "center" },
+                  ]}
+                >
+                  <Text style={[styles.cleanTableCell, { textAlign: "left" }]}>
+                    {item.title}
+                  </Text>
                 </View>
-                <View style={[styles.cleanTableCol, { width: "20%" }]}>
+                <View
+                  style={[
+                    styles.cleanTableCol,
+                    styles.cleanTableColRight,
+                    { width: "20%" },
+                  ]}
+                >
                   <Text style={styles.cleanTableCell}>
                     {client.hourly_rate.toFixed(2)}
                   </Text>
                 </View>
-                <View style={[styles.cleanTableCol, { width: "20%" }]}>
+                <View
+                  style={[
+                    styles.cleanTableCol,
+                    styles.cleanTableColRight,
+                    { width: "20%" },
+                  ]}
+                >
                   <Text style={styles.cleanTableCell}>
                     {getHours(item.total_seconds).toFixed(2)}
                   </Text>
                 </View>
-                <View style={[styles.cleanTableCol, { width: "20%" }]}>
+                <View
+                  style={[
+                    styles.cleanTableCol,
+                    styles.cleanTableColRight,
+                    { width: "20%" },
+                  ]}
+                >
                   <Text style={styles.cleanTableCell}>
                     {formatCurrency(
                       client.hourly_rate * getHours(item.total_seconds),
@@ -165,29 +273,53 @@ export const InvoicePDFViewer = ({ invoiceData }: iProps) => {
                 </View>
               </View>
             ))}
-            
+
             {/* Subtotal Row */}
             <View style={styles.cleanTableTotalRow}>
               <View style={[styles.cleanTableCol, { width: "40%" }]}></View>
               <View style={[styles.cleanTableCol, { width: "20%" }]}></View>
-              <View style={[styles.cleanTableCol, { width: "20%" }]}>
+              <View
+                style={[
+                  styles.cleanTableCol,
+                  styles.cleanTableColRight,
+                  { width: "20%" },
+                ]}
+              >
                 <Text style={styles.cleanTableTotalLabel}>Subtotal:</Text>
               </View>
-              <View style={[styles.cleanTableCol, { width: "20%" }]}>
+              <View
+                style={[
+                  styles.cleanTableCol,
+                  styles.cleanTableColRight,
+                  { width: "20%" },
+                ]}
+              >
                 <Text style={styles.cleanTableTotalValue}>
                   {formatCurrency(totalInvoice, client.currency)}
                 </Text>
               </View>
             </View>
-            
+
             {/* Final Total Row */}
             <View style={styles.cleanTableFinalRow}>
               <View style={[styles.cleanTableCol, { width: "40%" }]}></View>
               <View style={[styles.cleanTableCol, { width: "20%" }]}></View>
-              <View style={[styles.cleanTableCol, { width: "20%" }]}>
+              <View
+                style={[
+                  styles.cleanTableCol,
+                  styles.cleanTableColRight,
+                  { width: "20%" },
+                ]}
+              >
                 <Text style={styles.cleanTableFinalLabel}>Total:</Text>
               </View>
-              <View style={[styles.cleanTableCol, { width: "20%" }]}>
+              <View
+                style={[
+                  styles.cleanTableCol,
+                  styles.cleanTableColRight,
+                  { width: "20%" },
+                ]}
+              >
                 <Text style={styles.cleanTableFinalValue}>
                   {formatCurrency(netTotal, client.currency)}
                 </Text>
@@ -197,7 +329,15 @@ export const InvoicePDFViewer = ({ invoiceData }: iProps) => {
           {/* Notes Section */}
           {final_message && (
             <View style={{ marginTop: 40 }}>
-              <Text style={{ fontSize: 10, fontWeight: 700, color: "#333", marginBottom: 8, fontFamily: "GoogleSansFlexMedium" }}>
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontWeight: 500,
+                  color: "#333",
+                  marginBottom: 8,
+                  fontFamily: "Helvetica",
+                }}
+              >
                 NOTES
               </Text>
               <Text style={{ fontSize: 10, color: "#333", lineHeight: 1.5 }}>
@@ -224,7 +364,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#333",
     backgroundColor: "#fff",
-    fontFamily: "GoogleSansFlexRegular",
+    fontFamily: "Helvetica",
   },
   tableHeader: {
     backgroundColor: "rgb(250, 250, 250)",
@@ -302,7 +442,7 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     color: "#000000",
     marginBottom: 4,
-    fontFamily: "GoogleSansFlexBold",
+    fontFamily: "Helvetica",
   },
   flexRow: {
     display: "flex",
@@ -350,8 +490,9 @@ const styles = StyleSheet.create({
   cleanTableHeader: {
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#F9FAFB",
-    paddingVertical: 10,
+    paddingVertical: 12,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
     borderBottomColor: "#E5E7EB",
@@ -359,66 +500,86 @@ const styles = StyleSheet.create({
   cleanTableRow: {
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
     borderBottomWidth: 1,
     borderBottomColor: "#F3F4F6",
-    paddingVertical: 8,
+    paddingVertical: 12,
     paddingHorizontal: 16,
   },
   cleanTableCol: {
     display: "flex",
-    justifyContent: "flex-start",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: 20,
+  },
+  cleanTableColRight: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: 20,
   },
   cleanTableHeaderText: {
     fontSize: 10,
     fontWeight: 900,
     color: "#333",
-    fontFamily: "GoogleSansFlexBold",
+    fontFamily: "Helvetica-Bold",
+    textAlign: "center",
+    lineHeight: 1.4,
   },
   cleanTableCell: {
     fontSize: 10,
     color: "#333",
+    textAlign: "center",
+    lineHeight: 1.4,
   },
   cleanTableTotalRow: {
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#F3F4F6",
-    paddingVertical: 10,
+    paddingVertical: 12,
     paddingHorizontal: 16,
     borderTopWidth: 1,
     borderTopColor: "#E5E7EB",
   },
   cleanTableTotalLabel: {
-    fontSize: 10,
-    fontWeight: 600,
+    fontSize: 11,
+    fontWeight: 700,
     color: "#333",
-    textAlign: "left",
-    fontFamily: "GoogleSansFlexMedium",
+    textAlign: "center",
+    fontFamily: "Helvetica-Bold",
   },
   cleanTableTotalValue: {
-    fontSize: 10,
-    fontWeight: 600,
+    fontSize: 11,
+    fontWeight: 700,
     color: "#333",
+    textAlign: "center",
+    fontFamily: "Helvetica-Bold",
   },
   cleanTableFinalRow: {
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#EFF6FF",
-    paddingVertical: 12,
+    paddingVertical: 14,
     paddingHorizontal: 16,
     borderTopWidth: 2,
     borderTopColor: "#DBEAFE",
   },
   cleanTableFinalLabel: {
-    fontSize: 11,
-    fontWeight: 700,
+    fontSize: 12,
+    fontWeight: 900,
     color: "#333",
-    textAlign: "left",
-    fontFamily: "GoogleSansFlexBold",
+    textAlign: "center",
+    fontFamily: "Helvetica-Bold",
   },
   cleanTableFinalValue: {
-    fontSize: 11,
-    fontWeight: 700,
+    fontSize: 12,
+    fontWeight: 900,
     color: "#333",
-    fontFamily: "GoogleSansFlexBold",
+    textAlign: "center",
+    fontFamily: "Helvetica-Bold",
   },
 });
