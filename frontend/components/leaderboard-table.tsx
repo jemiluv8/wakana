@@ -69,53 +69,51 @@ export function LeaderBoardTable({
           {title} {subtitle}
         </h1>
       </div>
-      <Table className="w-100 w-full">
-        <TableCaption>
-          <p>
-            Leaderboard for the {range.text}. {range.start_text} -{" "}
-            {range.end_text}
-          </p>
-        </TableCaption>
+      <div className="overflow-x-auto">
+        <Table className="w-full table-fixed">
+          <TableCaption>
+            <p>
+              Leaderboard for the {range.text}. {range.start_text} -{" "}
+              {range.end_text}
+            </p>
+          </TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[70px]">Rank</TableHead>
-            <TableHead className="w-[300px] text-left">Programmer</TableHead>
-            <TableHead className="w-[300px] text-left">
+            <TableHead className="w-16">Rank</TableHead>
+            <TableHead className="w-48 text-left">Programmer</TableHead>
+            <TableHead className="w-32 text-left">
               <div className="flex items-center gap-2">
                 Hours Coded
                 <TooltipWithProvider description="Total hours coded over the last 7 days from Yesterday, using default 15 minute timeout, only showing coding activity from known languages." />
               </div>
             </TableHead>
-            <TableHead className="flex w-[150px] items-center gap-2 text-left">
+            <TableHead className="flex w-28 items-center gap-2 text-left">
               Daily Average
               <TooltipWithProvider description="Average hours coded per day, excluding days with zero coding activity." />
             </TableHead>
-            <TableHead className="text-left" style={{ maxWidth: "500px" }}>
+            <TableHead className="text-left min-w-0">
               Languages Used
             </TableHead>
-            <TableHead className="w-40 text-right"></TableHead>
-            <TableHead className="w-24 text-right"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {leaderboard.map((leader) => (
             <TableRow key={leader.rank}>
-              <TableCell>{leader.rank}</TableCell>
-              <TableCell>{leader.programmer}</TableCell>
-              <TableCell>{leader.hours_coded}</TableCell>
-              <TableCell>{leader.daily_average}</TableCell>
-              <TableCell
-                className="truncate text-right"
-                style={{ maxWidth: "550px" }}
-              >
-                <RenderLanguages languages={leader.languages} />
+              <TableCell className="w-16">{leader.rank}</TableCell>
+              <TableCell className="w-48">{leader.programmer}</TableCell>
+              <TableCell className="w-32">{leader.hours_coded}</TableCell>
+              <TableCell className="w-28">{leader.daily_average}</TableCell>
+              <TableCell className="min-w-0 max-w-none">
+                <div className="flex flex-wrap gap-1 items-center">
+                  <RenderLanguages languages={leader.languages} />
+                </div>
               </TableCell>
-              <TableCell className="w-24 text-right font-semibold"></TableCell>
             </TableRow>
           ))}
         </TableBody>
         <TableFooter></TableFooter>
-      </Table>
+        </Table>
+      </div>
     </div>
   );
 }

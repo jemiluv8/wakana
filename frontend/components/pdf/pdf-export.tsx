@@ -19,17 +19,17 @@ interface iProps {
 
 export const InvoicePDF = (props: iProps) => {
   return (
-    <Button
-      size={"sm"}
-      variant="outline"
-      className="size-7 bg-white p-1 hover:bg-white hover:opacity-70"
+    <PDFDownloadLink
+      fileName="invoice.pdf"
+      document={<InvoicePDFViewer invoiceData={props.invoiceData} />}
     >
-      <PDFDownloadLink
-        fileName="invoice.pdf"
-        document={<InvoicePDFViewer invoiceData={props.invoiceData} />}
+      <Button
+        variant="outline"
+        size="icon"
+        className="h-10 w-10 bg-transparent border-gray-300"
       >
-        <LucidePrinter className="size-4 text-black" />
-      </PDFDownloadLink>
-    </Button>
+        <LucidePrinter className="h-4 w-4 text-black" />
+      </Button>
+    </PDFDownloadLink>
   );
 };

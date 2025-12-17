@@ -1,6 +1,3 @@
-import { format, subDays } from "date-fns";
-
-import { fetchData } from "@/actions";
 import { ActivityCategoriesChart } from "@/components/charts/ActivityCategoriesChart";
 import { WBarChart } from "@/components/charts/WBarChart";
 import { WeekdaysBarChart } from "@/components/charts/WeekdaysBarChart";
@@ -9,36 +6,10 @@ import { makePieChartDataFromRawApiResponse } from "@/lib/utils";
 
 interface DashboardChartsProps {
   searchParams: Record<string, any>;
+  data: SummariesApiResponse;
 }
 
-export async function DashboardCharts({ searchParams }: DashboardChartsProps) {
-  const start =
-    searchParams.start || format(subDays(new Date(), 6), "yyyy-MM-dd");
-  const end = searchParams.end || format(new Date(), "yyyy-MM-dd");
-  const url = `/v1/users/current/summaries?${new URLSearchParams({ start, end })}`;
-
-  let durationData: SummariesApiResponse | null = null;
-
-  try {
-    durationData = await fetchData<SummariesApiResponse>(url, true);
-  } catch (error) {
-    console.error("Failed to fetch dashboard chart data:", error);
-    return (
-      <div className="text-center text-red-500">
-        Error fetching chart data:{" "}
-        {error instanceof Error ? error.message : "Unknown error"}
-        <br />
-        <small>URL: {url}</small>
-      </div>
-    );
-  }
-
-  if (!durationData) {
-    return (
-      <div className="text-center text-red-500">No chart data available</div>
-    );
-  }
-
+export async function DashboardCharts({ searchParams, data }: DashboardChartsProps) {
   return (
     <div className="my-5 space-y-5">
       <div className="charts-grid">
@@ -49,7 +20,7 @@ export async function DashboardCharts({ searchParams }: DashboardChartsProps) {
             colorNamespace="editors"
             defaultOrientation="vertical"
             data={makePieChartDataFromRawApiResponse(
-              durationData.data,
+              data.data,
               "editors"
             )}
             durationSubtitle="Editors used over the "
@@ -60,7 +31,7 @@ export async function DashboardCharts({ searchParams }: DashboardChartsProps) {
             innerRadius={34.45}
             title="LANGUAGES"
             data={makePieChartDataFromRawApiResponse(
-              durationData.data,
+              data.data,
               "languages"
             )}
             defaultOrientation="vertical"
@@ -74,7 +45,7 @@ export async function DashboardCharts({ searchParams }: DashboardChartsProps) {
           <WBarChart
             title="OPERATING SYSTEMS"
             data={makePieChartDataFromRawApiResponse(
-              durationData.data,
+              data.data,
               "operating_systems"
             )}
             defaultOrientation="horizontal"
@@ -86,7 +57,7 @@ export async function DashboardCharts({ searchParams }: DashboardChartsProps) {
           <WBarChart
             title="MACHINES"
             data={makePieChartDataFromRawApiResponse(
-              durationData.data,
+              data.data,
               "machines"
             )}
             defaultOrientation="horizontal"
@@ -97,10 +68,10 @@ export async function DashboardCharts({ searchParams }: DashboardChartsProps) {
       </div>
       <div className="charts-grid">
         <div className="chart-box">
-          <ActivityCategoriesChart data={durationData.data} />
+          <ActivityCategoriesChart data={data.data} />
         </div>
         <div className="chart-box">
-          <WeekdaysBarChart data={durationData.data} />
+          <WeekdaysBarChart data={data.data} />
         </div>
       </div>
     </div>

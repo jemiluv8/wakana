@@ -42,127 +42,122 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
   const currencySymbol = client.currency;
 
   return (
-    <div className={cn(styles.root, "px-6 my-6 mx-2 min-h-screen")}>
-      <main id="target-invoice" className={cn(styles.mainPreview, "")}>
-        <div className="mb-3 flex justify-end gap-1">
-          <Button
-            size={"sm"}
-            className="size-7 bg-white p-1 hover:bg-white hover:opacity-70"
-            variant="outline"
-            onClick={onTogglePreview}
-          >
-            <LucideEdit className="size-4 text-black" />
-          </Button>
-          <InvoicePDF invoiceData={data} />
-        </div>
-        <div className="flex justify-between">
-          <div className="w-100 max-w-lg">
+    <div className="min-h-screen bg-gray-100 p-4 md:p-8">
+      <div className="mx-auto max-w-4xl">
+        <div className="rounded-lg bg-white p-8 shadow-lg md:p-12" id="target-invoice">
+          <div className="mb-8 flex items-start justify-between">
             <div>
-              <h1 className="text-3xl">INVOICE</h1>
-              <RawHTML source={data.invoice_summary} fallback="" />
+              <h1 className="mb-2 text-4xl font-bold text-black">INVOICE</h1>
+              <div className="text-sm text-gray-600">
+                <RawHTML source={data.invoice_summary} fallback="" />
+              </div>
             </div>
-            <div className="my-2 mt-4">
-              <label htmlFor="from">From</label>
-              <RawHTML source={data.origin} fallback="" />
-            </div>{" "}
-            <br />
-            <div className="my-2">
-              <label htmlFor="to">Bill To</label>
-              <RawHTML source={data.destination} fallback="" />
+            <div className="flex gap-2">
+              <Button variant="outline" size="icon" onClick={onTogglePreview} className="h-10 w-10 bg-transparent border-gray-300">
+                <LucideEdit className="h-4 w-4 text-black" />
+              </Button>
+              <InvoicePDF invoiceData={data} />
             </div>
           </div>
-          <div>
-            <div className="flex">
-              <div className="mr-1 flex flex-col items-end justify-items-end">
-                <h1 className="font-bold">Invoice : </h1>
-                <h1 className="font-bold">Date: </h1>
+
+          <div className="mb-8 flex justify-between">
+            <div className="space-y-4">
+              <div>
+                <h3 className="mb-1 text-xs font-semibold uppercase text-gray-600">From</h3>
+                <div className="whitespace-pre-line text-sm text-black">
+                  <RawHTML source={data.origin} fallback="" />
+                </div>
+              </div>
+
+              <div>
+                <h3 className="mb-1 text-xs font-semibold uppercase text-gray-600">Bill To</h3>
+                <div className="whitespace-pre-line text-sm text-black">
+                  <RawHTML source={data.destination} fallback="" />
+                </div>
+              </div>
+            </div>
+
+            <div className="text-right">
+              <div className="mb-3">
+                <div className="text-xs font-semibold uppercase text-gray-600">Invoice</div>
+                <div className="text-sm font-semibold text-black">{data.invoice_id}</div>
               </div>
               <div>
-                <p>{data.invoice_id}</p>
-                <p>{format(data.created_at, "MMM dd, yyyy")}</p>
+                <div className="text-xs font-semibold uppercase text-gray-600">Date</div>
+                <div className="text-sm text-black">{format(data.created_at, "MMM dd, yyyy")}</div>
               </div>
             </div>
           </div>
-        </div>
-        {data.heading && (
-          <div className="my-4 mt-8">
-            <RawHTML source={data.heading} fallback="" />
-          </div>
-        )}
-        <div className={cn(styles.invoiceTableWrapper, "shadow")}>
-          <table className={cn(styles.invoiceTable, "")}>
-            <thead>
-              <tr className={cn(styles.invoiceRow, styles.invoiceHeader)}>
-                <th>Item</th>
-                <th>Price ({currencySymbol})</th>
-                <th>Qty (Hrs)</th>
-                <th>Amount ({currencySymbol})</th>
-                <th className={styles.invoiceRowAction}></th>
-              </tr>
-            </thead>
-            <tbody style={{ borderRadius: "0.5rem" }}>
-              {line_items.map((item, index) => (
-                <tr key={index} className={cn(styles.invoiceRow)}>
-                  <td>{item.title}</td>
-                  <td>{client.hourly_rate.toFixed(2)}</td>
-                  <td>{getHours(item.total_seconds).toFixed(2)}</td>
-                  <td>
-                    {formatNumber(
-                      getHours(item.total_seconds) * client.hourly_rate,
-                      {
-                        currency: client.currency,
-                        style: "currency",
-                      }
-                    )}
+          {data.heading && (
+            <div className="mb-8 rounded-lg bg-gray-50 p-4">
+              <div className="text-black">
+                <RawHTML source={data.heading} fallback="" />
+              </div>
+            </div>
+          )}
+          <div className="mb-8 overflow-hidden rounded-lg border border-gray-200">
+            <table className="w-full">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-black">Item</th>
+                  <th className="px-4 py-3 text-right text-sm font-semibold text-black">Price ({currencySymbol})</th>
+                  <th className="px-4 py-3 text-right text-sm font-semibold text-black">Qty (Hrs)</th>
+                  <th className="px-4 py-3 text-right text-sm font-semibold text-black">Amount ({currencySymbol})</th>
+                </tr>
+              </thead>
+              <tbody>
+                {line_items.map((item, index) => (
+                  <tr key={index} className="border-t border-gray-200">
+                    <td className="px-4 py-3 text-sm text-black">{item.title}</td>
+                    <td className="px-4 py-3 text-right text-sm text-black">{client.hourly_rate.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right text-sm text-black">{getHours(item.total_seconds).toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right text-sm font-medium text-black">
+                      {formatCurrency(
+                        getHours(item.total_seconds) * client.hourly_rate,
+                        currencySymbol
+                      )}
+                    </td>
+                  </tr>
+                ))}
+                <tr className="border-t border-gray-200 bg-gray-50">
+                  <td colSpan={3} className="px-4 py-3 text-right text-sm font-semibold text-black">
+                    Subtotal:
+                  </td>
+                  <td className="px-4 py-3 text-right text-sm font-semibold text-black">
+                    {formatCurrency(totalInvoice, currencySymbol)}
                   </td>
                 </tr>
-              ))}
-              <tr className={cn(styles.invoiceRow)}>
-                <td>{/* Empty cell under Item column */}</td>
-                <td className="font-bold">Total:</td>
-                <td className="font-bold">
-                  {line_items
-                    .reduce(
-                      (acc, item) => acc + getHours(item.total_seconds),
-                      0
-                    )
-                    .toFixed(2)}
-                </td>
-                <td className="font-bold">
-                  {formatNumber(totalInvoice, {
-                    currency: client.currency,
-                    style: "currency",
-                  })}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="mt-12 flex justify-end">
-          <div className="flex gap-8">
-            <div className="flex flex-col items-end justify-center gap-2 text-lg">
-              <h1 className="font-semibold">Total </h1>
-              {showTax && (
-                <>
-                  <h1 className="font-semibold">Tax ({tax || ""}%) </h1>
-                  <h1 className="font-semibold">Net Total </h1>
-                </>
-              )}
-            </div>
-            <div className="flex flex-col items-end justify-center gap-2 text-lg">
-              <p>{formatCurrency(totalInvoice, currencySymbol)}</p>
-              {showTax && (
-                <>
-                  <p>{formatCurrency(taxTotal, currencySymbol)}</p>
-                  <p>{formatCurrency(netTotal, currencySymbol)}</p>
-                </>
-              )}
-            </div>
+                {showTax && taxTotal > 0 && (
+                  <tr className="border-t border-gray-200">
+                    <td colSpan={3} className="px-4 py-3 text-right text-sm text-black">
+                      Tax ({tax || 0}%):
+                    </td>
+                    <td className="px-4 py-3 text-right text-sm text-black">
+                      {formatCurrency(taxTotal, currencySymbol)}
+                    </td>
+                  </tr>
+                )}
+                <tr className="border-t border-gray-200 bg-blue-50">
+                  <td colSpan={3} className="px-4 py-4 text-right text-base font-bold text-black">
+                    Total:
+                  </td>
+                  <td className="px-4 py-4 text-right text-base font-bold text-black">
+                    {formatCurrency(showTax ? netTotal : totalInvoice, currencySymbol)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+          {data.final_message && (
+            <div className="rounded-lg bg-gray-50 p-4">
+              <h3 className="mb-2 text-xs font-semibold uppercase text-gray-600">Notes</h3>
+              <div className="whitespace-pre-line text-sm text-black">
+                <RawHTML source={data.final_message} fallback="" />
+              </div>
+            </div>
+          )}
         </div>
-
-        <RawHTML source={data.final_message} fallback="" />
-      </main>
+      </div>
     </div>
   );
 }

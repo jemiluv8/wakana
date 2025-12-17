@@ -21,6 +21,13 @@ const fontSans = FontSans({
 
 const rubik = Rubik({ subsets: ["latin"] });
 
+// Google Sans Flex font using Google Fonts API since we don't have local files
+const googleSansFlex = localFont({
+  src: "../assets/fonts/CalSans-SemiBold.woff2", // Temporary - we'll use CSS for Google Sans Flex
+  variable: "--font-google-sans-flex",
+  display: "swap",
+});
+
 export const fontHeading = localFont({
   src: "../assets/fonts/CalSans-SemiBold.woff2",
   variable: "--font-heading",
@@ -82,14 +89,23 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
           fontSans.variable,
           fontHeading.variable,
+          googleSansFlex.variable,
           rubik.className
         )}
+        style={{ fontFamily: "'Google Sans Flex', system-ui, sans-serif" }}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           {children}

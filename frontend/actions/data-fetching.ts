@@ -44,7 +44,10 @@ export async function fetchData<T>(
             }
           : {}),
       },
-      cache: "no-store",
+      next: { 
+        revalidate: 300,
+        tags: ['dashboard-data']
+      }
     });
 
     if (!apiResponse.ok) {

@@ -60,12 +60,19 @@ input.taxInput {
   padding: 1px 2px;
 }
 
+input.qtyInput {
+  max-width: 80px;
+  width: 80px;
+}
+
 .taxInput:focus {
-  outline: 1px solid #d1d5db;
+  outline: 2px solid #000000;
+  outline-offset: 2px;
 }
 
 .invoiceInput:focus {
-  outline: 1px solid #d1d5db;
+  outline: 2px solid #000000;
+  outline-offset: 2px;
 }
 
 .root {

@@ -1,7 +1,5 @@
-import { format, subDays } from "date-fns";
 import Link from "next/link";
 
-import { fetchData } from "@/actions";
 import { ProjectCard } from "@/components/project-card";
 import { SummariesApiResponse } from "@/lib/types";
 import {
@@ -11,28 +9,15 @@ import {
 
 interface DashboardProjectsProps {
   searchParams: Record<string, any>;
+  data: SummariesApiResponse;
 }
 
 export async function DashboardProjects({
   searchParams,
+  data,
 }: DashboardProjectsProps) {
-  const start =
-    searchParams.start || format(subDays(new Date(), 6), "yyyy-MM-dd");
-  const end = searchParams.end || format(new Date(), "yyyy-MM-dd");
-  const url = `/v1/users/current/summaries?${new URLSearchParams({ start, end })}`;
-
-  const durationData = await fetchData<SummariesApiResponse>(url, true);
-
-  if (!durationData) {
-    return (
-      <div className="text-center text-red-500">
-        Error fetching projects data
-      </div>
-    );
-  }
-
   const projects = makePieChartDataFromRawApiResponse(
-    durationData.data,
+    data.data,
     "projects"
   );
 
