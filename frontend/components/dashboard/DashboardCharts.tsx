@@ -40,7 +40,7 @@ export async function DashboardCharts({ data }: DashboardChartsProps) {
             title="OPERATING SYSTEMS"
             data={makePieChartDataFromRawApiResponse(
               data.data,
-              "operating_systems",
+              "operating_systems"
             )}
             defaultOrientation="horizontal"
             colorNamespace="operating_systems"
