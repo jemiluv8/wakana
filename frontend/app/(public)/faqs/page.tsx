@@ -14,7 +14,7 @@ export const metadata = {
 
 export default function FAQPage() {
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4">
+    <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <h1 className="text-4xl font-bold mb-8">Frequently Asked Questions</h1>
 
       <div className="space-y-4">

@@ -79,14 +79,14 @@ const features = [
 
 export default function SetupPage() {
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4">
+    <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       {/* Hero Section */}
       <div className="text-center mb-16">
         <FadeOnView>
           <h1 className="text-4xl font-bold mb-6">
             Get Started in 4 Simple Steps
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
             Start tracking your coding activity in minutes. Works with your
             existing editor setup—no disruption to your workflow.
           </p>
@@ -187,7 +187,7 @@ export default function SetupPage() {
         <h2 className="text-2xl font-semibold mb-4">
           Ready to Start Tracking?
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
+        <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-3xl mx-auto">
           Join thousands of developers who use Wakana to understand their coding
           patterns and boost productivity.
         </p>

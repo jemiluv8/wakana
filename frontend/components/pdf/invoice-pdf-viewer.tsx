@@ -4,6 +4,7 @@ import React from "react";
 
 import { Invoice } from "@/lib/types";
 import { formatCurrency, getHours } from "@/lib/utils";
+import { trim, trimStart } from "lodash";
 
 // Use built-in Helvetica font family (no registration needed)
 
@@ -170,14 +171,14 @@ export const InvoicePDFViewer = ({ invoiceData }: iProps) => {
           {heading && (
             <View
               style={{
-                marginBottom: 32,
-                backgroundColor: "#F5F5F5",
-                padding: 16,
+                // marginBottom: 32,
+                // backgroundColor: "#F5F5F5",
+                // paddingHorizontal: 10,
                 borderRadius: 4,
               }}
             >
               <Text style={{ fontSize: 10, color: "#333", lineHeight: 1.4 }}>
-                {heading}
+                {trim(heading)}
               </Text>
             </View>
           )}

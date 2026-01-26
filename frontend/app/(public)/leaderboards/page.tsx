@@ -15,7 +15,7 @@ export default function LeaderboardsPage({
   searchParams: Record<string, any>;
 }) {
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4">
+    <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <Suspense
         fallback={
           <div className="flex justify-center py-12">
