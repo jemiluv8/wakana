@@ -6,8 +6,9 @@ interface DashboardStatsProps {
   data: SummariesApiResponse;
 }
 
-export async function DashboardStats({ searchParams, data }: DashboardStatsProps) {
-  return (
-    <DashboardStatsSummary searchParams={searchParams} data={data} />
-  );
+export async function DashboardStats({
+  searchParams,
+  data,
+}: DashboardStatsProps) {
+  return <DashboardStatsSummary searchParams={searchParams} data={data} />;
 }

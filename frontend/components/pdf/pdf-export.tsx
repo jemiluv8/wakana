@@ -1,7 +1,7 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { LucidePrinter } from "lucide-react";
+import dynamic from "next/dynamic";
 
 import { Invoice } from "@/lib/types";
 
@@ -14,7 +14,7 @@ interface iProps {
 // Dynamically import the entire PDF component with SSR disabled
 const PDFDownloadButton = dynamic(
   () => import("./pdf-download-button").then((mod) => mod.PDFDownloadButton),
-  { 
+  {
     ssr: false,
     loading: () => (
       <Button
@@ -25,7 +25,7 @@ const PDFDownloadButton = dynamic(
       >
         <LucidePrinter className="h-4 w-4 text-black" />
       </Button>
-    )
+    ),
   }
 );
 

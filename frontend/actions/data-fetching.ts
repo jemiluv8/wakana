@@ -44,10 +44,10 @@ export async function fetchData<T>(
             }
           : {}),
       },
-      next: { 
+      next: {
         revalidate: 300,
-        tags: ['dashboard-data']
-      }
+        tags: ["dashboard-data"],
+      },
     });
 
     if (!apiResponse.ok) {

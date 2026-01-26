@@ -231,7 +231,12 @@ export function InvoiceManager({ data }: iProps) {
             </div>
           </div>
           <div className="mt-4">
-            <label htmlFor="from" className="text-sm font-medium text-black uppercase tracking-wider">Preamble</label>
+            <label
+              htmlFor="from"
+              className="text-sm font-medium text-black uppercase tracking-wider"
+            >
+              Preamble
+            </label>
             <textarea
               className={cn(styles.invoiceInput)}
               placeholder="Write something here"
@@ -270,7 +275,9 @@ export function InvoiceManager({ data }: iProps) {
                           }}
                         />
                       </td>
-                      <td className="text-black">{client.hourly_rate.toFixed(2)}</td>
+                      <td className="text-black">
+                        {client.hourly_rate.toFixed(2)}
+                      </td>
                       <td>
                         {!(item as InvoiceLineItem).auto_generated ? (
                           <input
@@ -292,7 +299,9 @@ export function InvoiceManager({ data }: iProps) {
                             }}
                           />
                         ) : (
-                          <span className="text-black">{getHours(item.total_seconds).toFixed(2)}</span>
+                          <span className="text-black">
+                            {getHours(item.total_seconds).toFixed(2)}
+                          </span>
                         )}
                       </td>
                       <td className="text-black">
@@ -390,12 +399,14 @@ export function InvoiceManager({ data }: iProps) {
 
               {/* Include Tax Toggle */}
               <div className="flex justify-end items-center gap-3 pt-4">
-                <span className="text-lg font-semibold text-black">Include Tax</span>
+                <span className="text-lg font-semibold text-black">
+                  Include Tax
+                </span>
                 <Switch
                   id="show-tax"
                   checked={showTax}
                   onCheckedChange={setShowTax}
-                  className={`border-2 ${showTax ? 'border-white bg-black' : 'border-gray-800 bg-white'} data-[state=checked]:bg-black data-[state=checked]:border-white`}
+                  className={`border-2 ${showTax ? "border-white bg-black" : "border-gray-800 bg-white"} data-[state=checked]:bg-black data-[state=checked]:border-white`}
                 />
               </div>
             </div>

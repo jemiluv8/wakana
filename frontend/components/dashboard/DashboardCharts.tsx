@@ -9,7 +9,7 @@ interface DashboardChartsProps {
   data: SummariesApiResponse;
 }
 
-export async function DashboardCharts({ searchParams, data }: DashboardChartsProps) {
+export async function DashboardCharts({ data }: DashboardChartsProps) {
   return (
     <div className="my-5 space-y-5">
       <div className="charts-grid">
@@ -19,10 +19,7 @@ export async function DashboardCharts({ searchParams, data }: DashboardChartsPro
             title="EDITORS"
             colorNamespace="editors"
             defaultOrientation="vertical"
-            data={makePieChartDataFromRawApiResponse(
-              data.data,
-              "editors"
-            )}
+            data={makePieChartDataFromRawApiResponse(data.data, "editors")}
             durationSubtitle="Editors used over the "
           />
         </div>
@@ -30,10 +27,7 @@ export async function DashboardCharts({ searchParams, data }: DashboardChartsPro
           <WBarChart
             innerRadius={34.45}
             title="LANGUAGES"
-            data={makePieChartDataFromRawApiResponse(
-              data.data,
-              "languages"
-            )}
+            data={makePieChartDataFromRawApiResponse(data.data, "languages")}
             defaultOrientation="vertical"
             colorNamespace="languages"
             durationSubtitle="Languages used over the "
@@ -46,7 +40,7 @@ export async function DashboardCharts({ searchParams, data }: DashboardChartsPro
             title="OPERATING SYSTEMS"
             data={makePieChartDataFromRawApiResponse(
               data.data,
-              "operating_systems"
+              "operating_systems",
             )}
             defaultOrientation="horizontal"
             colorNamespace="operating_systems"
@@ -56,10 +50,7 @@ export async function DashboardCharts({ searchParams, data }: DashboardChartsPro
         <div className="chart-box">
           <WBarChart
             title="MACHINES"
-            data={makePieChartDataFromRawApiResponse(
-              data.data,
-              "machines"
-            )}
+            data={makePieChartDataFromRawApiResponse(data.data, "machines")}
             defaultOrientation="horizontal"
             colorNamespace="machines"
             durationSubtitle="Machines used over the "

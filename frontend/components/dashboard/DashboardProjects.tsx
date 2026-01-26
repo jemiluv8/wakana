@@ -12,14 +12,8 @@ interface DashboardProjectsProps {
   data: SummariesApiResponse;
 }
 
-export async function DashboardProjects({
-  searchParams,
-  data,
-}: DashboardProjectsProps) {
-  const projects = makePieChartDataFromRawApiResponse(
-    data.data,
-    "projects"
-  );
+export async function DashboardProjects({ data }: DashboardProjectsProps) {
+  const projects = makePieChartDataFromRawApiResponse(data.data, "projects");
 
   return (
     <div className="my-5">

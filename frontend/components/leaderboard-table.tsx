@@ -77,41 +77,41 @@ export function LeaderBoardTable({
               {range.end_text}
             </p>
           </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-16">Rank</TableHead>
-            <TableHead className="w-48 text-left">Programmer</TableHead>
-            <TableHead className="w-32 text-left">
-              <div className="flex items-center gap-2">
-                Hours Coded
-                <TooltipWithProvider description="Total hours coded over the last 7 days from Yesterday, using default 15 minute timeout, only showing coding activity from known languages." />
-              </div>
-            </TableHead>
-            <TableHead className="flex w-28 items-center gap-2 text-left">
-              Daily Average
-              <TooltipWithProvider description="Average hours coded per day, excluding days with zero coding activity." />
-            </TableHead>
-            <TableHead className="text-left min-w-0">
-              Languages Used
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {leaderboard.map((leader) => (
-            <TableRow key={leader.rank}>
-              <TableCell className="w-16">{leader.rank}</TableCell>
-              <TableCell className="w-48">{leader.programmer}</TableCell>
-              <TableCell className="w-32">{leader.hours_coded}</TableCell>
-              <TableCell className="w-28">{leader.daily_average}</TableCell>
-              <TableCell className="min-w-0 max-w-none">
-                <div className="flex flex-wrap gap-1 items-center">
-                  <RenderLanguages languages={leader.languages} />
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-16">Rank</TableHead>
+              <TableHead className="w-48 text-left">Programmer</TableHead>
+              <TableHead className="w-32 text-left">
+                <div className="flex items-center gap-2">
+                  Hours Coded
+                  <TooltipWithProvider description="Total hours coded over the last 7 days from Yesterday, using default 15 minute timeout, only showing coding activity from known languages." />
                 </div>
-              </TableCell>
+              </TableHead>
+              <TableHead className="flex w-28 items-center gap-2 text-left">
+                Daily Average
+                <TooltipWithProvider description="Average hours coded per day, excluding days with zero coding activity." />
+              </TableHead>
+              <TableHead className="text-left min-w-0">
+                Languages Used
+              </TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter></TableFooter>
+          </TableHeader>
+          <TableBody>
+            {leaderboard.map((leader) => (
+              <TableRow key={leader.rank}>
+                <TableCell className="w-16">{leader.rank}</TableCell>
+                <TableCell className="w-48">{leader.programmer}</TableCell>
+                <TableCell className="w-32">{leader.hours_coded}</TableCell>
+                <TableCell className="w-28">{leader.daily_average}</TableCell>
+                <TableCell className="min-w-0 max-w-none">
+                  <div className="flex flex-wrap gap-1 items-center">
+                    <RenderLanguages languages={leader.languages} />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableFooter></TableFooter>
         </Table>
       </div>
     </div>

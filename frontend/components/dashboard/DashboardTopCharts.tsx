@@ -8,10 +8,7 @@ interface DashboardTopChartsProps {
   data: SummariesApiResponse;
 }
 
-export async function DashboardTopCharts({
-  searchParams,
-  data,
-}: DashboardTopChartsProps) {
+export async function DashboardTopCharts({ data }: DashboardTopChartsProps) {
   return (
     <section className="charts-grid-top">
       <div className="chart-box min-h-52">
@@ -24,10 +21,7 @@ export async function DashboardTopCharts({
         />
       </div>
       <div className="chart-box min-h-52">
-        <WGaugeChart
-          data={data.data}
-          dailyAverage={data.daily_average}
-        />
+        <WGaugeChart data={data.data} dailyAverage={data.daily_average} />
       </div>
     </section>
   );
