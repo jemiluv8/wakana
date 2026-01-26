@@ -1,18 +1,20 @@
 import * as z from "zod";
 
+const emailSchema = z.string().min(3).max(254).email();
+
 export const userNameSchema = z.object({
-  email: z.string().min(3).max(32),
+  email: emailSchema,
   password: z.string().min(3).max(32),
 });
 
 export const otpLoginSchema = z.object({
-  email: z.string().min(3).max(32),
+  email: emailSchema,
   code_challenge: z.string().min(3),
   challenge_method: z.string().min(3),
 });
 
 export const otpLoginValidateSchema = z.object({
-  email: z.string().min(3).max(32),
+  email: emailSchema,
   code_verifier: z.string().min(3),
   otp: z.string().min(3),
 });
@@ -23,12 +25,12 @@ export const resetPasswordSchema = z.object({
 });
 
 export const forgotPasswordSchema = z.object({
-  email: z.string().min(3).max(32),
+  email: emailSchema,
 });
 
 export const userSignupSchema = z
   .object({
-    email: z.string().min(3).max(32),
+    email: emailSchema,
     password: z.string().min(3).max(32),
     password_repeat: z.string().min(3).max(32),
   })
