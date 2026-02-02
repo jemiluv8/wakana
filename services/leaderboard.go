@@ -14,37 +14,36 @@ import (
 	"github.com/muety/wakapi/helpers"
 	"github.com/muety/wakapi/models"
 	"github.com/muety/wakapi/repositories"
-	summarytypes "github.com/muety/wakapi/types"
 	"github.com/muety/wakapi/utils"
 	"github.com/patrickmn/go-cache"
 	"gorm.io/gorm"
 )
 
 type LeaderboardService struct {
-	config         *config.Config
-	cache          *cache.Cache
-	eventBus       *hub.Hub
-	repository     repositories.ILeaderboardRepository
-	summaryService ISummaryService
-	userService    IUserService
-	queueDefault   *artifex.Dispatcher
-	queueWorkers   *artifex.Dispatcher
-	defaultScope   *models.IntervalKey
+	config          *config.Config
+	cache           *cache.Cache
+	eventBus        *hub.Hub
+	repository      repositories.ILeaderboardRepository
+	durationService IDurationService
+	userService     IUserService
+	queueDefault    *artifex.Dispatcher
+	queueWorkers    *artifex.Dispatcher
+	defaultScope    *models.IntervalKey
 }
 
 func NewLeaderboardService(db *gorm.DB) *LeaderboardService {
 	leaderboardRepo := repositories.NewLeaderboardRepository(db)
-	summaryService := NewSummaryService(db)
+	durationService := NewDurationService(db)
 	userService := NewUserService(db)
 	srv := &LeaderboardService{
-		config:         config.Get(),
-		cache:          cache.New(6*time.Hour, 6*time.Hour),
-		eventBus:       config.EventBus(),
-		repository:     leaderboardRepo,
-		summaryService: summaryService,
-		userService:    userService,
-		queueDefault:   config.GetDefaultQueue(),
-		queueWorkers:   config.GetQueue(config.QueueProcessing),
+		config:          config.Get(),
+		cache:           cache.New(6*time.Hour, 6*time.Hour),
+		eventBus:        config.EventBus(),
+		repository:      leaderboardRepo,
+		durationService: durationService,
+		userService:     userService,
+		queueDefault:    config.GetDefaultQueue(),
+		queueWorkers:    config.GetQueue(config.QueueProcessing),
 	}
 
 	scope, err := helpers.ParseInterval(srv.config.App.LeaderboardScope)
@@ -245,15 +244,25 @@ func (srv *LeaderboardService) GenerateByUser(user *models.User, interval *model
 		return nil, err
 	}
 
-	request := summarytypes.NewSummaryRequest(from, to, user)
-	options := summarytypes.DefaultProcessingOptions()
-	summary, err := srv.summaryService.Generate(request, options)
-	if err != nil {
-		return nil, err
+	// Compute day-by-day using DurationService.Get — the same function the /day dashboard uses —
+	// then tally per-day totals. This avoids double-counting bugs in multi-day summary generation.
+	dayIntervals := utils.SplitRangeByDays(from, to)
+	var total time.Duration
+
+	for _, day := range dayIntervals {
+		durations, err := srv.durationService.Get(day.Start, day.End, user, &models.Filters{}, SliceByProject)
+		if err != nil {
+			slog.Warn("failed to compute daily durations for leaderboard", "userID", user.ID, "from", day.Start, "to", day.End, "error", err)
+			continue
+		}
+		for _, d := range durations {
+			// exclude unknown language (chrome-wakatime browsing time)
+			if d.Language != models.UnknownSummaryKey {
+				total += d.Duration
+			}
+		}
 	}
 
-	// exclude unknown language (will also exclude browsing time by chrome-wakatime plugin)
-	total := summary.TotalTime() - summary.TotalTimeByKey(models.SummaryLanguage, models.UnknownSummaryKey)
 	return &models.LeaderboardItem{
 		User:     user,
 		UserID:   user.ID,
@@ -268,29 +277,36 @@ func (srv *LeaderboardService) GenerateAggregatedByUser(user *models.User, inter
 		return nil, err
 	}
 
-	request := summarytypes.NewSummaryRequest(from, to, user)
-	options := summarytypes.DefaultProcessingOptions()
-	summary, err := srv.summaryService.Generate(request, options)
-	if err != nil {
-		return nil, err
-	}
+	// Compute day-by-day using DurationService.Get — the same function the /day dashboard uses —
+	// then aggregate per-key totals across all days.
+	dayIntervals := utils.SplitRangeByDays(from, to)
+	keyTotals := make(map[string]time.Duration)
 
-	summaryItems := *summary.GetByType(by)
-	items := make([]*models.LeaderboardItem, 0, summaryItems.Len())
-
-	for _, item := range summaryItems {
-		// explicitly exclude unknown languages from leaderboard
-		if item.Key == models.UnknownSummaryKey {
+	for _, day := range dayIntervals {
+		durations, err := srv.durationService.Get(day.Start, day.End, user, &models.Filters{}, SliceByProject)
+		if err != nil {
+			slog.Warn("failed to compute daily durations for aggregated leaderboard", "userID", user.ID, "from", day.Start, "to", day.End, "error", err)
 			continue
 		}
+		for _, d := range durations {
+			key := d.GetKey(by)
+			if key == models.UnknownSummaryKey {
+				continue
+			}
+			keyTotals[key] += d.Duration
+		}
+	}
 
+	items := make([]*models.LeaderboardItem, 0, len(keyTotals))
+	for key, total := range keyTotals {
+		keyCopy := key
 		items = append(items, &models.LeaderboardItem{
 			User:     user,
 			UserID:   user.ID,
 			Interval: (*interval)[0],
 			By:       &by,
-			Total:    summary.TotalTimeByKey(by, item.Key),
-			Key:      &item.Key,
+			Total:    total,
+			Key:      &keyCopy,
 		})
 	}
 

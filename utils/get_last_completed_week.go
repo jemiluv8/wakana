@@ -26,7 +26,7 @@ func GetLastCompletedWeek(now time.Time) (time.Time, time.Time) {
 	
 	// The last completed week is the week before
 	from := currentWeekMonday.AddDate(0, 0, -7)
-	to := from.AddDate(0, 0, 6)
-	
+	to := from.AddDate(0, 0, 7)
+
 	return from, to
 }

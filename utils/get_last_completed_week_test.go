@@ -24,25 +24,25 @@ func TestGetLastCompletedWeek(t *testing.T) {
 			name:     "Monday morning",
 			now:      mustDate("2025-08-11"), // Monday
 			wantFrom: "2025-08-04",
-			wantTo:   "2025-08-10",
+			wantTo:   "2025-08-11",
 		},
 		{
 			name:     "Saturday",
 			now:      mustDate("2025-08-09"), // Saturday
 			wantFrom: "2025-07-28",
-			wantTo:   "2025-08-03",
+			wantTo:   "2025-08-04",
 		},
 		{
 			name:     "Wednesday",
 			now:      mustDate("2025-08-06"), // Wednesday
 			wantFrom: "2025-07-28",
-			wantTo:   "2025-08-03",
+			wantTo:   "2025-08-04",
 		},
 		{
 			name:     "Sunday",
 			now:      mustDate("2025-08-10"), // Sunday
 			wantFrom: "2025-07-28",
-			wantTo:   "2025-08-03",
+			wantTo:   "2025-08-04",
 		},
 	}
 
