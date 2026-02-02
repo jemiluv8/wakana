@@ -12,7 +12,11 @@ export async function LeaderboardContent({
   const queryParams = new URLSearchParams(searchParams);
   const url = `/v1/leaders?${queryParams.toString()}`;
 
-  const durationData = await fetchData<LeaderboardApiResponse>(url, false, true);
+  const durationData = await fetchData<LeaderboardApiResponse>(
+    url,
+    false,
+    true
+  );
 
   if (!durationData) {
     return (
