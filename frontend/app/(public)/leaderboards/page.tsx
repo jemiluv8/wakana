@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import { LeaderboardContent } from "@/components/leaderboard-content";
 import { Spinner } from "@/components/spinner/spinner";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Leaderboards | Wakana",
   description:

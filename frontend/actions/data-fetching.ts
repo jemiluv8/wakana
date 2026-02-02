@@ -9,7 +9,8 @@ const { NEXT_PUBLIC_API_URL } = process.env;
 // doesn't throw. returns null when not found
 export async function fetchData<T>(
   url: string,
-  auth: boolean = true
+  auth: boolean = true,
+  noCache: boolean = false
 ): Promise<T | null> {
   let redirectToLogin = false;
   try {
@@ -44,10 +45,14 @@ export async function fetchData<T>(
             }
           : {}),
       },
-      next: {
-        revalidate: 300,
-        tags: ["dashboard-data"],
-      },
+      ...(noCache
+        ? { cache: "no-store" as const }
+        : {
+            next: {
+              revalidate: 300,
+              tags: ["dashboard-data"],
+            },
+          }),
     });
 
     if (!apiResponse.ok) {
