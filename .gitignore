@@ -19,3 +19,4 @@ notes
 .DS_Store
 wakana
 coverage/*
+*config.yml

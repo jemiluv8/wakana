@@ -2,6 +2,8 @@ import { ApiClient } from "@/actions/api";
 import { LeaderBoardTable } from "@/components/leaderboard-table";
 import { LeaderboardApiResponse } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export default async function Leaderboards({
   searchParams,
 }: {
