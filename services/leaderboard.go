@@ -244,23 +244,12 @@ func (srv *LeaderboardService) GenerateByUser(user *models.User, interval *model
 		return nil, err
 	}
 
-	// Compute day-by-day using DurationService.Get — the same function the /day dashboard uses —
-	// then tally per-day totals. This avoids double-counting bugs in multi-day summary generation.
-	dayIntervals := utils.SplitRangeByDays(from, to)
-	var total time.Duration
-
-	for _, day := range dayIntervals {
-		durations, err := srv.durationService.Get(day.Start, day.End, user, &models.Filters{}, SliceByProject)
-		if err != nil {
-			slog.Warn("failed to compute daily durations for leaderboard", "userID", user.ID, "from", day.Start, "to", day.End, "error", err)
-			continue
-		}
-		for _, d := range durations {
-			// exclude unknown language (chrome-wakatime browsing time)
-			if d.Language != models.UnknownSummaryKey {
-				total += d.Duration
-			}
-		}
+	// Use the shared GetIntervalTotal method for consistent computation across
+	// leaderboard and weekly email reports
+	total, err := srv.durationService.GetIntervalTotal(from, to, user)
+	if err != nil {
+		slog.Warn("failed to compute interval total for leaderboard", "userID", user.ID, "error", err)
+		return nil, err
 	}
 
 	return &models.LeaderboardItem{

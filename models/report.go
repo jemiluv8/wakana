@@ -8,6 +8,9 @@ type Report struct {
 	User           *User
 	Summary        *Summary
 	DailySummaries []*Summary
+	// WeeklyTotal is computed using day-by-day DurationService calculation,
+	// matching the leaderboard computation. This excludes "Unknown" language (browser time).
+	WeeklyTotal time.Duration
 }
 
 func (r *Report) DailyAverage() time.Duration {
@@ -15,7 +18,7 @@ func (r *Report) DailyAverage() time.Duration {
 	if numberOfDays == 0 {
 		return 0
 	}
-	dailyAverage := r.Summary.TotalTime() / time.Duration(numberOfDays)
+	dailyAverage := r.WeeklyTotal / time.Duration(numberOfDays)
 	return dailyAverage
 }
 

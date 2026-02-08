@@ -20,3 +20,8 @@ func (m *DurationServiceMock) MakeDurationsFromHeartbeats(options models.Process
 	args := m.Called(options, f)
 	return args.Get(0).(models.Durations), args.Error(1)
 }
+
+func (m *DurationServiceMock) GetIntervalTotal(from time.Time, to time.Time, user *models.User) (time.Duration, error) {
+	args := m.Called(from, to, user)
+	return args.Get(0).(time.Duration), args.Error(1)
+}

@@ -5,6 +5,7 @@ import (
 
 	"github.com/muety/wakapi/config"
 	"github.com/muety/wakapi/models"
+	"github.com/muety/wakapi/utils"
 	"gorm.io/gorm"
 )
 
@@ -148,4 +149,29 @@ func (srv *DurationService) hashAndFilterDuration(dh *models.Duration, excludeUn
 		d.Duration = 500 * time.Millisecond
 	}
 	return d
+}
+
+// GetIntervalTotal computes the total coding time for a given interval using day-by-day
+// calculation. This is the canonical method for computing accurate totals, used by both
+// the leaderboard and weekly email reports. It excludes "Unknown" language (browser time)
+// to match the leaderboard computation.
+func (srv *DurationService) GetIntervalTotal(from, to time.Time, user *models.User) (time.Duration, error) {
+	dayIntervals := utils.SplitRangeByDays(from, to)
+	var total time.Duration
+
+	for _, day := range dayIntervals {
+		durations, err := srv.Get(day.Start, day.End, user, &models.Filters{}, SliceByProject)
+		if err != nil {
+			config.Log().Warn("failed to compute daily durations", "userID", user.ID, "from", day.Start, "to", day.End, "error", err)
+			continue
+		}
+		for _, d := range durations {
+			// exclude unknown language (chrome-wakatime browsing time)
+			if d.Language != models.UnknownSummaryKey {
+				total += d.Duration
+			}
+		}
+	}
+
+	return total, nil
 }

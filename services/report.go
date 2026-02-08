@@ -19,15 +19,16 @@ import (
 )
 
 type ReportService struct {
-	config         *config.Config
-	eventBus       *hub.Hub
-	summaryService ISummaryService
-	userService    IUserService
-	mailService    mail.IMailService
-	rand           *rand.Rand
-	queueDefault   *artifex.Dispatcher
-	queueWorkers   *artifex.Dispatcher
-	db             *gorm.DB
+	config          *config.Config
+	eventBus        *hub.Hub
+	summaryService  ISummaryService
+	durationService IDurationService
+	userService     IUserService
+	mailService     mail.IMailService
+	rand            *rand.Rand
+	queueDefault    *artifex.Dispatcher
+	queueWorkers    *artifex.Dispatcher
+	db              *gorm.DB
 }
 
 // ReportDeduplicator ensures a report is not sent multiple times for the same user in the same week
@@ -79,18 +80,20 @@ func (rst *ReportDeduplicator) MarkReportAsSent() error {
 
 func NewReportService(db *gorm.DB) *ReportService {
 	summaryService := NewSummaryService(db)
+	durationService := NewDurationService(db)
 	userService := NewUserService(db)
 
 	srv := &ReportService{
-		config:         config.Get(),
-		eventBus:       config.EventBus(),
-		summaryService: summaryService,
-		userService:    userService,
-		mailService:    mail.NewMailService(),
-		rand:           rand.New(rand.NewSource(time.Now().Unix())),
-		queueDefault:   config.GetDefaultQueue(),
-		queueWorkers:   config.GetQueue(config.QueueReports),
-		db:             db,
+		config:          config.Get(),
+		eventBus:        config.EventBus(),
+		summaryService:  summaryService,
+		durationService: durationService,
+		userService:     userService,
+		mailService:     mail.NewMailService(),
+		rand:            rand.New(rand.NewSource(time.Now().Unix())),
+		queueDefault:    config.GetDefaultQueue(),
+		queueWorkers:    config.GetQueue(config.QueueReports),
+		db:              db,
 	}
 
 	return srv
@@ -127,6 +130,14 @@ func (srv *ReportService) SendReport(user *models.User, skipTracking bool) error
 		return err
 	}
 
+	// Compute weekly total using the same method as the leaderboard
+	// This ensures consistency between the weekly email and the leaderboard display
+	weeklyTotal, err := srv.durationService.GetIntervalTotal(start, end, user)
+	if err != nil {
+		config.Log().Error("failed to compute weekly total for report", "userID", user.ID, "error", err)
+		return err
+	}
+
 	// generate per-day summaries
 	dayIntervals := utils.SplitRangeByDays(start, end)
 	dailySummaries := make([]*models.Summary, len(dayIntervals))
@@ -151,6 +162,7 @@ func (srv *ReportService) SendReport(user *models.User, skipTracking bool) error
 		User:           user,
 		Summary:        fullSummary,
 		DailySummaries: dailySummaries,
+		WeeklyTotal:    weeklyTotal,
 	}
 
 	if err := srv.mailService.SendReport(user, report); err != nil {
