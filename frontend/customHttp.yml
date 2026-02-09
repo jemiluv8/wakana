@@ -1,0 +1,9 @@
+customHeaders:
+  - pattern: "/leaderboards"
+    headers:
+      - key: "Cache-Control"
+        value: "no-cache, no-store, must-revalidate"
+  - pattern: "/leaderboards/*"
+    headers:
+      - key: "Cache-Control"
+        value: "no-cache, no-store, must-revalidate"
