@@ -15,7 +15,10 @@ interface MarketingLayoutProps {
 }
 
 async function Header() {
-  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
+  const session = await getIronSession<SessionData>(
+    await cookies(),
+    sessionOptions
+  );
   const isLoggedIn = session.isLoggedIn;
 
   return (

@@ -64,7 +64,10 @@ export async function POST(request: NextRequest) {
 
 // this is used for something pretty shitty. remove
 export async function PUT(request: NextRequest) {
-  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
+  const session = await getIronSession<SessionData>(
+    await cookies(),
+    sessionOptions
+  );
 
   if (session.isLoggedIn !== true) {
     return Response.json(defaultSession);
@@ -81,7 +84,10 @@ export async function PUT(request: NextRequest) {
 
 // read session
 export async function GET(request: NextRequest) {
-  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
+  const session = await getIronSession<SessionData>(
+    await cookies(),
+    sessionOptions
+  );
 
   const action = new URL(request.url).searchParams.get("action");
   if (action === "logout") {
@@ -102,7 +108,10 @@ export async function GET(request: NextRequest) {
 
 // logout
 export async function DELETE() {
-  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
+  const session = await getIronSession<SessionData>(
+    await cookies(),
+    sessionOptions
+  );
 
   session.destroy();
   return redirect("/");
