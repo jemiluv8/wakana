@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
 import confetti from "canvas-confetti";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 const encouragements = [
   "Are you sure? Look at those eyes! 🥺",
@@ -128,7 +128,10 @@ export default function TiffyValentinePage() {
     return (
       <div className="min-h-[100dvh] flex flex-col items-center justify-center p-4 relative z-10 overflow-hidden">
         <div className="text-center animate-bounce-slow">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-4 sm:mb-6 drop-shadow-lg">
+          <h1
+            className="text-5xl sm:text-6xl md:text-8xl text-white mb-4 sm:mb-6 drop-shadow-lg"
+            style={{ fontFamily: "var(--font-handwritten), cursive" }}
+          >
             YAAAY! 🎉💕
           </h1>
           <p className="text-xl sm:text-2xl md:text-3xl text-pink-200 mb-6 sm:mb-8 px-4">
@@ -147,7 +150,7 @@ export default function TiffyValentinePage() {
     <div className="min-h-[100dvh] flex flex-col items-center justify-center p-4 relative z-10 overflow-hidden">
       <div className="text-center w-full max-w-lg mx-auto">
         {/* Puss in Boots Image */}
-        <div className="relative w-56 h-44 sm:w-64 sm:h-48 md:w-96 md:h-72 mx-auto mb-6 sm:mb-8 rounded-2xl overflow-hidden shadow-2xl border-4 border-pink-300/50 bg-black/20 backdrop-blur-sm">
+        <div className="relative w-56 h-44 sm:w-64 sm:h-48 md:w-96 md:h-72 mx-auto mb-6 sm:mb-8 rounded-2xl overflow-hidden shadow-[0_0_60px_20px_rgba(190,50,90,0.5)] border-4 border-pink-300/50">
           <Image
             src="/valentine-assets/final-img.jpg"
             alt="Puss in Boots with pleading eyes"
@@ -162,7 +165,10 @@ export default function TiffyValentinePage() {
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4 drop-shadow-lg px-2">
           My Tiffy Tuffy
         </h1>
-        <p className="text-lg sm:text-xl md:text-2xl text-pink-200 mb-6 sm:mb-8 leading-relaxed px-4">
+        <p
+          className="text-3xl sm:text-4xl md:text-5xl text-pink-200 mb-6 sm:mb-8 leading-relaxed px-4"
+          style={{ fontFamily: "var(--font-handwritten), cursive" }}
+        >
           Will you be my Valentine? 💕
         </p>
 
@@ -171,7 +177,8 @@ export default function TiffyValentinePage() {
           {/* YES Button */}
           <button
             onClick={handleYesClick}
-            className="px-10 sm:px-12 py-4 text-lg sm:text-xl font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 hover:from-green-400 hover:to-emerald-500 touch-manipulation"
+            className="px-10 sm:px-12 py-4 text-xl sm:text-2xl text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 hover:from-green-400 hover:to-emerald-500 touch-manipulation"
+            style={{ fontFamily: "var(--font-handwritten), cursive" }}
           >
             YES! 💚
           </button>
@@ -180,13 +187,14 @@ export default function TiffyValentinePage() {
           <button
             ref={noButtonRef}
             onClick={handleNoClick}
-            className="px-10 sm:px-12 py-4 text-lg sm:text-xl font-bold text-pink-200 bg-transparent border-2 border-pink-300/50 rounded-full hover:border-pink-300 active:scale-95 transition-all duration-500 touch-manipulation select-none"
+            className="px-10 sm:px-12 py-4 text-xl sm:text-2xl text-pink-200 bg-transparent border-2 border-pink-300/50 rounded-full hover:border-pink-300 active:scale-95 transition-all duration-500 touch-manipulation select-none"
             style={{
-              transform: `translate(${noPosition.x}px, ${noPosition.y}px)`,
+              fontFamily: "var(--font-ugly), cursive",
               zIndex: 50,
+              transform: `translate(${noPosition.x}px, ${noPosition.y}px)`,
             }}
           >
-            {showOopsText ? "Oooooopppppsss! 😬" : "No! 😡"}
+            {showOopsText ? "Ooopppsssieee! 😬" : "No! 😡"}
           </button>
         </div>
 

@@ -1,4 +1,16 @@
 import type { Metadata } from "next";
+import { Creepster, Dancing_Script } from "next/font/google";
+
+const dancingScript = Dancing_Script({
+  subsets: ["latin"],
+  variable: "--font-handwritten",
+});
+
+const creepster = Creepster({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-ugly",
+});
 
 export const metadata: Metadata = {
   title: "Be My Valentine? 💕",
@@ -11,7 +23,9 @@ export default function ValentineLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-rose-900 via-red-800 to-pink-900 relative overflow-hidden">
+    <div
+      className={`min-h-screen w-full bg-gradient-to-br from-rose-900 via-red-800 to-pink-900 relative overflow-hidden ${dancingScript.variable} ${creepster.variable}`}
+    >
       {/* Floating hearts background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
