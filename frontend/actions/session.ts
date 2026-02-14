@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { SessionData, sessionOptions } from "@/lib/session/options";
 
 export async function getSession(redirectIfNotLoggedIn = true) {
-  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
+  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
 
   if (!session.isLoggedIn && redirectIfNotLoggedIn) {
     redirect("/login");
@@ -27,7 +27,7 @@ export async function getSessionUser() {
 }
 
 export async function redirectIfLoggedIn() {
-  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
+  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
 
   if (session.isLoggedIn) {
     redirect("/dashboard");

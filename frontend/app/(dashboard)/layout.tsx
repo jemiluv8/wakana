@@ -14,7 +14,7 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   await getSession(true);
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const currentState = cookieStore.get("sidebar:state")?.value;
   const defaultOpen = currentState ? currentState === "true" : true;
 

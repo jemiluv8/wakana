@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { SessionData, sessionOptions } from "@/lib/session/options";
 
 export async function createIronSession(data: SessionData) {
-  const session = await getIronSession<SessionData>(cookies(), {
+  const session = await getIronSession<SessionData>(await cookies(), {
     ...sessionOptions,
   });
   session.isLoggedIn = true;
