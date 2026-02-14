@@ -8,6 +8,9 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 import Loading from "./loading";
 
+// Force dynamic rendering for all dashboard pages (they use cookies for auth)
+export const dynamic = "force-dynamic";
+
 export default async function Layout({
   children,
 }: {

@@ -10,6 +10,9 @@ import { SessionData, sessionOptions } from "@/lib/session/options";
 import PublicFooter from "./sections/components/public-footer";
 import { PublicMobileHeader } from "./sections/public-mobile-header";
 
+// Force dynamic rendering (header checks session cookies)
+export const dynamic = "force-dynamic";
+
 interface MarketingLayoutProps {
   children: React.ReactNode;
 }
