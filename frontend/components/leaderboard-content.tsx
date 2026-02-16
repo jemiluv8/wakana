@@ -3,7 +3,7 @@ import { LeaderBoardTableV2 } from "@/components/leaderboard-table-v2";
 import { LeaderboardApiResponse } from "@/lib/types";
 
 interface LeaderboardContentProps {
-  searchParams: Record<string, any>;
+  searchParams: Record<string, string>;
 }
 
 export async function LeaderboardContent({

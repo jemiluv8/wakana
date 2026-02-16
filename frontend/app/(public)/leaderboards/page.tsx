@@ -11,11 +11,12 @@ export const metadata = {
     "See how you rank among developers worldwide. Compare coding time, languages, and productivity metrics.",
 };
 
-export default function LeaderboardsPage({
+export default async function LeaderboardsPage({
   searchParams,
 }: {
-  searchParams: Record<string, any>;
+  searchParams: Promise<Record<string, string>>;
 }) {
+  const resolvedParams = await searchParams;
   return (
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <Suspense
@@ -25,7 +26,7 @@ export default function LeaderboardsPage({
           </div>
         }
       >
-        <LeaderboardContent searchParams={searchParams} />
+        <LeaderboardContent searchParams={resolvedParams} />
       </Suspense>
     </div>
   );
