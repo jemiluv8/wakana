@@ -25,11 +25,11 @@ export const revalidate = 300;
 export default async function Dashboard({
   searchParams,
 }: {
-  searchParams: Record<string, any>;
+  searchParams: Promise<Record<string, any>>;
 }) {
-  const start =
-    searchParams.start || format(subDays(new Date(), 6), "yyyy-MM-dd");
-  const end = searchParams.end || format(new Date(), "yyyy-MM-dd");
+  const params = await searchParams;
+  const start = params.start || format(subDays(new Date(), 6), "yyyy-MM-dd");
+  const end = params.end || format(new Date(), "yyyy-MM-dd");
   const url = `/v1/users/current/summaries?${new URLSearchParams({ start, end })}`;
 
   const durationData = await fetchData<SummariesApiResponse>(url, true);
@@ -46,19 +46,19 @@ export default async function Dashboard({
     <div className="my-6">
       <main className="main-dashboard space-y-5">
         <Suspense fallback={<StatsSkeleton />}>
-          <DashboardStats searchParams={searchParams} data={durationData} />
+          <DashboardStats searchParams={params} data={durationData} />
         </Suspense>
 
         <Suspense fallback={<TopChartsSkeleton />}>
-          <DashboardTopCharts searchParams={searchParams} data={durationData} />
+          <DashboardTopCharts searchParams={params} data={durationData} />
         </Suspense>
 
         <Suspense fallback={<ChartsSkeleton />}>
-          <DashboardCharts searchParams={searchParams} data={durationData} />
+          <DashboardCharts searchParams={params} data={durationData} />
         </Suspense>
 
         <Suspense fallback={<ProjectsSkeleton />}>
-          <DashboardProjects searchParams={searchParams} data={durationData} />
+          <DashboardProjects searchParams={params} data={durationData} />
         </Suspense>
       </main>
     </div>

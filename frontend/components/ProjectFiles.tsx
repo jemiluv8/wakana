@@ -62,10 +62,12 @@ function TableRow({
 }
 
 export function ProjectFiles({ data, title, field, showCopy = false }: iProps) {
-  const entities = data.reduce(
-    (prev: any[], curr) => [...prev, ...curr[field]],
-    []
-  );
+  const entities = data.reduce((prev: any[], curr) => {
+    const newEntities = curr[field].filter(
+      (entity: any) => !prev.some((existing) => existing.name === entity.name)
+    );
+    return [...prev, ...newEntities];
+  }, []);
 
   return (
     <div>
