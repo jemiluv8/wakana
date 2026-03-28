@@ -30,6 +30,12 @@ export const InvoicePDFViewer = ({ invoiceData }: iProps) => {
     }, 0);
   }, [line_items, client.hourly_rate]);
 
+  const totalHours = React.useMemo(() => {
+    return line_items.reduce((acc, item) => {
+      return acc + getHours(item.total_seconds);
+    }, 0);
+  }, [line_items]);
+
   const taxTotal = React.useMemo(() => {
     if (isNaN(tax)) {
       return 0;
@@ -268,7 +274,7 @@ export const InvoicePDFViewer = ({ invoiceData }: iProps) => {
                   <Text style={styles.cleanTableCell}>
                     {formatCurrency(
                       client.hourly_rate * getHours(item.total_seconds),
-                      client.currency
+                      client.currency,
                     )}
                   </Text>
                 </View>
@@ -286,7 +292,9 @@ export const InvoicePDFViewer = ({ invoiceData }: iProps) => {
                   { width: "20%" },
                 ]}
               >
-                <Text style={styles.cleanTableTotalLabel}>Subtotal:</Text>
+                <Text style={styles.cleanTableTotalLabel}>
+                  {totalHours.toFixed(2)}
+                </Text>
               </View>
               <View
                 style={[

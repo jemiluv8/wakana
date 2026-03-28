@@ -26,12 +26,8 @@ func (a *APIv1) RegisterRoutes(router chi.Router) {
 		r.Use(
 			middlewares.NewAuthenticateMiddleware(a.services.Users()).WithOptionalForMethods(http.MethodOptions).Handler,
 			customMiddleware.NewWakatimeRelayMiddleware().Handler,
+			customMiddleware.NewWakatimeRelayMiddleware().OtherInstancesHandler,
 		)
-		if a.config.IsDev() {
-			r.Use(
-				customMiddleware.NewWakatimeRelayMiddleware().OtherInstancesHandler,
-			)
-		}
 		// see https://github.com/muety/wakapi/issues/203
 		r.Post("/heartbeat", a.ProcessHeartBeat)
 		r.Post("/heartbeats", a.ProcessHeartBeat)

@@ -112,15 +112,13 @@ func (m *WakatimeRelayMiddleware) serveHTTPCommon(w http.ResponseWriter, r *http
 }
 
 func (m *WakatimeRelayMiddleware) ServeHTTPOtherInstance(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	userId := "a904aac0-7924-4d99-b896-ca4a78d25a48" // localhost user id
-	apiKey := "b545546f-69f1-4459-9248-cf3a2fa88cba"
 
 	authFn := func(user *models.User) (string, string, error) {
-		if user.ID != userId {
+		if len(user.WakatimeApiKey) == 0 {
 			return "", "", fmt.Errorf("unauthorized user")
 		}
 
-		authHeader := fmt.Sprintf("Bearer %s", base64.StdEncoding.EncodeToString([]byte(apiKey)))
+		authHeader := fmt.Sprintf("Bearer %s", base64.StdEncoding.EncodeToString([]byte(user.WakatimeApiKey)))
 		targetURL := config.InstanceApiUrl + config.WakatimeApiHeartbeatsBulkUrl
 
 		fmt.Println("relaying heartbeat to wakana.io", "url", targetURL, "body", "[redacted]")

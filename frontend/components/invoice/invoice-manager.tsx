@@ -29,20 +29,20 @@ export function InvoiceManager({ data }: iProps) {
     data.line_items.map((line_item) => ({
       ...line_item,
       total: getHours(line_item.total_seconds),
-    }))
+    })),
   );
   const defaultInvoiceSubtitle = () => {
     return `Invoice for the month of ${format(date, "MMMM yyyy")}.`;
   };
   const [origin, setFrom] = React.useState(data.origin);
   const [destination, setDestination] = React.useState(
-    data.destination || client.name
+    data.destination || client.name,
   );
   const [tax, setTax] = React.useState(data.tax || "");
   const [heading, setPreamble] = React.useState(data.heading);
   const [finalMessage, setMainMessage] = React.useState(data.final_message);
   const [invoiceSummary, setInvoiceSummary] = React.useState(
-    data.invoice_summary || defaultInvoiceSubtitle()
+    data.invoice_summary || defaultInvoiceSubtitle(),
   );
   const [preview, setPreview] = React.useState(true);
   const [showTax, setShowTax] = React.useState(!data.exclude_tax);
@@ -170,7 +170,7 @@ export function InvoiceManager({ data }: iProps) {
                 rows={2}
                 className={cn(
                   styles.invoiceInput,
-                  "text-lg text-black resize-none border-none bg-transparent p-0 focus:bg-white focus:border focus:border-gray-300 focus:p-2"
+                  "text-lg text-black resize-none border-none bg-transparent p-0 focus:bg-white focus:border focus:border-gray-300 focus:p-2",
                 )}
                 placeholder="Invoice Subtitle"
                 defaultValue={invoiceSummary}
@@ -264,7 +264,7 @@ export function InvoiceManager({ data }: iProps) {
                         <input
                           className={cn(
                             styles.invoiceInput,
-                            styles.inputOutlined
+                            styles.inputOutlined,
                           )}
                           placeholder="Invoice Item"
                           defaultValue={item.title}
@@ -287,7 +287,7 @@ export function InvoiceManager({ data }: iProps) {
                             className={cn(
                               styles.invoiceInput,
                               styles.qtyInput,
-                              "text-center"
+                              "text-center",
                             )}
                             placeholder="0.00"
                             defaultValue={getHours(item.total_seconds || 0)}
@@ -335,7 +335,7 @@ export function InvoiceManager({ data }: iProps) {
                       <span
                         className={cn(
                           styles.addItem,
-                          "border border-slate-300"
+                          "border border-slate-300",
                         )}
                       >
                         <LucidePlusCircle className="size-4" />
@@ -353,7 +353,7 @@ export function InvoiceManager({ data }: iProps) {
             <div className="w-96 space-y-4">
               {/* Subtotal */}
               <div className="flex justify-between items-center text-lg">
-                <span className="font-semibold text-black">Subtotal:</span>
+                <span className="font-semibold text-black">Subtotals0:</span>
                 <span className="font-bold text-black">
                   {formatNumber(totalInvoice, { currency: client.currency })}
                 </span>

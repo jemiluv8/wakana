@@ -27,6 +27,12 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
     }, 0);
   }, [line_items, client.hourly_rate]);
 
+  const totalHours = React.useMemo(() => {
+    return line_items.reduce((acc, item) => {
+      return acc + getHours(item.total_seconds);
+    }, 0);
+  }, [line_items]);
+
   const taxTotal = React.useMemo(() => {
     if (!showTax || isNaN(tax)) {
       return 0;
@@ -147,7 +153,7 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
                     <td className="px-4 py-3 text-right text-sm font-medium text-black">
                       {formatCurrency(
                         getHours(item.total_seconds) * client.hourly_rate,
-                        currencySymbol
+                        currencySymbol,
                       )}
                     </td>
                   </tr>
@@ -157,7 +163,7 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
                     colSpan={3}
                     className="px-4 py-3 text-right text-sm font-semibold text-black"
                   >
-                    Subtotal:
+                    {totalHours.toFixed(2)}
                   </td>
                   <td className="px-4 py-3 text-right text-sm font-semibold text-black">
                     {formatCurrency(totalInvoice, currencySymbol)}
@@ -186,7 +192,7 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
                   <td className="px-4 py-4 text-right text-base font-bold text-black">
                     {formatCurrency(
                       showTax ? netTotal : totalInvoice,
-                      currencySymbol
+                      currencySymbol,
                     )}
                   </td>
                 </tr>
