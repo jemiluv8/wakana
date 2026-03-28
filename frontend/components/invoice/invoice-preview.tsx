@@ -153,7 +153,7 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
                     <td className="px-4 py-3 text-right text-sm font-medium text-black">
                       {formatCurrency(
                         getHours(item.total_seconds) * client.hourly_rate,
-                        currencySymbol,
+                        currencySymbol
                       )}
                     </td>
                   </tr>
@@ -192,7 +192,7 @@ export function InvoicePreview({ data, onTogglePreview }: iProps) {
                   <td className="px-4 py-4 text-right text-base font-bold text-black">
                     {formatCurrency(
                       showTax ? netTotal : totalInvoice,
-                      currencySymbol,
+                      currencySymbol
                     )}
                   </td>
                 </tr>

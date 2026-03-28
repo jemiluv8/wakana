@@ -274,7 +274,7 @@ export const InvoicePDFViewer = ({ invoiceData }: iProps) => {
                   <Text style={styles.cleanTableCell}>
                     {formatCurrency(
                       client.hourly_rate * getHours(item.total_seconds),
-                      client.currency,
+                      client.currency
                     )}
                   </Text>
                 </View>
