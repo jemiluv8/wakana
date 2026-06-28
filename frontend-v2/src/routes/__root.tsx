@@ -2,6 +2,7 @@
 import * as React from "react";
 import {
   HeadContent,
+  Link,
   Outlet,
   Scripts,
   createRootRouteWithContext,
@@ -16,9 +17,13 @@ import { ThemeProvider } from "~/providers/theme-provider";
 import { Toaster } from "~/components/ui/sonner";
 
 import appCss from "~/styles/app.css?url";
+import globalCss from "~/styles/global.css?url";
 import { seo } from "~/utils/seo";
 import { cn } from "~/lib/utils";
 import { siteConfig } from "~/config/site";
+import { FadeOnView } from "~/components/custom/fade-on-view";
+import PublicFooter from "~/components/fragments/sections/components/public-footer";
+import { PublicMobileHeader } from "~/components/fragments/sections/public-mobile-header";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -43,6 +48,7 @@ export const Route = createRootRouteWithContext<{
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "stylesheet", href: globalCss },
 
       {
         rel: "icon",
@@ -72,10 +78,84 @@ export const Route = createRootRouteWithContext<{
 });
 
 function RootComponent() {
+  const isLoggedIn = false;
+
   return (
     <RootDocument>
-      <Outlet />
+      <div className="flex flex-col min-h-screen">
+        <Header isLoggedIn={isLoggedIn} />
+        <PublicMobileHeader />
+
+        <main className="m-auto md:mx-14 flex flex-1 flex-col px-4 md:px-14 align-middle">
+          <FadeOnView>
+            {" "}
+            <Outlet />
+          </FadeOnView>
+        </main>
+
+        <PublicFooter />
+      </div>
     </RootDocument>
+  );
+}
+
+function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
+  return (
+    <header className="sticky top-8 z-50 mb-20 mt-8 hidden justify-center rounded-lg px-2 md:flex md:px-4">
+      <nav className="z-20 flex h-[50px] items-center rounded-full border border-border bg-opacity-70 px-4 backdrop-blur-xl text-primary-foreground">
+        <Link to="/">
+          <img src="/white-icon.svg" alt="Logo" width={80} height={56} />
+        </Link>
+
+        <ul className="mx-3 space-x-2 text-sm font-medium md:flex">
+          <Link
+            to="/posts"
+            className="inline-flex h-8 items-center px-3 py-2 hover:opacity-70"
+          >
+            Installation
+          </Link>
+
+          <Link
+            to="/posts"
+            className="inline-flex h-8 items-center px-3 py-2 hover:opacity-70"
+          >
+            FAQ
+          </Link>
+
+          <Link
+            to="/posts"
+            className="inline-flex h-8 items-center px-3 py-2 hover:opacity-70"
+          >
+            Plugins
+          </Link>
+
+          <Link
+            to="/posts"
+            className="inline-flex h-8 items-center px-3 py-2 hover:opacity-70"
+          >
+            Leaderboard
+          </Link>
+        </ul>
+
+        <div className="hidden border-l border-border pl-4 pr-2 text-sm font-medium md:flex md:items-center md:gap-2">
+          {isLoggedIn ? (
+            <Link
+              to="/posts"
+              className="inline-flex h-8 items-center px-3 py-2 bg-primary rounded-md"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <Link
+              to="/posts"
+              className="inline-flex h-8 items-center px-3 py-2 bg-primary rounded-md"
+            >
+              Sign in
+            </Link>
+          )}
+        </div>
+      </nav>
+    </header>
   );
 }
 
