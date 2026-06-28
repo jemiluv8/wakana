@@ -1,145 +1,112 @@
-/// <reference types="vite/client" />
+// src/routes/__root.tsx
+import * as React from "react";
 import {
   HeadContent,
-  Link,
   Outlet,
   Scripts,
   createRootRouteWithContext,
-} from '@tanstack/react-router'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import * as React from 'react'
-import type { QueryClient } from '@tanstack/react-query'
-import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
-import { NotFound } from '~/components/NotFound'
-import appCss from '~/styles/app.css?url'
-import { seo } from '~/utils/seo'
+} from "@tanstack/react-router";
+import type { QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+
+import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
+import { NotFound } from "~/components/NotFound";
+import { ThemeProvider } from "~/providers/theme-provider";
+import { Toaster } from "~/components/ui/sonner";
+
+import appCss from "~/styles/app.css?url";
+import { seo } from "~/utils/seo";
+import { cn } from "~/lib/utils";
+import { siteConfig } from "~/config/site";
 
 export const Route = createRootRouteWithContext<{
-  queryClient: QueryClient
+  queryClient: QueryClient;
 }>()({
   head: () => ({
     meta: [
       {
-        charSet: 'utf-8',
+        charSet: "utf-8",
       },
       {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
+      },
+      {
+        name: "theme-color",
+        content: "#ffffff",
       },
       ...seo({
-        title:
-          'TanStack Start | Type-Safe, Client-First, Full-Stack React Framework',
-        description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
+        title: siteConfig.name,
+        description: siteConfig.description,
       }),
     ],
     links: [
-      { rel: 'stylesheet', href: appCss },
+      { rel: "stylesheet", href: appCss },
+
       {
-        rel: 'apple-touch-icon',
-        sizes: '180x180',
-        href: '/apple-touch-icon.png',
+        rel: "icon",
+        href: "/favicon.png",
       },
       {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '32x32',
-        href: '/favicon-32x32.png',
+        rel: "shortcut icon",
+        href: "/favicon-16x16.png",
       },
       {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '16x16',
-        href: '/favicon-16x16.png',
+        rel: "apple-touch-icon",
+        href: "/apple-touch-icon.png",
       },
-      { rel: 'manifest', href: '/site.webmanifest', color: '#fffff' },
-      { rel: 'icon', href: '/favicon.ico' },
+
+      {
+        rel: "manifest",
+        href: "/site.webmanifest",
+      },
     ],
   }),
-  errorComponent: (props) => {
-    return (
-      <RootDocument>
-        <DefaultCatchBoundary {...props} />
-      </RootDocument>
-    )
-  },
+
+  errorComponent: (props) => <DefaultCatchBoundary {...props} />,
+
   notFoundComponent: () => <NotFound />,
+
   component: RootComponent,
-})
+});
 
 function RootComponent() {
   return (
     <RootDocument>
       <Outlet />
     </RootDocument>
-  )
+  );
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
-      <body>
-        <div className="p-2 flex gap-2 text-lg">
-          <Link
-            to="/"
-            activeProps={{
-              className: 'font-bold',
-            }}
-            activeOptions={{ exact: true }}
-          >
-            Home
-          </Link>{' '}
-          <Link
-            to="/posts"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Posts
-          </Link>{' '}
-          <Link
-            to="/users"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Users
-          </Link>{' '}
-          <Link
-            to="/route-a"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Pathless Layout
-          </Link>{' '}
-          <Link
-            to="/deferred"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Deferred
-          </Link>{' '}
-          <Link
-            // @ts-expect-error
-            to="/this-route-does-not-exist"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            This Route Does Not Exist
-          </Link>
-        </div>
-        <hr />
-        {children}
-        <TanStackRouterDevtools position="bottom-right" />
-        <ReactQueryDevtools buttonPosition="bottom-left" />
+
+      <body className={cn("min-h-screen bg-background font-sans antialiased")}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+
+          <Toaster />
+
+          {import.meta.env.DEV && (
+            <>
+              <ReactQueryDevtools buttonPosition="bottom-left" />
+              <TanStackRouterDevtools position="bottom-right" />
+            </>
+          )}
+        </ThemeProvider>
+
         <Scripts />
       </body>
     </html>
-  )
+  );
 }
