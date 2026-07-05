@@ -34,7 +34,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center">
       <Hero />
       <FeatureSection />
       <HowItWorks />

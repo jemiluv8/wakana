@@ -138,14 +138,14 @@ function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
         <div className="hidden border-l border-border pl-4 pr-2 text-sm font-medium md:flex md:items-center md:gap-2">
           {isLoggedIn ? (
             <Link
-              to="/posts"
+              to="/auth/login"
               className="inline-flex h-8 items-center px-3 py-2 bg-primary rounded-md"
             >
               Dashboard
             </Link>
           ) : (
             <Link
-              to="/posts"
+              to="/auth/login"
               className="inline-flex h-8 items-center px-3 py-2 bg-primary text-secondary font-bold rounded-md"
             >
               Sign in

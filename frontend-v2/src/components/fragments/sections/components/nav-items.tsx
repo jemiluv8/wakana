@@ -5,7 +5,7 @@ const items = [
   { name: "Faq", href: "/faqs" },
   { name: "Plugins", href: "/plugins" },
   { name: "Leaderboard", href: "/leaderboards" },
-  { name: "Sign in", href: "/login" },
+  { name: "Sign in", href: "/auth/login" },
 ];
 
 export function NavItems({ className }: { className?: string }) {
