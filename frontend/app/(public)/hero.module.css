@@ -1,8 +1,3 @@
-:root {
-  --hero: 238 50% 60%;
-  --hero-ring: 234 17% 18%;
-}
-
 .heroHeading {
   font-size: 1.875rem;
   line-height: 2.25rem;
@@ -55,10 +50,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
-  background-color: hsl(var(--hero-ring));
+  background-color: hsl(var(--ring));
 }
-
 
 .heroBorderAnimation::before {
   content: "";

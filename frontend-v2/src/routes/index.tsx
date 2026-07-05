@@ -34,7 +34,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   return (
-    <div className="font-rubik">
+    <div>
       <Hero />
       <FeatureSection />
       <HowItWorks />

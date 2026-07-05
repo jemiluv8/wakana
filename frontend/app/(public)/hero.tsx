@@ -4,8 +4,8 @@ import Link from "next/link";
 
 import { FadeOnView } from "@/components/fade-on-view";
 import { Badge } from "@/components/ui/badge";
-// import Blur1 from "@/public//dashboard.webp";
 import { cn } from "@/lib/utils";
+import styles from "./hero.module.css";
 
 export function Hero() {
   return (
@@ -18,7 +18,11 @@ export function Hero() {
           </Badge>
         </FadeOnView>
         <FadeOnView delay={0.2}>
-          <h1 className="heading vertical-gradient sm:flex-center gap-2 py-4 sm:gap-4 md:py-6 lg:text-7xl">
+          <h1
+            className={cn(
+              "sm:flex-center gap-2 py-4 sm:gap-4 md:py-6 lg:text-7xl font-semibold leading-5 tracking-tighter",
+            )}
+          >
             Observe your work in real time
           </h1>
         </FadeOnView>
@@ -29,8 +33,7 @@ export function Hero() {
         </FadeOnView>
         <div className="flex-gap justify-center">
           <FadeOnView delay={0.6} className="mt-12 space-x-2">
-            {/* <Button className="rounded-full shadow-lg">Get Started</Button> */}
-            <Link href="/login" className={cn("font-heading hero-cta")}>
+            <Link href="/login" className={cn("font-heading", styles.heroCta)}>
               Try it for free
             </Link>
           </FadeOnView>
@@ -38,7 +41,10 @@ export function Hero() {
       </div>
       <FadeOnView
         delay={1}
-        className="hero-border-animation mx-auto mt-16 max-w-screen-xl rounded-2xl bg-ring p-px"
+        className={cn(
+          styles.heroBorderAnimation,
+          "mx-auto mt-16 max-w-screen-xl rounded-2xl p-px",
+        )}
         style={{
           maskImage: "linear-gradient(to bottom, black 30%, transparent 90%)",
           borderWidth: 0,
@@ -47,7 +53,7 @@ export function Hero() {
         <div
           className={cn(
             "rounded-[1rem] overflow-hidden p-2 z-10",
-            "bg-background"
+            "bg-background",
           )}
         >
           <div className="z-10">

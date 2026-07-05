@@ -70,7 +70,7 @@ api_key = ${isLoggedIn ? apiKey : "## replace this with your api key when you lo
   };
 
   return (
-    <div className={`w-full ${className} text-primary-foreground`}>
+    <div className={`w-full ${className} text-primary`}>
       <div className="mb-4">
         {isLoggedIn ? (
           <h2 className="text-xl font-semibold">Your ~/.wakatime.cfg</h2>

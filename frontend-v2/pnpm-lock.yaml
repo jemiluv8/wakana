@@ -8,7 +8,16 @@ importers:
 
   .:
     dependencies:
+      '@fontsource-variable/inter':
+        specifier: ^5.2.8
+        version: 5.2.8
       '@fontsource-variable/jetbrains-mono':
+        specifier: ^5.2.8
+        version: 5.2.8
+      '@fontsource-variable/rubik':
+        specifier: ^5.2.8
+        version: 5.2.8
+      '@fontsource/inter':
         specifier: ^5.2.8
         version: 5.2.8
       '@fontsource/rubik':
@@ -263,8 +272,17 @@ packages:
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
 
+  '@fontsource-variable/inter@5.2.8':
+    resolution: {integrity: sha512-kOfP2D+ykbcX/P3IFnokOhVRNoTozo5/JxhAIVYLpea/UBmCQ/YWPBfWIDuBImXX/15KH+eKh4xpEUyS2sQQGQ==}
+
   '@fontsource-variable/jetbrains-mono@5.2.8':
     resolution: {integrity: sha512-WBA9elru6Jdp5df2mES55wuOO0WIrn3kpXnI4+W2ek5u3ZgLS9XS4gmIlcQhiZOWEKl95meYdvK7xI+ETLCq/Q==}
+
+  '@fontsource-variable/rubik@5.2.8':
+    resolution: {integrity: sha512-vGDExLzB4a2Fj9mca5LqNoA2ZKcU9o+x5FEBLte/nxYkCB9hOQwZS6ZlItUv+Ssn7YMzKauGuI/Po+YueFuZbg==}
+
+  '@fontsource/inter@5.2.8':
+    resolution: {integrity: sha512-P6r5WnJoKiNVV+zvW2xM13gNdFhAEpQ9dQJHt3naLvfg+LkF2ldgSLiF4T41lf1SQCM9QmkqPTn4TH568IRagg==}
 
   '@fontsource/rubik@5.2.8':
     resolution: {integrity: sha512-PIc8QR7FqWPcYhbdRiGff56vQlKqg/ytES1YqecSq1GkgxiH4TBshrFvDEOZ9JonUF9m1qQ+qXxJj7wD5zgXEw==}
@@ -3154,7 +3172,13 @@ snapshots:
 
   '@floating-ui/utils@0.2.11': {}
 
+  '@fontsource-variable/inter@5.2.8': {}
+
   '@fontsource-variable/jetbrains-mono@5.2.8': {}
+
+  '@fontsource-variable/rubik@5.2.8': {}
+
+  '@fontsource/inter@5.2.8': {}
 
   '@fontsource/rubik@5.2.8': {}
 

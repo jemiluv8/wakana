@@ -17,7 +17,6 @@ import { ThemeProvider } from "~/providers/theme-provider";
 import { Toaster } from "~/components/ui/sonner";
 
 import appCss from "~/styles/app.css?url";
-import globalCss from "~/styles/global.css?url";
 import { seo } from "~/utils/seo";
 import { cn } from "~/lib/utils";
 import { siteConfig } from "~/config/site";
@@ -48,7 +47,6 @@ export const Route = createRootRouteWithContext<{
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "stylesheet", href: globalCss },
 
       {
         rel: "icon",
@@ -82,7 +80,7 @@ function RootComponent() {
 
   return (
     <RootDocument>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen font-rubik antialiased">
         <Header isLoggedIn={isLoggedIn} />
         <PublicMobileHeader />
 
@@ -101,13 +99,13 @@ function RootComponent() {
 
 function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
   return (
-    <header className="sticky top-8 z-50 mb-20 mt-8 hidden justify-center rounded-lg px-2 md:flex md:px-4">
-      <nav className="z-20 flex h-[50px] items-center rounded-full border border-border bg-opacity-70 px-4 backdrop-blur-xl text-primary-foreground">
+    <header className="sticky top-8 z-50 mb-20 mt-8 hidden justify-center rounded-lg px-2 md:flex md:px-4 font-bold">
+      <nav className="z-20 flex h-[50px] items-center rounded-full border border-border bg-opacity-70 px-4 backdrop-blur-xl text-primary">
         <Link to="/">
           <img src="/white-icon.svg" alt="Logo" width={80} height={56} />
         </Link>
 
-        <ul className="mx-3 space-x-2 text-sm font-medium md:flex">
+        <ul className="mx-3 space-x-2 text-sm md:flex font-bold">
           <Link
             to="/posts"
             className="inline-flex h-8 items-center px-3 py-2 hover:opacity-70"
@@ -148,7 +146,7 @@ function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
           ) : (
             <Link
               to="/posts"
-              className="inline-flex h-8 items-center px-3 py-2 bg-primary rounded-md"
+              className="inline-flex h-8 items-center px-3 py-2 bg-primary text-secondary font-bold rounded-md"
             >
               Sign in
             </Link>
@@ -166,10 +164,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
 
-      <body className={cn("min-h-screen bg-background font-sans antialiased")}>
+      <body className={cn("min-h-screen bg-background font-rubik antialiased")}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { FadeOnView } from "~/components/custom/fade-on-view";
 import { Badge } from "../ui/badge";
 import { cn } from "~/lib/utils";
+import styles from "./hero.module.css";
 
 export function Hero() {
   return (
@@ -16,7 +17,11 @@ export function Hero() {
           </Badge>
         </FadeOnView>
         <FadeOnView delay={0.2}>
-          <h1 className="sm:flex-center gap-2 py-4 sm:gap-4 md:py-6 lg:text-7xl text-white font-rubik">
+          <h1
+            className={cn(
+              "sm:flex-center gap-2 py-4 sm:gap-4 md:py-6 lg:text-7xl font-semibold leading-5 tracking-tighter",
+            )}
+          >
             Observe your work in real time
           </h1>
         </FadeOnView>
@@ -27,8 +32,7 @@ export function Hero() {
         </FadeOnView>
         <div className="flex-gap justify-center">
           <FadeOnView delay={0.6} className="mt-12 space-x-2">
-            {/* <Button className="rounded-full shadow-lg">Get Started</Button> */}
-            <Link to="/posts" className={cn("font-heading hero-cta")}>
+            <Link to="/posts" className={cn("font-heading", styles.heroCta)}>
               Try it for free
             </Link>
           </FadeOnView>
@@ -36,7 +40,10 @@ export function Hero() {
       </div>
       <FadeOnView
         delay={1}
-        className="hero-border-animation mx-auto mt-16 max-w-screen-xl rounded-2xl bg-ring p-px"
+        className={cn(
+          styles.heroBorderAnimation,
+          "mx-auto mt-16 max-w-screen-xl rounded-2xl p-px",
+        )}
         style={{
           maskImage: "linear-gradient(to bottom, black 30%, transparent 90%)",
           borderWidth: 0,
@@ -45,13 +52,13 @@ export function Hero() {
         <div
           className={cn(
             "rounded-[1rem] overflow-hidden p-2 z-10",
-            "bg-background"
+            "bg-background",
           )}
         >
           <div className="z-10">
             <img
               src="/neo-dashboard.png"
-              alt="App image"
+              alt="App img"
               width={1920}
               height={1080}
               className="relative z-10 overflow-hidden rounded-[12px] border"

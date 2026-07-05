@@ -82,7 +82,7 @@ export default function PublicFooter() {
                 alt="Wakana Logo"
               />
             </div>
-            <h3 className="mb-4 lg:mb-6 max-w-md leading-relaxed text-sm lg:text-base text-primary-foreground">
+            <h3 className="mb-4 lg:mb-6 max-w-md leading-relaxed text-sm lg:text-base text-primary">
               Observe your work habits in real time with developer dashboards
               for insights into your coding patterns and productivity.
             </h3>
@@ -102,7 +102,7 @@ export default function PublicFooter() {
           </div>
 
           {/* Links sections - simplified on mobile */}
-          <div className="lg:col-span-6 text-primary-foreground">
+          <div className="lg:col-span-6 text-primary">
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 ">
               {footerSections.map((section, index) => (
                 <div
@@ -144,7 +144,7 @@ export default function PublicFooter() {
         </div>
 
         {/* Bottom section - simplified on mobile */}
-        <div className="mt-8 lg:mt-12 pt-6 lg:pt-8 border-t border-gray-200 dark:border-gray-700 text-primary-foreground">
+        <div className="mt-8 lg:mt-12 pt-6 lg:pt-8 border-t border-gray-200 dark:border-gray-700 text-primary">
           <div className="flex flex-col lg:flex-row justify-between items-center gap-3 lg:gap-4">
             <div className="flex items-center gap-2 text-xs lg:text-sm">
               <span>Made with</span>
@@ -155,7 +155,7 @@ export default function PublicFooter() {
               <span className="lg:hidden">for developers</span>
             </div>
 
-            <div className="flex items-center gap-4 lg:gap-6 text-xs lg:text-sm text-primary-foreground">
+            <div className="flex items-center gap-4 lg:gap-6 text-xs lg:text-sm text-primary">
               <span>© 2024 Wakana</span>
               <div className="hidden lg:flex items-center gap-1">
                 <Clock className="h-3.5 w-3.5" />

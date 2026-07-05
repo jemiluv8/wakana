@@ -6,7 +6,7 @@ import { Installation } from "./installation";
 export default function InstallationInstructions() {
   return (
     <FadeOnView>
-      <div className="container space-y-5 text-primary-foreground">
+      <div className="container space-y-5 text-primary">
         <div className="grid gap-6 md:grid-cols-2 lg:gap-12">
           <div className="space-y-4">
             <ol className="list-decimal list-inside space-y-4">
@@ -14,7 +14,7 @@ export default function InstallationInstructions() {
                 Install the relevant WakaTime plugins for your editor
                 <a
                   href="https://wakatime.com/plugins"
-                  className="text-primary-foreground inline-flex items-center ml-1"
+                  className="text-primary inline-flex items-center ml-1"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -35,7 +35,7 @@ export default function InstallationInstructions() {
                 Update it with the API key you get in your Wakana dashboard
                 <a
                   href="https://wakana.io/settings"
-                  className="text-primary-foreground inline-flex items-center ml-1"
+                  className="text-primary inline-flex items-center ml-1"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -68,7 +68,7 @@ export default function InstallationInstructions() {
                 Also check the plugins section on your dashboard
                 <a
                   href="https://wakana.io/plugins/status"
-                  className="text-primary-foreground inline-flex items-center ml-1"
+                  className="text-primary inline-flex items-center ml-1"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

@@ -20,7 +20,7 @@ export function OverlayNav() {
       </Button>
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
-          <div className="main-bg fixed inset-y-0 left-0 z-50 size-full max-w-xs bg-white p-6 shadow-lg">
+          <div className="main-bg fixed inset-y-0 left-0 z-50 size-full max-w-xs p-6 shadow-lg">
             <Button
               variant="ghost"
               size="icon"
