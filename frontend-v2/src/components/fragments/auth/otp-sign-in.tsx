@@ -7,10 +7,15 @@ import { z } from "zod";
 import { PKCEGenerator, PKCEResult } from "~/lib/oauth/pkce";
 import { cn } from "~/lib/utils";
 import { toast } from "sonner";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "~/components/ui/input-otp";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "~/components/ui/input-otp";
 import { Input } from "~/components/ui/input";
-import { buttonVariants } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { Icons } from "~/components/icons";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -20,15 +25,15 @@ const initiateOTPLogin = createServerFn({ method: "POST" })
   .validator(formSchema)
   .handler(async ({ data }) => {
     // move logic from initiateOTPLoginAction here
-    console.log("groot", data)
+    console.log("groot", data);
     // return await authService.initiateOTPLogin(data);
     return {
-        success: false,
-        message: {
-            title: "Error",
-            description: "Not implemented"
-        }
-     }
+      success: false,
+      message: {
+        title: "Error",
+        description: "Not implemented",
+      },
+    };
   });
 
 const processLoginWithOTP = createServerFn({ method: "POST" })
@@ -42,13 +47,13 @@ const processLoginWithOTP = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     // move logic from processLoginWithOTP here
     // return await authService.processOTPLogin(data);
-     console.log("groot", data)
-     return {
-        message: {
-            title: "Error",
-            description: "Not implemented"
-        }
-     }
+    console.log("groot", data);
+    return {
+      message: {
+        title: "Error",
+        description: "Not implemented",
+      },
+    };
   });
 
 type Props = {
@@ -76,7 +81,7 @@ export function OTPSignIn({ className }: Props) {
     validators: {
       onSubmit: formSchema,
     },
-    onSubmit: async ({ value }: { value: any}) => {
+    onSubmit: async ({ value }: { value: any }) => {
       const response = await initiateOTPLogin({
         data: value,
       });
@@ -127,30 +132,24 @@ export function OTPSignIn({ className }: Props) {
 
   if (isSent) {
     return (
-      <div
-        className={cn(
-          "flex flex-col items-center space-y-4",
-          className,
-        )}
-      >
+      <div className={cn("flex flex-col items-center space-y-4", className)}>
         <InputOTP
           maxLength={6}
           autoFocus
           disabled={isLoading}
           onComplete={onComplete}
-          render={({ slots }) => (
-            <InputOTPGroup>
-              {slots.map((slot, index) => (
-                <InputOTPSlot
-                  index={index}
-                  key={index}
-                  {...slot}
-                  className="h-[62px] w-[62px]"
-                />
-              ))}
-            </InputOTPGroup>
-          )}
-        />
+          pattern={REGEXP_ONLY_DIGITS}
+        >
+          <InputOTPGroup>
+            {Array.from({ length: 6 }).map((_, index: number) => (
+              <InputOTPSlot
+                key={index}
+                index={index}
+                className="h-15.5 w-15.5"
+              />
+            ))}
+          </InputOTPGroup>
+        </InputOTP>
 
         <div className="flex space-x-2">
           <span className="text-sm text-[#878787]">
@@ -208,18 +207,18 @@ export function OTPSignIn({ className }: Props) {
         })}
       >
         {({ canSubmit, isSubmitting }: any) => (
-          <button
+          <Button
             type="submit"
             disabled={!canSubmit || isSubmitting}
             className={buttonVariants({
-              variant: "outline",
+              variant: "secondary",
             })}
           >
             {isSubmitting && (
               <Icons.spinner className="mr-2 size-4 animate-spin" />
             )}
             Continue
-          </button>
+          </Button>
         )}
       </form.Subscribe>
     </form>

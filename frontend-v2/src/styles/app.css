@@ -13,15 +13,6 @@
   font-style: normal;
 }
 
-@font-face {
-  font-family: "__Rubik_c2c3d1";
-  src: url("/fonts/Rubik-VariableFont_wght.ttf") format("truetype");
-  font-weight: 300 900;
-  font-style: normal;
-}
-
-@custom-variant dark (&:is(.dark *));
-
 @layer base {
   *,
   ::after,
