@@ -37,7 +37,7 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-mono;
+    @apply font-sans;
   }
 }
 
@@ -101,13 +101,13 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 
   /* CUSTOM */
-  --font-heading: var(--font-mono);
+  --font-heading: var(--font-sans);
   --font-mono: "JetBrains Mono Variable", monospace;
   --font-inter: "Inter", system-ui, sans-serif;
   --font-rubik: "Rubik", sans-serif;
   --font-heading: "CalSans", system-ui, sans-serif;
   --font-google-sans-flex:
-    "Inter", system-ui, sans-serif; /* fallback unless you truly have it */
+    "Inter", system-ui, sans-serif; /* fallback unless you truly have it */ --font-sans: 'Inter Variable', sans-serif;
 }
 
 :root {

@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { OTPSignIn } from '~/components/fragments/auth/otp-sign-in';
 
 export const Route = createFileRoute('/auth/login')({
   component: RouteComponent,
@@ -24,6 +25,7 @@ export default async function RouteComponent() {
 
       {/* Login Form */}
       <div className="space-y-4 sm:space-y-6">
+        <OTPSignIn />
       </div>
 
       {/* Legal Text - Only show on mobile in main content, hidden on desktop (shown in footer) */}

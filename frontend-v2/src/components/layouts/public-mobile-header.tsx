@@ -2,7 +2,7 @@ import { Menu, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import React from "react";
 
-import { NavItems } from "./components/nav-items";
+import { NavItems } from "../fragments/sections/components/nav-items";
 import { Button } from "~/components/ui/button";
 
 export function OverlayNav() {
