@@ -17,7 +17,7 @@ export function MainHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
           </Link>
 
           <Link
-            to="/posts"
+            to="/faqs"
             className="inline-flex h-8 items-center px-3 py-2 hover:opacity-70"
           >
             FAQ

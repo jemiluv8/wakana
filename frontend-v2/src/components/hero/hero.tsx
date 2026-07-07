@@ -19,7 +19,7 @@ export function Hero() {
         <FadeOnView delay={0.2}>
           <h1
             className={cn(
-              "sm:flex-center gap-2 py-4 sm:gap-4 md:py-6 lg:text-7xl font-semibold leading-5 tracking-tighter text-secondary-foreground",
+              "sm:flex-center gap-4 py-4 sm:gap-4 md:py-6 lg:text-7xl font-semibold leading-5 tracking-tighter text-secondary-foreground",
             )}
           >
             Observe your work in real time

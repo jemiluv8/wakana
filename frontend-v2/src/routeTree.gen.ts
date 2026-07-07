@@ -15,6 +15,7 @@ import { Route as PathlessLayoutRouteImport } from './routes/_pathlessLayout'
 import { Route as UsersRouteRouteImport } from './routes/users.route'
 import { Route as PostsRouteRouteImport } from './routes/posts.route'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
+import { Route as PublicRouteRouteImport } from './routes/_public/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users.index'
 import { Route as PostsIndexRouteImport } from './routes/posts.index'
@@ -22,6 +23,7 @@ import { Route as UsersUserIdRouteImport } from './routes/users.$userId'
 import { Route as PostsPostIdRouteImport } from './routes/posts.$postId'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ApiUsersRouteImport } from './routes/api/users'
+import { Route as PublicFaqsRouteImport } from './routes/_public/faqs'
 import { Route as PathlessLayoutNestedLayoutRouteImport } from './routes/_pathlessLayout/_nested-layout'
 import { Route as PostsPostIdDeepRouteImport } from './routes/posts_.$postId.deep'
 import { Route as ApiUsersIdRouteImport } from './routes/api/users.$id'
@@ -55,6 +57,10 @@ const PostsRouteRoute = PostsRouteRouteImport.update({
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicRouteRoute = PublicRouteRouteImport.update({
+  id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -92,6 +98,11 @@ const ApiUsersRoute = ApiUsersRouteImport.update({
   path: '/api/users',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicFaqsRoute = PublicFaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
 const PathlessLayoutNestedLayoutRoute =
   PathlessLayoutNestedLayoutRouteImport.update({
     id: '/_nested-layout',
@@ -127,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/users': typeof UsersRouteRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
+  '/faqs': typeof PublicFaqsRoute
   '/api/users': typeof ApiUsersRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/posts/$postId': typeof PostsPostIdRoute
@@ -143,6 +155,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRouteRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
+  '/faqs': typeof PublicFaqsRoute
   '/api/users': typeof ApiUsersRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/posts/$postId': typeof PostsPostIdRoute
@@ -157,6 +170,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_public': typeof PublicRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/posts': typeof PostsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
@@ -164,6 +178,7 @@ export interface FileRoutesById {
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
+  '/_public/faqs': typeof PublicFaqsRoute
   '/api/users': typeof ApiUsersRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/posts/$postId': typeof PostsPostIdRoute
@@ -184,6 +199,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/deferred'
     | '/redirect'
+    | '/faqs'
     | '/api/users'
     | '/auth/login'
     | '/posts/$postId'
@@ -200,6 +216,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/deferred'
     | '/redirect'
+    | '/faqs'
     | '/api/users'
     | '/auth/login'
     | '/posts/$postId'
@@ -213,6 +230,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_public'
     | '/auth'
     | '/posts'
     | '/users'
@@ -220,6 +238,7 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/redirect'
     | '/_pathlessLayout/_nested-layout'
+    | '/_public/faqs'
     | '/api/users'
     | '/auth/login'
     | '/posts/$postId'
@@ -234,6 +253,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PublicRouteRoute: typeof PublicRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   PostsRouteRoute: typeof PostsRouteRouteWithChildren
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
@@ -288,6 +308,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_public': {
+      id: '/_public'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PublicRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -337,6 +364,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiUsersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_public/faqs': {
+      id: '/_public/faqs'
+      path: '/faqs'
+      fullPath: '/faqs'
+      preLoaderRoute: typeof PublicFaqsRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
     '/_pathlessLayout/_nested-layout': {
       id: '/_pathlessLayout/_nested-layout'
       path: ''
@@ -374,6 +408,18 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface PublicRouteRouteChildren {
+  PublicFaqsRoute: typeof PublicFaqsRoute
+}
+
+const PublicRouteRouteChildren: PublicRouteRouteChildren = {
+  PublicFaqsRoute: PublicFaqsRoute,
+}
+
+const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(
+  PublicRouteRouteChildren,
+)
 
 interface AuthRouteRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
@@ -459,6 +505,7 @@ const ApiUsersRouteWithChildren = ApiUsersRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PublicRouteRoute: PublicRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   PostsRouteRoute: PostsRouteRouteWithChildren,
   UsersRouteRoute: UsersRouteRouteWithChildren,
