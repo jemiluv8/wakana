@@ -20,7 +20,6 @@ import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
 import { cn } from "~/lib/utils";
 import { siteConfig } from "~/config/site";
-import { MainLayout } from "~/components/layouts/main-layout";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -63,6 +62,14 @@ export const Route = createRootRouteWithContext<{
         rel: "manifest",
         href: "/site.webmanifest",
       },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com"
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300;400;500;600;700&display=swap",
+      },
     ],
   }),
 
@@ -88,7 +95,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
 
-      <body className={cn("min-h-screen bg-background font-rubik antialiased")}>
+      <body className={cn("min-h-screen bg-background font-google-sans-flex antialiased")} style={{ fontFamily: "'Google Sans Flex', system-ui, sans-serif" }}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

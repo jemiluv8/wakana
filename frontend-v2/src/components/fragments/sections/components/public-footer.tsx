@@ -82,7 +82,7 @@ export default function PublicFooter() {
                 alt="Wakana Logo"
               />
             </div>
-            <h3 className="mb-4 lg:mb-6 max-w-md leading-relaxed text-sm lg:text-base text-primary">
+            <h3 className="mb-4 lg:mb-6 max-w-md leading-relaxed text-sm lg:text-base text-secondary-foreground">
               Observe your work habits in real time with developer dashboards
               for insights into your coding patterns and productivity.
             </h3>

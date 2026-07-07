@@ -1,4 +1,4 @@
-@import "tailwindcss" source("../");
+@import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/jetbrains-mono";
@@ -7,7 +7,7 @@
 
 /* Local font */
 @font-face {
-  font-family: "CalSans";
+  font-family: "Cal Sans";
   src: url("/fonts/CalSans-SemiBold.woff2") format("woff2");
   font-weight: 300 900;
   font-style: normal;
@@ -96,9 +96,10 @@
   --font-mono: "JetBrains Mono Variable", monospace;
   --font-inter: "Inter", system-ui, sans-serif;
   --font-rubik: "Rubik", sans-serif;
-  --font-heading: "CalSans", system-ui, sans-serif;
+  --font-default: "Cal Sans", system-ui, sans-serif;
   --font-google-sans-flex:
-    "Inter", system-ui, sans-serif; /* fallback unless you truly have it */ --font-sans: 'Inter Variable', sans-serif;
+    "Google Sans Flex", system-ui, sans-serif; /* fallback unless you truly have it */
+    --font-sans: 'Inter Variable', sans-serif;
 }
 
 :root {

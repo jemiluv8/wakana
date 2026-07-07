@@ -1,16 +1,7 @@
-function makeState(payload: Record<string, any>): string {
-  return Buffer.from(JSON.stringify(payload)).toString("base64");
-}
 
 export function startGithubLoginFlow() {
   const { clientId, redirectUri, scope } = getGithubConfig();
-
-  const state_payload = {
-    redirectUri,
-    scope,
-    clientId,
-  };
-  const state = makeState(state_payload);
+  const state = crypto.randomUUID();
   const url = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
   return url;
 }

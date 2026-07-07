@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { OTPSignIn } from '~/components/fragments/auth/otp-sign-in';
+import { SocialLogin } from '~/components/fragments/auth/social-login';
 
 export const Route = createFileRoute('/auth/login')({
   component: RouteComponent,
@@ -24,7 +25,8 @@ export default async function RouteComponent() {
       </div>
 
       {/* Login Form */}
-      <div className="space-y-4 sm:space-y-6">
+      <div className="space-y-6 sm:space-y-6">
+        <SocialLogin className='mb-8' />
         <OTPSignIn />
       </div>
 
