@@ -10,7 +10,7 @@ export function MainHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
 
         <ul className="mx-3 space-x-2 text-sm md:flex font-bold">
           <Link
-            to="/posts"
+            to="/installation"
             className="inline-flex h-8 items-center px-3 py-2 hover:opacity-70"
           >
             Installation
@@ -24,14 +24,14 @@ export function MainHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
           </Link>
 
           <Link
-            to="/posts"
+            to="/plugins"
             className="inline-flex h-8 items-center px-3 py-2 hover:opacity-70"
           >
             Plugins
           </Link>
 
           <Link
-            to="/posts"
+            to="/leaderboard"
             className="inline-flex h-8 items-center px-3 py-2 hover:opacity-70"
           >
             Leaderboard

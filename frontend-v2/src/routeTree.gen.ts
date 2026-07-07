@@ -23,6 +23,9 @@ import { Route as UsersUserIdRouteImport } from './routes/users.$userId'
 import { Route as PostsPostIdRouteImport } from './routes/posts.$postId'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ApiUsersRouteImport } from './routes/api/users'
+import { Route as PublicPluginsRouteImport } from './routes/_public/plugins'
+import { Route as PublicLeaderboardRouteImport } from './routes/_public/leaderboard'
+import { Route as PublicInstallationRouteImport } from './routes/_public/installation'
 import { Route as PublicFaqsRouteImport } from './routes/_public/faqs'
 import { Route as PathlessLayoutNestedLayoutRouteImport } from './routes/_pathlessLayout/_nested-layout'
 import { Route as PostsPostIdDeepRouteImport } from './routes/posts_.$postId.deep'
@@ -98,6 +101,21 @@ const ApiUsersRoute = ApiUsersRouteImport.update({
   path: '/api/users',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicPluginsRoute = PublicPluginsRouteImport.update({
+  id: '/plugins',
+  path: '/plugins',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicLeaderboardRoute = PublicLeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicInstallationRoute = PublicInstallationRouteImport.update({
+  id: '/installation',
+  path: '/installation',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
 const PublicFaqsRoute = PublicFaqsRouteImport.update({
   id: '/faqs',
   path: '/faqs',
@@ -139,6 +157,9 @@ export interface FileRoutesByFullPath {
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
   '/faqs': typeof PublicFaqsRoute
+  '/installation': typeof PublicInstallationRoute
+  '/leaderboard': typeof PublicLeaderboardRoute
+  '/plugins': typeof PublicPluginsRoute
   '/api/users': typeof ApiUsersRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/posts/$postId': typeof PostsPostIdRoute
@@ -156,6 +177,9 @@ export interface FileRoutesByTo {
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
   '/faqs': typeof PublicFaqsRoute
+  '/installation': typeof PublicInstallationRoute
+  '/leaderboard': typeof PublicLeaderboardRoute
+  '/plugins': typeof PublicPluginsRoute
   '/api/users': typeof ApiUsersRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/posts/$postId': typeof PostsPostIdRoute
@@ -179,6 +203,9 @@ export interface FileRoutesById {
   '/redirect': typeof RedirectRoute
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/_public/faqs': typeof PublicFaqsRoute
+  '/_public/installation': typeof PublicInstallationRoute
+  '/_public/leaderboard': typeof PublicLeaderboardRoute
+  '/_public/plugins': typeof PublicPluginsRoute
   '/api/users': typeof ApiUsersRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/posts/$postId': typeof PostsPostIdRoute
@@ -200,6 +227,9 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/redirect'
     | '/faqs'
+    | '/installation'
+    | '/leaderboard'
+    | '/plugins'
     | '/api/users'
     | '/auth/login'
     | '/posts/$postId'
@@ -217,6 +247,9 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/redirect'
     | '/faqs'
+    | '/installation'
+    | '/leaderboard'
+    | '/plugins'
     | '/api/users'
     | '/auth/login'
     | '/posts/$postId'
@@ -239,6 +272,9 @@ export interface FileRouteTypes {
     | '/redirect'
     | '/_pathlessLayout/_nested-layout'
     | '/_public/faqs'
+    | '/_public/installation'
+    | '/_public/leaderboard'
+    | '/_public/plugins'
     | '/api/users'
     | '/auth/login'
     | '/posts/$postId'
@@ -364,6 +400,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiUsersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_public/plugins': {
+      id: '/_public/plugins'
+      path: '/plugins'
+      fullPath: '/plugins'
+      preLoaderRoute: typeof PublicPluginsRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/leaderboard': {
+      id: '/_public/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof PublicLeaderboardRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/installation': {
+      id: '/_public/installation'
+      path: '/installation'
+      fullPath: '/installation'
+      preLoaderRoute: typeof PublicInstallationRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
     '/_public/faqs': {
       id: '/_public/faqs'
       path: '/faqs'
@@ -411,10 +468,16 @@ declare module '@tanstack/react-router' {
 
 interface PublicRouteRouteChildren {
   PublicFaqsRoute: typeof PublicFaqsRoute
+  PublicInstallationRoute: typeof PublicInstallationRoute
+  PublicLeaderboardRoute: typeof PublicLeaderboardRoute
+  PublicPluginsRoute: typeof PublicPluginsRoute
 }
 
 const PublicRouteRouteChildren: PublicRouteRouteChildren = {
   PublicFaqsRoute: PublicFaqsRoute,
+  PublicInstallationRoute: PublicInstallationRoute,
+  PublicLeaderboardRoute: PublicLeaderboardRoute,
+  PublicPluginsRoute: PublicPluginsRoute,
 }
 
 const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(
