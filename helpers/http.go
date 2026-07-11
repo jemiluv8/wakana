@@ -24,7 +24,7 @@ func CreateCookie(name, value, path string, maxAge int) *http.Cookie {
 		Value:    value,
 		Path:     path,
 		MaxAge:   maxAge,
-		Secure:   true,
+		Secure:   false,
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
 	}
@@ -75,17 +75,18 @@ func GetClearCookie(name, path string) *http.Cookie {
 	return CreateCookie(name, "", path, -1)
 }
 
-func ExtractCookieAuth(r *http.Request, config *config.Config) (username *string, err error) {
+// this is fucking diabolical. We have to use session cookie.
+func ExtractCookieAuth(r *http.Request, config *config.Config) (userId *string, err error) {
 	cookie, err := r.Cookie(models.AuthCookieKey)
 	if err != nil {
 		return nil, errors.New("missing authentication")
 	}
 
-	if err := config.Security.SecureCookie.Decode(models.AuthCookieKey, cookie.Value, &username); err != nil {
+	if err := config.Security.SecureCookie.Decode(models.AuthCookieKey, cookie.Value, &userId); err != nil {
 		return nil, errors.New("cookie is invalid")
 	}
 
-	return username, nil
+	return userId, nil
 }
 
 func RespondJSON(w http.ResponseWriter, r *http.Request, status int, object interface{}) {

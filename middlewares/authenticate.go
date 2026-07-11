@@ -207,12 +207,12 @@ func (m *AuthenticateMiddleware) tryGetUserByTrustedHeader(r *http.Request) (*mo
 }
 
 func (m *AuthenticateMiddleware) tryGetUserByCookie(r *http.Request) (*models.User, error) {
-	username, err := helpers.ExtractCookieAuth(r, m.config)
+	userId, err := helpers.ExtractCookieAuth(r, m.config)
 	if err != nil {
 		return nil, err
 	}
 
-	user, err := m.userSrvc.GetUserByEmail(*username)
+	user, err := m.userSrvc.GetUserById(*userId)
 	if err != nil {
 		return nil, err
 	}
