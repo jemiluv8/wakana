@@ -5,7 +5,7 @@ import { useLocation } from '@tanstack/react-router'
 
 import { COLORS } from "~/lib/constants";
 import { cn, convertSecondsToHoursAndMinutes } from "~/lib/utils";
-import { LeaderboardApiResponse } from "../types";
+import { LeaderboardApiResponse } from "../../types";
 import { Link } from "@tanstack/react-router";
 
 function getLanguageColor(language: string): string {

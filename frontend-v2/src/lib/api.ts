@@ -1,24 +1,37 @@
-import { VITE_PUBLIC_API_URL } from "~/config";
+// hooks/useApiMutation.ts
 
-export async function apiFetch<T>(url: string): Promise<T> {
-  if (!VITE_PUBLIC_API_URL) {
-    throw new Error("VITE_PUBLIC_API_URL is not configured")
-  }
+import { VITE_PUBLIC_API_URL } from "~/config"
+import { ApiError } from "~/types"
 
-  const response = await fetch(`${VITE_PUBLIC_API_URL}${url}`, {
+
+export async function apiFetch<T>(
+  url: string,
+  options?: RequestInit
+): Promise<T> {
+  const full_url = `${VITE_PUBLIC_API_URL}${url}`
+  const response = await fetch(full_url, {
     credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      ...(options?.headers || {}),
+    },
+    ...options,
   })
 
+  const contentType = response.headers.get("content-type")
+  const data = contentType?.includes("application/json")
+    ? await response.json()
+    : await response.text()
+
   if (!response.ok) {
-    const error = (await response.json()) as ApiError
-    throw error
+    throw new ApiError(
+      typeof data === "object" && data !== null && "message" in data
+        ? String(data.message)
+        : "Something went wrong",
+      response.status,
+      data
+    )
   }
 
-  return response.json() as Promise<T>
-}
-
-export interface ApiError {
-  message: string
-  code: string
-  status: number
+  return data as T
 }

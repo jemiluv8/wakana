@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { LeaderBoardTable } from '~/components/custom/leaderboard';
 import { Spinner } from '~/components/custom/spinner/spinner';
-import { LeaderboardApiResponse } from '~/components/types';
+import { LeaderboardApiResponse } from '~/types';
 import { apiFetch } from '~/lib/api';
 import { z } from "zod"
 

@@ -7,7 +7,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { twMerge } from "tailwind-merge";
 
 import { COLORS, SAMPLE_COLORS } from "../constants";
-import { Category, SummariesResponse } from "~/components/types";
+import { Category, SummariesResponse } from "~/types";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
