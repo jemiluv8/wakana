@@ -174,7 +174,7 @@ export function OTPSignIn({ className }: Props) {
 
   if (isSent) {
     return (
-      <div className="w-full">
+      <div className="w-full text-primary">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
           <p className="text-sm text-muted-foreground">
@@ -196,9 +196,9 @@ export function OTPSignIn({ className }: Props) {
               autoFocus
               onComplete={onComplete}
               disabled={isLoading}
-              className="gap-2 justify-center"
+              className="gap-2 justify-center text-primary"
               render={({ slots }) => (
-                <InputOTPGroup className="gap-2">
+                <InputOTPGroup className="gap-2 text-primary">
                   {slots.map((slot, index) => (
                     <InputOTPSlot
                       key={index.toString()}
@@ -209,7 +209,7 @@ export function OTPSignIn({ className }: Props) {
                         "bg-muted/50 border-2 border-border hover:border-border/80",
                         "focus:border-primary focus:ring-0",
                         "focus:outline-2 focus:outline-primary focus:outline-offset-2",
-                        "dark:bg-muted/50 dark:border-border dark:hover:border-border/60"
+                        "dark:bg-muted/50 dark:border-border dark:hover:border-border/60 text-primary",
                       )}
                     />
                   ))}
@@ -271,7 +271,7 @@ export function OTPSignIn({ className }: Props) {
       </div>
 
       <Form {...form}>
-        <form ref={formRef} action={formAction} className="w-full">
+        <form ref={formRef} className="w-full">
           <div className={cn("flex flex-col space-y-6 w-full", className)}>
             <FormField
               control={form.control}

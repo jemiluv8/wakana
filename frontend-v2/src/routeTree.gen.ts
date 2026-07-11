@@ -16,6 +16,7 @@ import { Route as UsersRouteRouteImport } from './routes/users.route'
 import { Route as PostsRouteRouteImport } from './routes/posts.route'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as PublicRouteRouteImport } from './routes/_public/route'
+import { Route as DashboardRouteRouteImport } from './routes/_dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users.index'
 import { Route as PostsIndexRouteImport } from './routes/posts.index'
@@ -28,6 +29,7 @@ import { Route as PublicLeaderboardRouteImport } from './routes/_public/leaderbo
 import { Route as PublicInstallationRouteImport } from './routes/_public/installation'
 import { Route as PublicFaqsRouteImport } from './routes/_public/faqs'
 import { Route as PathlessLayoutNestedLayoutRouteImport } from './routes/_pathlessLayout/_nested-layout'
+import { Route as DashboardDashboardRouteImport } from './routes/_dashboard/dashboard'
 import { Route as PostsPostIdDeepRouteImport } from './routes/posts_.$postId.deep'
 import { Route as ApiUsersIdRouteImport } from './routes/api/users.$id'
 import { Route as PathlessLayoutNestedLayoutRouteBRouteImport } from './routes/_pathlessLayout/_nested-layout/route-b'
@@ -64,6 +66,10 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
 } as any)
 const PublicRouteRoute = PublicRouteRouteImport.update({
   id: '/_public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  id: '/_dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -126,6 +132,11 @@ const PathlessLayoutNestedLayoutRoute =
     id: '/_nested-layout',
     getParentRoute: () => PathlessLayoutRoute,
   } as any)
+const DashboardDashboardRoute = DashboardDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 const PostsPostIdDeepRoute = PostsPostIdDeepRouteImport.update({
   id: '/posts_/$postId/deep',
   path: '/posts/$postId/deep',
@@ -156,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/users': typeof UsersRouteRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
+  '/dashboard': typeof DashboardDashboardRoute
   '/faqs': typeof PublicFaqsRoute
   '/installation': typeof PublicInstallationRoute
   '/leaderboard': typeof PublicLeaderboardRoute
@@ -176,6 +188,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRouteRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
+  '/dashboard': typeof DashboardDashboardRoute
   '/faqs': typeof PublicFaqsRoute
   '/installation': typeof PublicInstallationRoute
   '/leaderboard': typeof PublicLeaderboardRoute
@@ -194,6 +207,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_dashboard': typeof DashboardRouteRouteWithChildren
   '/_public': typeof PublicRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/posts': typeof PostsRouteRouteWithChildren
@@ -201,6 +215,7 @@ export interface FileRoutesById {
   '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
+  '/_dashboard/dashboard': typeof DashboardDashboardRoute
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/_public/faqs': typeof PublicFaqsRoute
   '/_public/installation': typeof PublicInstallationRoute
@@ -226,6 +241,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/deferred'
     | '/redirect'
+    | '/dashboard'
     | '/faqs'
     | '/installation'
     | '/leaderboard'
@@ -246,6 +262,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/deferred'
     | '/redirect'
+    | '/dashboard'
     | '/faqs'
     | '/installation'
     | '/leaderboard'
@@ -263,6 +280,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_dashboard'
     | '/_public'
     | '/auth'
     | '/posts'
@@ -270,6 +288,7 @@ export interface FileRouteTypes {
     | '/_pathlessLayout'
     | '/deferred'
     | '/redirect'
+    | '/_dashboard/dashboard'
     | '/_pathlessLayout/_nested-layout'
     | '/_public/faqs'
     | '/_public/installation'
@@ -289,6 +308,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   PublicRouteRoute: typeof PublicRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   PostsRouteRoute: typeof PostsRouteRouteWithChildren
@@ -349,6 +369,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof PublicRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard': {
+      id: '/_dashboard'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof DashboardRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -435,6 +462,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PathlessLayoutNestedLayoutRouteImport
       parentRoute: typeof PathlessLayoutRoute
     }
+    '/_dashboard/dashboard': {
+      id: '/_dashboard/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardDashboardRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/posts_/$postId/deep': {
       id: '/posts_/$postId/deep'
       path: '/posts/$postId/deep'
@@ -465,6 +499,18 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface DashboardRouteRouteChildren {
+  DashboardDashboardRoute: typeof DashboardDashboardRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardDashboardRoute: DashboardDashboardRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
 
 interface PublicRouteRouteChildren {
   PublicFaqsRoute: typeof PublicFaqsRoute
@@ -568,6 +614,7 @@ const ApiUsersRouteWithChildren = ApiUsersRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
   PublicRouteRoute: PublicRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   PostsRouteRoute: PostsRouteRouteWithChildren,

@@ -32,7 +32,7 @@ export function Hero() {
         </FadeOnView>
         <div className="flex-gap justify-center">
           <FadeOnView delay={0.6} className="mt-12 space-x-2">
-            <Link to="/posts" className={cn("font-heading", styles.heroCta)}>
+            <Link to="/auth/login" className={cn("font-heading", styles.heroCta)}>
               Try it for free
             </Link>
           </FadeOnView>

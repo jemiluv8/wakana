@@ -8,7 +8,6 @@ import basicSsl from "@vitejs/plugin-basic-ssl"
 export default defineConfig({
   server: {
     port: 3000,
-    https: true
   },
   resolve: {
     tsconfigPaths: true,

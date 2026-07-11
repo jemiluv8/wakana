@@ -16,55 +16,58 @@ import { Input } from "~/components/ui/input";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { Icons } from "~/components/icons";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { useApiMutation } from "~/hooks";
+import { useNavigate } from "@tanstack/react-router";
 
 const formSchema = z.object({
   email: z.string().email(),
 });
 
-const initiateOTPLogin = createServerFn({ method: "POST" })
-  .validator(formSchema)
-  .handler(async ({ data }) => {
-    // move logic from initiateOTPLoginAction here
-    console.log("groot", data);
-    // return await authService.initiateOTPLogin(data);
-    return {
-      success: false,
-      message: {
-        title: "Error",
-        description: "Not implemented",
-      },
-    };
-  });
-
-const processLoginWithOTP = createServerFn({ method: "POST" })
-  .validator(
-    z.object({
-      email: z.string().email(),
-      otp: z.string().length(6),
-      code_verifier: z.string(),
-    }),
-  )
-  .handler(async ({ data }) => {
-    // move logic from processLoginWithOTP here
-    // return await authService.processOTPLogin(data);
-    console.log("groot", data);
-    return {
-      message: {
-        title: "Error",
-        description: "Not implemented",
-      },
-    };
-  });
-
 type Props = {
   className?: string;
 };
 
+type InitOtpResponse = {
+  message: string;
+};
+
 export function OTPSignIn({ className }: Props) {
+  const navigate = useNavigate();
   const [isSent, setSent] = React.useState(false);
   const [email, setEmail] = React.useState<string>();
   const [isLoading, setIsLoading] = React.useState(false);
   const [pkce, setPKCE] = React.useState<PKCEResult>();
+
+  const { mutate: initiateOtpLogin, isPending } =
+    useApiMutation<InitOtpResponse>("/v1/auth/otp/create", {
+      onSuccess: (data) => {
+        console.log("User created:", data);
+        setSent(true);
+      },
+      onError: (error) => {
+        console.error("Failed:", error.message);
+        toast.success(error.message, {
+          description: "Failed to initiate OTP login",
+        });
+      },
+    });
+
+  const { mutate: verifyToken } = useApiMutation<InitOtpResponse>(
+    "/v1/auth/otp/verify",
+    {
+      onSuccess: () => {
+        navigate({
+          to: "/dashboard",
+        });
+      },
+      onError: (error) => {
+        console.error("Failed:", error.message);
+        toast.success(error.message, {
+          description: "Failed to verify OTP",
+        });
+      },
+    },
+  );
 
   React.useEffect(() => {
     const generator = new PKCEGenerator();
@@ -82,26 +85,16 @@ export function OTPSignIn({ className }: Props) {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }: { value: any }) => {
-      const response = await initiateOTPLogin({
-        data: value,
-      });
-
-      if (response?.message) {
-        toast.success(response.message.title, {
-          description: response.message.description,
-        });
-      }
-
-      if (response?.success) {
-        setEmail(value.email);
-        setSent(true);
-      }
+      setEmail(value.email);
+      initiateOtpLogin({ body: { ...value, set_cookie: true, ...pkce } });
     },
   });
 
   async function onComplete(otp: string) {
     try {
       setIsLoading(true);
+
+      console.log("pkce", pkce);
 
       if (!email || !pkce?.code_verifier) {
         toast.error("Invalid OTP", {
@@ -110,19 +103,13 @@ export function OTPSignIn({ className }: Props) {
         return;
       }
 
-      const response = await processLoginWithOTP({
-        data: {
+      verifyToken({
+        body: {
           email,
           otp,
           code_verifier: pkce.code_verifier,
         },
       });
-
-      if (response?.message) {
-        toast.error(response.message.title, {
-          description: response.message.description,
-        });
-      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -132,7 +119,9 @@ export function OTPSignIn({ className }: Props) {
 
   if (isSent) {
     return (
-      <div className={cn("flex flex-col items-center space-y-4", className)}>
+      <div
+        className={cn("flex flex-col items-center space-y-4 px-4", className)}
+      >
         <InputOTP
           maxLength={6}
           autoFocus
@@ -145,7 +134,7 @@ export function OTPSignIn({ className }: Props) {
               <InputOTPSlot
                 key={index}
                 index={index}
-                className="h-15.5 w-15.5"
+                className="h-15.5 w-15.5 text-primary"
               />
             ))}
           </InputOTPGroup>
@@ -189,6 +178,7 @@ export function OTPSignIn({ className }: Props) {
               autoCapitalize="none"
               autoCorrect="off"
               spellCheck={false}
+              className="text-primary"
             />
 
             {field.state.meta.errors.length > 0 && (
@@ -214,7 +204,7 @@ export function OTPSignIn({ className }: Props) {
               variant: "secondary",
             })}
           >
-            {isSubmitting && (
+            {(isSubmitting || isPending) && (
               <Icons.spinner className="mr-2 size-4 animate-spin" />
             )}
             Continue

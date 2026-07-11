@@ -14,6 +14,67 @@ import (
 
 var JWT_TOKEN_DURATION = time.Hour * 24
 
+func CreateCookie(name, value, path string, maxAge int) *http.Cookie {
+	if path == "" {
+		path = "/"
+	}
+
+	return &http.Cookie{
+		Name:     name,
+		Value:    value,
+		Path:     path,
+		MaxAge:   maxAge,
+		Secure:   true,
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+	}
+}
+
+func RespondJSONWithAuthCookie(
+	w http.ResponseWriter,
+	r *http.Request,
+	status int,
+	object interface{},
+	username string,
+) {
+	conf := conf.Get()
+
+	w.Header().Set("Content-Type", "application/json")
+
+	encodedCookie, err := conf.Security.SecureCookie.Encode(models.AuthCookieKey, username)
+	if err != nil {
+		config.Log().Request(r).Error(
+			"error while encoding auth cookie",
+			"error", err,
+		)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	http.SetCookie(
+		w,
+		CreateCookie(
+			models.AuthCookieKey,
+			encodedCookie,
+			"/",
+			int((24*time.Hour).Seconds()),
+		),
+	)
+
+	w.WriteHeader(status)
+
+	if err := json.NewEncoder(w).Encode(object); err != nil {
+		config.Log().Request(r).Error(
+			"error while writing json response",
+			"error", err,
+		)
+	}
+}
+
+func GetClearCookie(name, path string) *http.Cookie {
+	return CreateCookie(name, "", path, -1)
+}
+
 func ExtractCookieAuth(r *http.Request, config *config.Config) (username *string, err error) {
 	cookie, err := r.Cookie(models.AuthCookieKey)
 	if err != nil {

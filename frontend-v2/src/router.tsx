@@ -6,14 +6,18 @@ import { DefaultCatchBoundary } from './components/DefaultCatchBoundary'
 import { NotFound } from './components/NotFound'
 
 import { FastResponse } from 'srvx'
+import { AuthContext } from './types'
 globalThis.Response = FastResponse
 
 export function getRouter() {
   const queryClient = new QueryClient()
+  const auth: AuthContext = {
+    userId: null
+  }
 
   const router = createRouter({
     routeTree,
-    context: { queryClient },
+    context: { queryClient, auth },
     defaultPreload: 'intent',
     defaultErrorComponent: DefaultCatchBoundary,
     defaultNotFoundComponent: () => <NotFound />,

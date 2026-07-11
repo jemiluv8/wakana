@@ -1,21 +1,18 @@
-import {
-  useMutation,
-  type UseMutationOptions,
-} from "@tanstack/react-query"
-import { apiFetch } from "~/lib/api"
-import { ApiError } from "~/types"
+import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
+import { apiFetch } from "~/lib/api";
+import { ApiError } from "~/types";
 
 type ApiMutationVariables = {
-  body?: unknown
-  params?: RequestInit
-}
+  body?: unknown;
+  params?: RequestInit;
+};
 
 export function useApiMutation<TResponse>(
   url: string,
   options?: Omit<
     UseMutationOptions<TResponse, ApiError, ApiMutationVariables>,
     "mutationFn"
-  >
+  >,
 ) {
   return useMutation<TResponse, ApiError, ApiMutationVariables>({
     mutationFn: ({ body, params }) =>
@@ -26,5 +23,5 @@ export function useApiMutation<TResponse>(
       }),
 
     ...options,
-  })
+  });
 }

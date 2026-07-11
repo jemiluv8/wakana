@@ -128,6 +128,7 @@ func (s *OTPService) CreateOTP(otpRequest models.InitiateOTPRequest) (*models.Cr
 		ExpiresIn:       expiryTime.Unix(),
 		Used:            false,
 		OTPHash:         otpHash,
+		SetCookie:       otpRequest.SetCookie,
 	}
 
 	if err := s.db.Create(&otp).Error; err != nil {
@@ -233,6 +234,7 @@ func (s *OTPService) VerifyOTP(validateOtpRequest models.ValidateOTPRequest) (*m
 		Valid:     true,
 		User:      user,
 		IsNewUser: new_user,
+		SetCookie: otp.SetCookie,
 	}, nil
 }
 
@@ -308,8 +310,6 @@ func CreateOTPHandler(service IOTPService) http.HandlerFunc {
 			return
 		}
 
-		// w.Header().Set("Content-Type", "application/json")
-		// json.NewEncoder(w).Encode(resp)
 		helpers.RespondJSON(w, r, http.StatusAccepted, resp)
 	}
 }
@@ -378,7 +378,12 @@ func VerifyOTPHandler(service IOTPService) http.HandlerFunc {
 			return
 		}
 
-		helpers.RespondJSON(w, r, http.StatusCreated, response)
+		if resp.SetCookie {
+			// we ought to create a session and use the cookie session ID
+			helpers.RespondJSONWithAuthCookie(w, r, http.StatusCreated, response, resp.User.ID)
+		} else {
+			helpers.RespondJSON(w, r, http.StatusCreated, response)
+		}
 	}
 }
 

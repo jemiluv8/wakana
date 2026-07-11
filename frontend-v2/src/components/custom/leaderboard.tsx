@@ -1,5 +1,3 @@
-"use client";
-
 import { Crown } from "lucide-react";
 import { useLocation } from '@tanstack/react-router'
 

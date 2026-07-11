@@ -211,11 +211,11 @@ func (a *APIv1) initializeJobs() {
 
 func corsSetup(r *chi.Mux) {
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"https://*", "http://*", "https://localhost:3000", "http://localhost:3000"},
+		AllowedOrigins:   []string{"https://localhost:3000", "http://localhost:3000", "https://wakana.io", "https://www.wakana.io"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token", "Token"},
 		ExposedHeaders:   []string{"Link"},
-		AllowCredentials: false,
+		AllowCredentials: true,
 		MaxAge:           300,
 	}))
 }

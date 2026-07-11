@@ -105,6 +105,7 @@ func (api *APIv1) RegisterApiV1Routes(r *chi.Mux) {
 
 			r.Group(func(r chi.Router) {
 				r.Use(middlewares.NewAuthenticateMiddleware(api.services.Users()).Handler)
+				r.Get("/me", api.Me)
 				r.Get("/api-key", api.GetApiKey)
 				r.Post("/api-key/refresh", api.RefreshApiKey)
 			})

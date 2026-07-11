@@ -36,6 +36,52 @@ type OauthCode struct {
 	Code string `json:"code"`
 }
 
+func (a *APIv1) FakeSignIn(w http.ResponseWriter, r *http.Request) {
+
+	var params = &LoginParams{}
+	jsonDecoder := json.NewDecoder(r.Body)
+	err := jsonDecoder.Decode(params)
+
+	if err != nil || params.Email == "" {
+		helpers.RespondJSON(w, r, http.StatusBadRequest, map[string]interface{}{
+			"message": "Bad Request",
+			"status":  http.StatusBadRequest,
+		})
+		return
+	}
+
+	params.Email = strings.ToLower(params.Email)
+	user, err := a.services.Users().GetUserByEmail(params.Email)
+	if err != nil || user == nil {
+		helpers.RespondJSON(w, r, http.StatusBadRequest, map[string]interface{}{
+			"message": "Invalid credentials",
+			"status":  http.StatusBadRequest,
+		})
+		return
+	}
+
+	user.LastLoggedInAt = models.CustomTime(time.Now())
+	a.services.Users().Update(user)
+
+	response, err := helpers.MakeAuthSuccessResponse(
+		&helpers.AuthSuccessResponse{
+			Message:   "Login Successful",
+			User:      user,
+			OauthUser: nil,
+			IsNewUser: false,
+		},
+	)
+	if err != nil {
+		helpers.RespondJSON(w, r, http.StatusBadRequest, map[string]interface{}{
+			"message": "Internal Server Error. Try again",
+			"status":  http.StatusInternalServerError,
+		})
+		return
+	}
+
+	helpers.RespondJSONWithAuthCookie(w, r, http.StatusCreated, response, user.ID)
+}
+
 func (a *APIv1) Signin(w http.ResponseWriter, r *http.Request) {
 
 	var params = &LoginParams{}
@@ -388,6 +434,23 @@ func (a *APIv1) GetApiKey(w http.ResponseWriter, r *http.Request) {
 	helpers.RespondJSON(w, r, http.StatusAccepted, map[string]interface{}{
 		"status": http.StatusAccepted,
 		"apiKey": user.ApiKey,
+	})
+}
+
+func (a *APIv1) Me(w http.ResponseWriter, r *http.Request) {
+	user := helpers.ExtractUser(r)
+
+	if user == nil {
+		helpers.RespondJSON(w, r, http.StatusUnauthorized, map[string]interface{}{
+			"message": "Unauthorized",
+			"status":  http.StatusUnauthorized,
+		})
+		return
+	}
+
+	helpers.RespondJSON(w, r, http.StatusAccepted, map[string]interface{}{
+		"status": http.StatusAccepted,
+		"user":   user,
 	})
 }
 

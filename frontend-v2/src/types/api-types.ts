@@ -285,3 +285,8 @@ export class ApiError extends Error {
     this.data = data
   }
 }
+
+export interface AuthContext {
+  userId: string | null;
+}
+

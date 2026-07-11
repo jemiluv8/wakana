@@ -42,6 +42,7 @@ type OTP struct {
 	UpdatedAt       time.Time
 	ExpiresIn       int64 `gorm:"not null"` // Unix timestamp
 	Used            bool
+	SetCookie       bool
 }
 
 func (otp *OTP) IsValid() bool {
@@ -53,6 +54,7 @@ type InitiateOTPRequest struct {
 	Email           string `json:"email"`
 	CodeChallenge   string `json:"code_challenge"`
 	ChallengeMethod string `json:"challenge_method"`
+	SetCookie       bool   `json:"set_cookie"`
 }
 
 type ValidateOTPRequest struct {
@@ -75,4 +77,5 @@ type VerifyOTPResponse struct {
 	Valid     bool   `json:"valid"`
 	User      *User  `json:"user"`
 	IsNewUser bool   `json:"is_new_user"`
+	SetCookie bool   `json:"set_cookie"`
 }

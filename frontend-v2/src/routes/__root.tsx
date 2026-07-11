@@ -20,9 +20,11 @@ import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
 import { cn } from "~/lib/utils";
 import { siteConfig } from "~/config/site";
+import { AuthContext } from "~/types";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
+  auth: AuthContext
 }>()({
   head: () => ({
     meta: [
