@@ -5,9 +5,6 @@ import { routeTree } from './routeTree.gen'
 import { DefaultCatchBoundary } from './components/DefaultCatchBoundary'
 import { NotFound } from './components/NotFound'
 
-import { FastResponse } from 'srvx'
-globalThis.Response = FastResponse
-
 export function getRouter() {
   const queryClient = new QueryClient()
 
