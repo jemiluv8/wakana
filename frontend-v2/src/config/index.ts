@@ -1,0 +1,1 @@
+export const VITE_PUBLIC_API_URL = process.env.VITE_PUBLIC_API_URL

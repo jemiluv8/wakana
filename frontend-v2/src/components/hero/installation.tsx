@@ -6,19 +6,17 @@ import { useEffect, useState } from "react";
 
 // import { ApiClient } from "@/actions/api";
 // import { Button } from "@/components/ui/button";
-// import { NEXT_PUBLIC_API_URL } from "@/lib/constants/config";
 // import useSession from "@/lib/session/use-session";
 
 // import { Spinner } from "./spinner/spinner";
 import { toast } from "sonner";
 import { Spinner } from "../custom/spinner/spinner";
 import { Button } from "../ui/button";
+import { VITE_PUBLIC_API_URL } from "~/config";
 
 interface ConfigDisplayProps {
   className?: string;
 }
-
-const API_URL = `https://api.wakana.io/api`;
 
 export function Installation({ className = "" }: ConfigDisplayProps) {
   const [copied, setCopied] = useState(false);
@@ -58,7 +56,7 @@ export function Installation({ className = "" }: ConfigDisplayProps) {
 
   const configContent = React.useMemo(() => {
     return `[settings]
-api_url = ${API_URL}
+api_url = ${VITE_PUBLIC_API_URL}
 api_key = ${isLoggedIn ? apiKey : "## replace this with your api key when you login"}
 `;
   }, [apiKey, isLoggedIn]);
