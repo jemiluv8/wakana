@@ -3,12 +3,15 @@ import { LeaderBoardTable } from '~/components/custom/leaderboard';
 import { Spinner } from '~/components/custom/spinner/spinner';
 import { LeaderboardApiResponse } from '~/components/types';
 import { apiFetch } from '~/lib/api';
+import { z } from "zod"
 
-export interface LeaderboardItem {
-  name: string;
-}
+const productSearchSchema = z.object({
+  language: z.string().optional()
+})
+
 
 export const Route = createFileRoute('/_public/leaderboard')({
+  validateSearch: productSearchSchema,
   component: RouteComponent,
   pendingComponent: () => (
     <div>
@@ -16,10 +19,15 @@ export const Route = createFileRoute('/_public/leaderboard')({
       Loading leaderboard...
     </div>
   ),
-  loader: async ({ context }) => {
+  loaderDeps: ({ search: { language } }) => ({ language }),
+  loader: async ({ context, deps: { language} }) => {
+    const query = language
+      ? `?language=${encodeURIComponent(language)}`
+      : ''
+
     return await context.queryClient.ensureQueryData({
-      queryKey: ["/v1/leaders"],
-      queryFn: () => apiFetch<LeaderboardApiResponse>("/v1/leaders"),
+      queryKey: ["/v1/leaders", language],
+      queryFn: () => apiFetch<LeaderboardApiResponse>(`/v1/leaders${query}`),
     })
   },
 })

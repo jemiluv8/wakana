@@ -33,7 +33,7 @@ export default function RouteComponent() {
             <AccordionItem
               value={faq.question}
               key={faq.question}
-              className="border border-gray-200 dark:border-gray-800 rounded-lg px-4"
+              className="border border-gray-800 rounded-lg px-4"
             >
               <AccordionTrigger className="text-left font-medium hover:no-underline">
                 {faq.question}

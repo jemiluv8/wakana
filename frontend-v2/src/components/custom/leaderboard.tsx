@@ -130,14 +130,14 @@ interface iProps {
   title: string;
   data: LeaderboardApiResponse;
   titleClass?: string;
-  searchParams?: Record<string, any>;
+  language?: string;
 }
 
 export function LeaderBoardTable({
   title,
-  data: leaderboardData,
+  language,
   titleClass = "",
-  searchParams,
+  data: leaderboardData,
 }: iProps) {
   const pathname = useLocation({
     select: (location) => location.pathname,
@@ -160,7 +160,7 @@ export function LeaderBoardTable({
       languages: item.running_total.languages.slice(0, 3), // Show top 3 languages
     }));
 
-  const subtitle = searchParams?.language ? `- ${searchParams.language}` : "";
+  const subtitle = language ? `- ${language}` : "";
 
   return (
     <div className="w-full mx-auto my-auto">

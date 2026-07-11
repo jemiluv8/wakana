@@ -2,7 +2,7 @@ import { VITE_PUBLIC_API_URL } from "~/config";
 
 export async function apiFetch<T>(url: string): Promise<T> {
   if (!VITE_PUBLIC_API_URL) {
-    throw new Error("API_URL is not configured")
+    throw new Error("VITE_PUBLIC_API_URL is not configured")
   }
 
   const response = await fetch(`${VITE_PUBLIC_API_URL}${url}`, {

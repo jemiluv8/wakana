@@ -124,7 +124,7 @@ export default function RouteComponent() {
             {popularPlugins.map((plugin, index) => (
               <div
                 key={index}
-                className="border border-gray-200 dark:border-gray-800 rounded-lg p-6 hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
+                className="border border-gray-800 dark:border-gray-800 rounded-lg p-6 hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <span className="text-3xl">{plugin.icon}</span>

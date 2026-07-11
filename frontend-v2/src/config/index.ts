@@ -1,1 +1,4 @@
-export const VITE_PUBLIC_API_URL = process.env.VITE_PUBLIC_API_URL
+// config.ts
+
+export const VITE_PUBLIC_API_URL =
+  import.meta.env.VITE_PUBLIC_API_URL

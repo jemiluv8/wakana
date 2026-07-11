@@ -63,7 +63,7 @@ const footerSections: FooterSection[] = [
 
 export default function PublicFooter() {
   return (
-    <footer className="relative border-t backdrop-blur-sm">
+    <footer className="relative border-t backdrop-blur-sm border-gray-800">
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-10 left-20 w-32 h-32 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full filter blur-xl"></div>
@@ -144,7 +144,7 @@ export default function PublicFooter() {
         </div>
 
         {/* Bottom section - simplified on mobile */}
-        <div className="mt-8 lg:mt-12 pt-6 lg:pt-8 border-t border-gray-200 dark:border-gray-700 text-primary">
+        <div className="mt-8 lg:mt-12 pt-6 lg:pt-8 border-t border-gray-800 dark:border-gray-700 text-primary">
           <div className="flex flex-col lg:flex-row justify-between items-center gap-3 lg:gap-4">
             <div className="flex items-center gap-2 text-xs lg:text-sm">
               <span>Made with</span>

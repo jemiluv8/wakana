@@ -119,7 +119,7 @@ export default function RouteComponent() {
         {steps.map((step, index) => (
           <div
             key={index}
-            className="border border-gray-200 dark:border-gray-800 rounded-lg p-6"
+            className="border border-gray-800 dark:border-gray-800 rounded-lg p-6"
           >
             <div className="flex items-start gap-4">
               {/* Step number */}
