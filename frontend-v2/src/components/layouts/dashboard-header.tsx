@@ -10,6 +10,7 @@ import {
   BreadcrumbSeparator,
 } from "../ui/breadcrumb";
 import { Separator } from "../ui/separator";
+import { CurrentWorkTime } from "../custom/current-work-time";
 
 export function DashboardHeader() {
   const pathname = useLocation({
@@ -44,7 +45,7 @@ export function DashboardHeader() {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      {/* <CurrentWorkTime /> */}
+      <CurrentWorkTime />
     </header>
   );
 }
