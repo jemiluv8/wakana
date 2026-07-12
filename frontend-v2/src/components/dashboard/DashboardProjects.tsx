@@ -8,7 +8,7 @@ interface DashboardProjectsProps {
   data: SummariesApiResponse;
 }
 
-export async function DashboardProjects({ data }: DashboardProjectsProps) {
+export function DashboardProjects({ data }: DashboardProjectsProps) {
   const projects = makePieChartDataFromRawApiResponse(data.data, "projects");
 
   return (

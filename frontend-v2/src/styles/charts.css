@@ -1,0 +1,233 @@
+.charts-grid-top {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 3 columns */
+  gap: 16px;
+}
+
+.charts-grid-top > :first-child {
+  grid-column: span 2; /* Make the first item span 2 columns */
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  /* Adjust the breakpoint as needed */
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-grid-top {
+    grid-template-columns: 1fr;
+  }
+
+  .three-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-grid-top > :first-child {
+    grid-column: span 1; /* Make the first item span 2 columns */
+  }
+}
+
+.card-border {
+  border: 1px solid #4f5b69;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 7px 25px 0 rgba(0, 0, 0, 0.03),
+    0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.chart-box:hover {
+  text-decoration: none;
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.1),
+    0 12px 35px 0 rgba(0, 0, 0, 0.05),
+    0 6px 40px rgba(0, 0, 0, 0.15);
+}
+
+.chart-box { 
+  /* // dark mode */
+  background-color: unset;
+  border: 1px solid #4f5b69;
+
+  border-color: hsl(0, 0%, 17%);
+  background-color: hsl(0, 0%, 7%);
+}
+
+.chart-box:hover {
+  /* dark mode */
+  border-color: rgb((79, 91, 105) / 0.15);
+  background-color: rgb(255 255 255 / 4%);
+}
+
+
+@keyframes slow-pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.slow-pulse {
+  animation: slow-pulse 15s infinite;
+}
+
+.project-wrapper .project-card {
+  border-radius: 4px;
+}
+
+@media (max-width: 650px) {
+  .main-dashboard-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+
+  #projects .project-wrapper {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+@media (max-width: 1010px) {
+  .chart-box {
+    margin-bottom: 20px;
+  }
+}
+
+#projects .project-wrapper a.project-card {
+  display: block;
+  /* position: relative; */
+  height: 100%;
+  padding: 30px 20px;
+  /* margin-left: 48px; */
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 7px 25px 0 rgba(0, 0, 0, 0.03),
+    0 4px 12px 0 rgba(0, 0, 0, 0.03);
+  transition-property: box-shadow, transform;
+  transition-duration: 0.4s;
+  transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  /* color: rgba(0, 0, 0, 0.85); */
+  overflow: hidden;
+  width: 100%;
+  text-decoration: none;
+}
+
+#projects .project-wrapper a.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 7px 25px 0 rgba(0, 0, 0, 0.03),
+    0 4px 30px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+
+.dark #projects .project-wrapper a.project-card {
+  border: 1px solid #4f5b69;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+
+  z-index: 40;
+}
+
+@media (max-width: 1366px) {
+  .main-dashboard-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+}
+
+.three-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 16px;
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+
+.panel {
+  margin-bottom: 20px;
+  /* background-color: #ffffff; */
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.panel-default {
+  border-color: #dddddd;
+}
+
+.panel-default > .panel-heading {
+  color: #333333;
+  /* background-color: #f5f5f5; */
+  border-color: #dddddd;
+}
+
+.white-well {
+  /* background-color: #fff; */
+  min-height: 20px;
+  padding: 30px 40px;
+  border-radius: 6px;
+  border: 2px solid #d1d9e1;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.dark .white-well {
+  border: 2px solid #4f5b69;
+}
+
+.main-dashboard .chart-box-title {
+  color: #fff;
+}
+
+.custom-tooltip {
+  background-color: hsl(0, 0%, 7%);
+  border-color: hsl(0, 0%, 17%);
+  color: #fff;
+  z-index: 5000000;
+  border-radius: 7px;
+}
+
+.custom-tooltip-header {
+  font-weight: 500;
+  font-size: 13px;
+  padding: 5px;
+}
+
+.chart-box-sub-title {
+  color: #8a8e91;
+  padding-left: 3px;
+}
+
+.chart-x-axis {
+  color: #8a8e91 !important;
+  font-size: 10px;
+  font-family: sans-serif;
+}

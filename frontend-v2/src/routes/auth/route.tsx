@@ -4,7 +4,7 @@ export const Route = createFileRoute("/auth")({
   component: RouteComponent,
 });
 
-export default async function RouteComponent() {
+export default function RouteComponent() {
   return (
     <div className="min-h-screen bg-background">
       <div className="flex flex-col min-h-screen">

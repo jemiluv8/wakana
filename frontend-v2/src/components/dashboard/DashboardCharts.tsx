@@ -9,7 +9,7 @@ interface DashboardChartsProps {
   data: SummariesApiResponse;
 }
 
-export async function DashboardCharts({ data }: DashboardChartsProps) {
+export function DashboardCharts({ data }: DashboardChartsProps) {
   return (
     <div className="my-5 space-y-5">
       <div className="charts-grid">

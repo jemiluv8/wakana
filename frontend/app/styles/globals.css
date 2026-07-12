@@ -334,12 +334,6 @@
   z-index: 40;
 }
 
-.charts-grid-top {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 3 columns */
-  gap: 16px;
-}
-
 @keyframes slow-pulse {
   0% {
     opacity: 1;
@@ -359,6 +353,12 @@
 .three-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 16px;
+}
+
+.charts-grid-top {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 3 columns */
   gap: 16px;
 }
 

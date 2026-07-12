@@ -12,7 +12,7 @@ export const Route = createFileRoute("/auth/login")({
 //   description: "Login to your account",
 // };
 
-export default async function RouteComponent() {
+export default function RouteComponent() {
   return (
     <div className="w-full">
       {/* Header */}

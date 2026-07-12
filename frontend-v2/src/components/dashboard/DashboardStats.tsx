@@ -9,7 +9,7 @@ interface DashboardStatsProps {
   data: SummariesApiResponse;
 }
 
-export async function DashboardStats({
+export function DashboardStats({
   searchParams,
   data,
 }: DashboardStatsProps) {

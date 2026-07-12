@@ -13,7 +13,7 @@ import {
 
 import { EmptyChartWrapper } from "./EmptyChartWrapper";
 import { DailyAverage, SummariesResponse } from "~/types";
-import { convertSecondsToHoursAndMinutes } from "~/lib/utils";
+import { cn, convertSecondsToHoursAndMinutes } from "~/lib/utils";
 
 export interface WPieChartDataItem {
   name: string;
@@ -141,7 +141,7 @@ export function WGaugeChart({ data, dailyAverage }: WGaugeChartProps) {
 
   return (
     <>
-      <div className="d-flex">
+      <div className="flex justify-center items-baseline">
         <div className="chart-box-title">
           {convertSecondsToHoursAndMinutes(todaysTotal)}
           <span className="chart-box-sub-title">Today</span>
@@ -151,14 +151,14 @@ export function WGaugeChart({ data, dailyAverage }: WGaugeChartProps) {
         <ResponsiveContainer
           width="100%"
           height={160}
-          className="flex justify-around align-middle"
+          className="flex"
         >
           <PieChart>
             <Pie
               dataKey="value"
               isAnimationActive={true}
               data={change > 0 ? [gaugeData[0]] : gaugeData}
-              cx="50%"
+              cx="30%"
               cy="75%"
               width="100%"
               alignmentBaseline="hanging"

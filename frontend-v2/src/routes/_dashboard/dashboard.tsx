@@ -1,18 +1,19 @@
 import React, { Suspense } from "react";
-import { useApiQuery } from "~/hooks/useApiQuery";
+import { format, subDays } from "date-fns";
 import { SummariesApiResponse } from "~/types";
+import { useApiQuery } from "~/hooks/useApiQuery";
+import { Spinner } from "~/components/custom/spinner/spinner";
+import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { DashboardStats } from "~/components/dashboard/DashboardStats";
-import { DashboardTopCharts } from "~/components/dashboard/DashboardTopCharts";
 import { DashboardCharts } from "~/components/dashboard/DashboardCharts";
 import { DashboardProjects } from "~/components/dashboard/DashboardProjects";
-import { format, subDays } from "date-fns";
-import { createFileRoute, useSearch } from "@tanstack/react-router";
+import { DashboardTopCharts } from "~/components/dashboard/dashboard-top-charts";
 import { ChartsSkeleton, ProjectsSkeleton, StatsSkeleton, TopChartsSkeleton } from "~/components/custom/section-skeleton/section-skeleton";
 
 export const Route = createFileRoute("/_dashboard/dashboard")({
+  loader: Spinner,
   component: RouteComponent,
 });
-
 
 export default function RouteComponent() {
   const { start: rawStart, end: rawEnd } = useSearch({ strict: false }) as any;

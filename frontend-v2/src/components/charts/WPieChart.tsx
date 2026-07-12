@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useCallback, useState } from "react";
 import {
   Cell,
@@ -11,14 +9,9 @@ import {
   Tooltip as RechartsTooltip,
 } from "recharts";
 
-import { useMediaQuery } from "@/hooks/use-media-query";
-import {
-  convertSecondsToHoursAndMinutes,
-  getEntityColor,
-  getMachineColor,
-} from "@/lib/utils";
-
 import { EmptyChartWrapper } from "./EmptyChartWrapper";
+import { convertSecondsToHoursAndMinutes, getEntityColor, getMachineColor } from "~/lib/utils";
+import { useMediaQuery } from "~/hooks/use-media-query";
 
 export interface WPieChartDataItem {
   key: string;

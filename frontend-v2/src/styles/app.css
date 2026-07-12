@@ -4,6 +4,7 @@
 @import "@fontsource-variable/jetbrains-mono";
 @import "@fontsource-variable/rubik";
 @import "@fontsource-variable/inter";
+@import "./charts.css";
 
 /* Local font */
 @font-face {
