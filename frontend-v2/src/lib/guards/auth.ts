@@ -1,4 +1,4 @@
-import { createMiddleware } from "@tanstack/react-start";
+import { createMiddleware, createServerFn } from "@tanstack/react-start";
 import { redirect } from "@tanstack/react-router";
 import { queryOptions } from "@tanstack/react-query";
 import { apiFetch } from "../api";
@@ -11,15 +11,22 @@ export const meQueryOptions = queryOptions({
   staleTime: 1000 * 60 * 60, // 1 hour
 });
 
-export const authMiddleware = createMiddleware().server(
-  async ({ next, request }) => {
+function hasCookie(request: Request) {
     const cookieHeader = request.headers.get("cookie");
 
     const hasAuthCookie = cookieHeader
       ?.split(";")
       .some((cookie) => cookie.trim().startsWith("wakapi_auth="));
 
-    if (!hasAuthCookie) {
+    
+    console.log('hasAuthCookie', hasAuthCookie)
+
+    return hasAuthCookie
+}
+
+export const authMiddleware = createMiddleware().server(
+  async ({ next, request }) => {
+    if (!hasCookie(request)) {
       throw redirect({
         to: "/auth/login",
       });
@@ -28,3 +35,17 @@ export const authMiddleware = createMiddleware().server(
     return next()
   },
 );
+
+export const isAuthenticated = createMiddleware().server(
+  async ({ next, request }) => {
+    const authenticated = hasCookie(request);
+    return next({ context: { authenticated }})
+  },
+)
+
+export const getAuthenticated = createServerFn({
+  method: "GET",
+}).handler(async () => {
+  const request = new Request(""); // replaced below
+  return hasCookie(request);
+});

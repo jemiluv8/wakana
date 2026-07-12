@@ -1,7 +1,4 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-// import "@fontsource/rubik/500.css";
-
-// import { redirectIfLoggedIn } from "@/actions";
+import { createFileRoute } from "@tanstack/react-router";
 import FeatureSection from "~/components/hero/features-section";
 import HowItWorks from "~/components/hero/how-it-works";
 import { Hero } from "~/components/hero/hero";
@@ -19,17 +16,7 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
-
-  beforeLoad: async () => {
-    const isLoggedIn = false;
-
-    if (isLoggedIn) {
-      throw redirect({
-        to: "/posts",
-      });
-    }
-  },
-
+  // middleware: [],
   component: HomePage,
 });
 

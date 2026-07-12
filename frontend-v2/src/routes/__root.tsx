@@ -66,7 +66,7 @@ export const Route = createRootRouteWithContext<{
       },
       {
         rel: "preconnect",
-        href: "https://fonts.gstatic.com"
+        href: "https://fonts.gstatic.com",
       },
       {
         rel: "stylesheet",
@@ -97,7 +97,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
 
-      <body className={cn("min-h-screen bg-background font-google-sans-flex antialiased text-foreground")} style={{ fontFamily: "'Google Sans Flex', system-ui, sans-serif" }}>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-google-sans-flex antialiased text-foreground",
+        )}
+        style={{ fontFamily: "'Google Sans Flex', system-ui, sans-serif" }}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
