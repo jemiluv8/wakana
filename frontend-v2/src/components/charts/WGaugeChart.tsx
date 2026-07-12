@@ -141,7 +141,7 @@ export function WGaugeChart({ data, dailyAverage }: WGaugeChartProps) {
 
   return (
     <>
-      <div className="flex justify-center items-baseline">
+      <div className="flex justify-center items-baseline mt-4">
         <div className="chart-box-title">
           {convertSecondsToHoursAndMinutes(todaysTotal)}
           <span className="chart-box-sub-title">Today</span>
@@ -151,15 +151,15 @@ export function WGaugeChart({ data, dailyAverage }: WGaugeChartProps) {
         <ResponsiveContainer
           width="100%"
           height={160}
-          className="flex"
+          className="flex justify-middle"
         >
           <PieChart>
             <Pie
               dataKey="value"
               isAnimationActive={true}
               data={change > 0 ? [gaugeData[0]] : gaugeData}
-              cx="30%"
-              cy="75%"
+              cx="50%"
+              cy="70%"
               width="100%"
               alignmentBaseline="hanging"
               outerRadius={85}
@@ -191,7 +191,7 @@ export function WGaugeChart({ data, dailyAverage }: WGaugeChartProps) {
           </PieChart>
         </ResponsiveContainer>
       </EmptyChartWrapper>
-      <div className="d-flex " style={{ marginTop: "-22px" }}>
+      <div className="flex justify-center" style={{ marginTop: "-22px" }}>
         <div className="chart-box-title flex flex-col" style={{ gap: 0 }}>
           <span className="text">
             {dailyAverage?.text}
