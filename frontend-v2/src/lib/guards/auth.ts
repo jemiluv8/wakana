@@ -1,8 +1,10 @@
-import { createMiddleware, createServerFn } from "@tanstack/react-start";
-import { redirect } from "@tanstack/react-router";
 import { queryOptions } from "@tanstack/react-query";
-import { apiFetch } from "../api";
+import { redirect } from "@tanstack/react-router";
+import { createMiddleware, createServerFn } from "@tanstack/react-start";
+
 import { User } from "~/types";
+
+import { apiFetch } from "../api";
 
 export const meQueryOptions = queryOptions({
   queryKey: ["auth", "me"],
@@ -31,14 +33,14 @@ export const authMiddleware = createMiddleware().server(
     }
 
     return next();
-  },
+  }
 );
 
 export const isAuthenticated = createMiddleware().server(
   async ({ next, request }) => {
     const authenticated = hasCookie(request);
     return next({ context: { authenticated } });
-  },
+  }
 );
 
 export const getAuthenticated = createServerFn({

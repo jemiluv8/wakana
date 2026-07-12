@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import {
   Clock,
   Code,
@@ -8,7 +9,6 @@ import {
   LogIn,
   Settings,
 } from "lucide-react";
-import { Link } from "@tanstack/react-router";
 
 type Links = {
   name: string;

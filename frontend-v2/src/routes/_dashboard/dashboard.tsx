@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+
 import { useAuth } from "~/lib/providers/auth-provider";
 
 export const Route = createFileRoute("/_dashboard/dashboard")({

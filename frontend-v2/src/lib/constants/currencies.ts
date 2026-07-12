@@ -741,7 +741,7 @@ export const CURRENCY_OPTIONS = CURRENCIES.map(
   ({ id, name, symbol }: Currency) => ({
     value: id,
     label: `${symbol} - ${name}`,
-  }),
+  })
 );
 
 export function getCurrencySymbol(id: string) {

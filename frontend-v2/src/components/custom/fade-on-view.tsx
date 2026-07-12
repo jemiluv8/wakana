@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+
 import { cn } from "~/lib/utils";
 
 interface FadeOnViewProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -40,7 +41,7 @@ export function FadeOnView({
         "data-[inview=false]:translate-y-10",
         "data-[inview=true]:opacity-100",
         "data-[inview=true]:translate-y-0",
-        className,
+        className
       )}
       style={{
         transitionDelay: `${delay ?? 0}s`,

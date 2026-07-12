@@ -1,4 +1,5 @@
 import { getAuthenticated } from "~/lib/guards/auth";
+
 import { FadeOnView } from "../custom/fade-on-view";
 import PublicFooter from "../fragments/sections/components/public-footer";
 import { MainHeader } from "./main-header";

@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
+
 import { LeaderBoardTable } from "~/components/custom/leaderboard";
 import { Spinner } from "~/components/custom/spinner/spinner";
-import { LeaderboardApiResponse } from "~/types";
 import { apiFetch } from "~/lib/api";
-import { z } from "zod";
+import { LeaderboardApiResponse } from "~/types";
 
 const productSearchSchema = z.object({
   language: z.string().optional(),

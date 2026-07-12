@@ -1,4 +1,5 @@
 import { FadeOnView } from "~/components/custom/fade-on-view";
+
 import InstallationInstructions from "./installation-instructions";
 
 export default function HowItWorks() {

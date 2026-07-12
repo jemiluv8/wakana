@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import {
   BarChart3,
   Clock,
@@ -8,9 +9,9 @@ import {
   Trophy,
   Users,
 } from "lucide-react";
-import { Link } from "@tanstack/react-router";
 
 import { FadeOnView } from "~/components/custom/fade-on-view";
+
 import { FeatureCard } from "./feature-card";
 import { StatCard } from "./start-card";
 

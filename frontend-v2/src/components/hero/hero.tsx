@@ -1,9 +1,10 @@
-import { SparklesIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { SparklesIcon } from "lucide-react";
 
 import { FadeOnView } from "~/components/custom/fade-on-view";
-import { Badge } from "../ui/badge";
 import { cn } from "~/lib/utils";
+
+import { Badge } from "../ui/badge";
 import styles from "./hero.module.css";
 
 export function Hero() {
@@ -19,7 +20,7 @@ export function Hero() {
         <FadeOnView delay={0.2}>
           <h1
             className={cn(
-              "sm:flex-center gap-4 py-4 sm:gap-4 md:py-6 lg:text-7xl font-semibold leading-5 tracking-tighter text-secondary-foreground",
+              "sm:flex-center gap-4 py-4 sm:gap-4 md:py-6 lg:text-7xl font-semibold leading-5 tracking-tighter text-secondary-foreground"
             )}
           >
             Observe your work in real time
@@ -45,7 +46,7 @@ export function Hero() {
         delay={1}
         className={cn(
           styles.heroBorderAnimation,
-          "mx-auto mt-16 max-w-screen-xl rounded-2xl p-px",
+          "mx-auto mt-16 max-w-screen-xl rounded-2xl p-px"
         )}
         style={{
           maskImage: "linear-gradient(to bottom, black 30%, transparent 90%)",
@@ -55,7 +56,7 @@ export function Hero() {
         <div
           className={cn(
             "rounded-[1rem] overflow-hidden p-2 z-10",
-            "bg-background",
+            "bg-background"
           )}
         >
           <div className="z-10">

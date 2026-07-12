@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, redirect, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+
 import { Spinner } from "~/components/custom/spinner/spinner";
 import { authMiddleware, meQueryOptions } from "~/lib/guards/auth";
 import { AuthProvider } from "~/lib/providers/auth-provider";

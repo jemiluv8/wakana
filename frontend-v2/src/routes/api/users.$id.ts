@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import axios from "redaxios";
+
 import type { User } from "../../utils/users";
 
 export const Route = createFileRoute("/api/users/$id")({
@@ -9,7 +10,7 @@ export const Route = createFileRoute("/api/users/$id")({
         console.info(`Fetching users by id=${params.id}... @`, request.url);
         try {
           const res = await axios.get<User>(
-            "https://jsonplaceholder.typicode.com/users/" + params.id,
+            "https://jsonplaceholder.typicode.com/users/" + params.id
           );
           return Response.json({
             id: res.data.id,

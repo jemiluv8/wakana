@@ -1,16 +1,15 @@
 import { Check, Copy } from "lucide-react";
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // import { ApiClient } from "@/actions/api";
 // import { Button } from "@/components/ui/button";
 // import useSession from "@/lib/session/use-session";
-
 // import { Spinner } from "./spinner/spinner";
-import { toast } from "sonner";
+import { VITE_PUBLIC_API_URL } from "~/config";
+
 import { Spinner } from "../custom/spinner/spinner";
 import { Button } from "../ui/button";
-import { VITE_PUBLIC_API_URL } from "~/config";
 
 interface ConfigDisplayProps {
   className?: string;

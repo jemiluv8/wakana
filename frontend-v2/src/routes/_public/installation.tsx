@@ -5,6 +5,7 @@ export const Route = createFileRoute("/_public/installation")({
 });
 
 import { Clock, Code, Download, Gauge, Rocket, Settings } from "lucide-react";
+
 import { FadeOnView } from "~/components/custom/fade-on-view";
 
 // import { Installation } from "~/components/installation";

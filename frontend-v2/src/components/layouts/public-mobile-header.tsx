@@ -1,9 +1,10 @@
-import { Menu, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { Menu, X } from "lucide-react";
 import React from "react";
 
-import { NavItems } from "../fragments/sections/components/nav-items";
 import { Button } from "~/components/ui/button";
+
+import { NavItems } from "../fragments/sections/components/nav-items";
 
 export function OverlayNav() {
   const [isOpen, setIsOpen] = React.useState(false);

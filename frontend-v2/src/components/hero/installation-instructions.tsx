@@ -1,6 +1,7 @@
 import { ExternalLink } from "lucide-react";
 
 import { FadeOnView } from "~/components/custom/fade-on-view";
+
 import { Installation } from "./installation";
 
 export default function InstallationInstructions() {

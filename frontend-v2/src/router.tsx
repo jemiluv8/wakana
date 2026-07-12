@@ -1,11 +1,11 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
-import { routeTree } from "./routeTree.gen";
+import { FastResponse } from "srvx";
+
 import { DefaultCatchBoundary } from "./components/DefaultCatchBoundary";
 import { NotFound } from "./components/NotFound";
-
-import { FastResponse } from "srvx";
+import { routeTree } from "./routeTree.gen";
 import { AuthContext } from "./types";
 globalThis.Response = FastResponse;
 

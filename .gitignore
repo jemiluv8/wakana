@@ -20,3 +20,5 @@ notes
 wakana
 coverage/*
 *config.yml
+# Lint
+.lint/tmp/

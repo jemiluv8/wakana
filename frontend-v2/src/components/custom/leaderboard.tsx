@@ -1,10 +1,11 @@
-import { Crown } from "lucide-react";
 import { useLocation } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
+import { Crown } from "lucide-react";
 
 import { COLORS } from "~/lib/constants";
 import { cn, convertSecondsToHoursAndMinutes } from "~/lib/utils";
+
 import { LeaderboardApiResponse } from "../../types";
-import { Link } from "@tanstack/react-router";
 
 function getLanguageColor(language: string): string {
   const color = COLORS.languages?.[language];
@@ -34,7 +35,7 @@ function LanguageBadge({
       className={cn(
         "inline-flex items-center rounded font-medium transition-opacity text-white",
         compact ? "px-1.5 py-0.5 text-[10px]" : "px-2 py-0.5 text-xs",
-        href && "hover:opacity-80 cursor-pointer",
+        href && "hover:opacity-80 cursor-pointer"
       )}
       style={{ backgroundColor: colorClass }}
       title={language} // Show full name on hover
@@ -253,7 +254,7 @@ export function LeaderBoardTable({
                         key={idx}
                         language={lang.name}
                         time={convertSecondsToHoursAndMinutes(
-                          lang.total_seconds,
+                          lang.total_seconds
                         )}
                         href={`${pathname}?language=${encodeURIComponent(lang.name)}`}
                         compact={false}

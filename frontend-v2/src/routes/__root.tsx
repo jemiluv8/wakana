@@ -1,26 +1,24 @@
 // src/routes/__root.tsx
-import * as React from "react";
-import {
-  HeadContent,
-  Link,
-  Outlet,
-  Scripts,
-  createRootRouteWithContext,
-} from "@tanstack/react-router";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import {
+  createRootRouteWithContext,
+  HeadContent,
+  Outlet,
+  Scripts,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import * as React from "react";
 
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
-import { ThemeProvider } from "~/providers/theme-provider";
 import { Toaster } from "~/components/ui/sonner";
-
-import appCss from "~/styles/app.css?url";
-import { seo } from "~/utils/seo";
-import { cn } from "~/lib/utils";
 import { siteConfig } from "~/config/site";
+import { cn } from "~/lib/utils";
+import { ThemeProvider } from "~/providers/theme-provider";
+import appCss from "~/styles/app.css?url";
 import { AuthContext } from "~/types";
+import { seo } from "~/utils/seo";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -99,7 +97,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
       <body
         className={cn(
-          "min-h-screen bg-background font-google-sans-flex antialiased text-foreground",
+          "min-h-screen bg-background font-google-sans-flex antialiased text-foreground"
         )}
         style={{ fontFamily: "'Google Sans Flex', system-ui, sans-serif" }}
       >

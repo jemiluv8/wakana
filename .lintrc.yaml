@@ -1,0 +1,15 @@
+linters:
+  enabled:
+    - stylelint
+ignore:
+  - node_modules/**
+  - dist/**
+  - build/**
+  - coverage/**
+  - .git/**
+fix:
+  enabled: true
+  strategy: formatter-first
+hooks:
+  timeout: 60
+  skip_env: LINT_SKIP

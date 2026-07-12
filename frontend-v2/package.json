@@ -8,7 +8,7 @@
     "build": "vite build && tsc --noEmit",
     "preview": "vite preview",
     "start": "pnpx srvx --prod -s ../client dist/server/server.js",
-    "lint": "pnpx lint",
+    "lint": "pnpx lint .",
     "lint:fix": "eslint . --fix",
     "prettify": "prettier --write .",
     "type-check": "tsc --noEmit"

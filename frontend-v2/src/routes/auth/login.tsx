@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+
 import { OTPSignIn } from "~/components/fragments/auth/otp-sign-in";
 import { SocialLogin } from "~/components/fragments/auth/social-login";
 

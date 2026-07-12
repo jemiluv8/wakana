@@ -1,23 +1,22 @@
-import * as React from "react";
-import { createServerFn } from "@tanstack/react-start";
 import { useForm } from "@tanstack/react-form";
+import { useNavigate } from "@tanstack/react-router";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+import * as React from "react";
+import { toast } from "sonner";
 import { z } from "zod";
 
-// import { toast } from "~/components/ui/use-toast";
-import { PKCEGenerator, PKCEResult } from "~/lib/oauth/pkce";
-import { cn } from "~/lib/utils";
-import { toast } from "sonner";
+import { Icons } from "~/components/icons";
+import { Button, buttonVariants } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "~/components/ui/input-otp";
-import { Input } from "~/components/ui/input";
-import { Button, buttonVariants } from "~/components/ui/button";
-import { Icons } from "~/components/icons";
-import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { useApiMutation } from "~/hooks";
-import { useNavigate } from "@tanstack/react-router";
+// import { toast } from "~/components/ui/use-toast";
+import { PKCEGenerator, PKCEResult } from "~/lib/oauth/pkce";
+import { cn } from "~/lib/utils";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -66,7 +65,7 @@ export function OTPSignIn({ className }: Props) {
           description: "Failed to verify OTP",
         });
       },
-    },
+    }
   );
 
   React.useEffect(() => {

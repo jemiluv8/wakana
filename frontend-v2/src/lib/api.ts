@@ -5,7 +5,7 @@ import { ApiError } from "~/types";
 
 export async function apiFetch<T>(
   url: string,
-  options?: RequestInit,
+  options?: RequestInit
 ): Promise<T> {
   const full_url = `${VITE_PUBLIC_API_URL}${url}`;
   const response = await fetch(full_url, {
@@ -28,7 +28,7 @@ export async function apiFetch<T>(
         ? String(data.message)
         : "Something went wrong",
       response.status,
-      data,
+      data
     );
   }
 

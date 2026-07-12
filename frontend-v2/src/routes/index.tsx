@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+
 import FeatureSection from "~/components/hero/features-section";
-import HowItWorks from "~/components/hero/how-it-works";
 import { Hero } from "~/components/hero/hero";
+import HowItWorks from "~/components/hero/how-it-works";
 import { MainLayout } from "~/components/layouts/main-layout";
 
 export const Route = createFileRoute("/")({
