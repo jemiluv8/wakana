@@ -13,7 +13,7 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   plugins: [
-    basicSsl(),
+    // basicSsl(),
     tailwindcss(), tanstackStart(), viteReact(),
     nitro({ preset: 'aws_amplify' }),
   ],
