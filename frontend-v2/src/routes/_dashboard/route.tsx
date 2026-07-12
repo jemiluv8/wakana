@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 import { Spinner } from "~/components/custom/spinner/spinner";
+import { DashboardLayout } from "~/components/layouts/dashboard-layout";
 import { authMiddleware, meQueryOptions } from "~/lib/guards/auth";
 import { AuthProvider } from "~/lib/providers/auth-provider";
 
@@ -31,7 +32,9 @@ export function RootComponent() {
 
   return (
     <AuthProvider user={data.user}>
-      <Outlet />
+      <DashboardLayout>
+        <Outlet />
+      </DashboardLayout>
     </AuthProvider>
   );
 }

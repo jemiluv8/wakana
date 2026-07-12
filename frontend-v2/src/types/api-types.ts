@@ -215,8 +215,10 @@ export interface RunningTotal {
 
 export interface User {
   id: string;
+  avatar: string;
   display_name: string;
   full_name: string;
+  name: string;
   email: string;
   is_email_public: boolean;
   is_email_confirmed: boolean;
