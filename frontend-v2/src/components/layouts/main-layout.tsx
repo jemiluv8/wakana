@@ -7,18 +7,15 @@ import { PublicMobileHeader } from "./public-mobile-header";
 export function MainLayout({ children }: { children: React.ReactNode }) {
   const authenticated = getAuthenticated();
   return (
-      <div className="flex flex-col min-h-screen font-rubik antialiased">
-        <MainHeader isLoggedIn={!!authenticated} />
-        <PublicMobileHeader />
+    <div className="flex flex-col min-h-screen font-rubik antialiased">
+      <MainHeader isLoggedIn={!!authenticated} />
+      <PublicMobileHeader />
 
-        <main className="m-auto md:mx-14 flex flex-1 flex-col px-4 md:px-14 align-middle mb-22">
-          <FadeOnView>
-            {" "}
-            {children}
-          </FadeOnView>
-        </main>
+      <main className="m-auto md:mx-14 flex flex-1 flex-col px-4 md:px-14 align-middle mb-22">
+        <FadeOnView> {children}</FadeOnView>
+      </main>
 
-        <PublicFooter />
-      </div>
-      )
+      <PublicFooter />
+    </div>
+  );
 }

@@ -1,8 +1,8 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/_public/plugins')({
+export const Route = createFileRoute("/_public/plugins")({
   component: RouteComponent,
-})
+});
 
 import { CheckCircle, Code, Download, ExternalLink } from "lucide-react";
 
@@ -128,9 +128,7 @@ export default function RouteComponent() {
               >
                 <div className="flex items-center gap-3 mb-3">
                   <span className="text-3xl">{plugin.icon}</span>
-                  <h3 className="font-semibold text-lg">
-                    {plugin.name}
-                  </h3>
+                  <h3 className="font-semibold text-lg">{plugin.name}</h3>
                 </div>
                 <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
                   {plugin.description}
@@ -208,13 +206,8 @@ export default function RouteComponent() {
                   Configure the plugin with your Wakana API settings
                 </p>
                 <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">
-                  Follow our{" "}
-                  <Link
-                    to="/installation"
-                  >
-                    setup guide
-                  </Link>{" "}
-                  for detailed configuration instructions
+                  Follow our <Link to="/installation">setup guide</Link> for
+                  detailed configuration instructions
                 </p>
               </div>
             </div>

@@ -12,16 +12,14 @@ export const Route = createFileRoute("/_dashboard")({
 });
 
 export function RootComponent() {
-  const {
-    data: data,
-    isLoading,
-    isError,
-  } = useQuery(meQueryOptions);
+  const { data: data, isLoading, isError } = useQuery(meQueryOptions);
 
   if (isLoading) {
-    return (<div>
-      <Spinner />
-    </div>);
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
   }
 
   if (isError || !data) {

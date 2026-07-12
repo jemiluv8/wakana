@@ -1,11 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/_public/installation')({
+export const Route = createFileRoute("/_public/installation")({
   component: RouteComponent,
-})
+});
 
 import { Clock, Code, Download, Gauge, Rocket, Settings } from "lucide-react";
-import { FadeOnView } from '~/components/custom/fade-on-view';
+import { FadeOnView } from "~/components/custom/fade-on-view";
 
 // import { Installation } from "~/components/installation";
 
@@ -105,9 +105,7 @@ export default function RouteComponent() {
                 className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 text-primary-foreground rounded-lg px-4 py-2"
               >
                 <feature.icon className="h-4 w-4" />
-                <span className="text-sm font-medium">
-                  {feature.title}
-                </span>
+                <span className="text-sm font-medium">{feature.title}</span>
               </div>
             ))}
           </div>
@@ -129,12 +127,8 @@ export default function RouteComponent() {
 
               {/* Content */}
               <div className="flex-1">
-                <h3 className="text-lg font-semibold mb-2">
-                  {step.title}
-                </h3>
-                <p className="mb-4">
-                  {step.description}
-                </p>
+                <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
+                <p className="mb-4">{step.description}</p>
 
                 {/* Action button */}
                 {step.action && (
@@ -208,4 +202,3 @@ export default function RouteComponent() {
     </div>
   );
 }
-

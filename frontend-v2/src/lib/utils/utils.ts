@@ -14,7 +14,7 @@ dayjs.extend(relativeTime);
 
 export const preserveNewLine = (
   text: string | undefined | null,
-  fallback = ""
+  fallback = "",
 ) => {
   if (!text) return fallback;
   return text.replace(/\n/g, "<br />");
@@ -26,7 +26,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function transparentize(
   value: string | number[] | Color | RGBA,
-  opacity?: number | undefined
+  opacity?: number | undefined,
 ) {
   const alpha = opacity === undefined ? 0.5 : 1 - opacity;
   return colorLib(value).alpha(alpha).rgbString();
@@ -40,7 +40,7 @@ export function makePieChartDataFromRawApiResponse(
     | "operating_systems"
     | "languages"
     | "machines"
-    | "projects"
+    | "projects",
 ) {
   const pieData: Record<string, number> = {};
   for (const response of responses) {
@@ -188,7 +188,7 @@ export function getRandomBrightColor2(format = "hex") {
 
 export function convertToHoursAndMinutes(
   valueInMilliSeconds: number,
-  verbose = false
+  verbose = false,
 ) {
   const value = valueInMilliSeconds / 1000;
   const minutes = Math.floor(value % 60);
@@ -202,7 +202,7 @@ export function convertToHoursAndMinutes(
 
 export function convertSecondsToHoursAndMinutes(
   value: number,
-  verbose = false
+  verbose = false,
 ) {
   if (value === 0 || !value) {
     return "0h 0m";
@@ -253,19 +253,19 @@ export function prepareDailyCodingData(arg: SummariesResponse) {
       ...prev,
       total: prev.total + curr.total_seconds,
     }),
-    { name, total: 0, date }
+    { name, total: 0, date },
   );
   return amalgamated;
 }
 
 export function normalizeChartData(
-  rawChartData: Record<string, number>[]
+  rawChartData: Record<string, number>[],
 ): [any, string[]] {
   const projects = new Set<string>();
   rawChartData.forEach((d) =>
     Object.keys(d).forEach(
-      (key) => !["name", "total"].includes(key) && projects.add(key)
-    )
+      (key) => !["name", "total"].includes(key) && projects.add(key),
+    ),
   );
   for (const data of rawChartData) {
     for (const projectKey of Array.from(projects)) {
@@ -281,13 +281,13 @@ export function getUniqueProjects(
   rawChartData: {
     name: string;
     total: number;
-  }[]
+  }[],
 ): string[] {
   const projects = new Set<string>();
   rawChartData.forEach((d) =>
     Object.keys(d).forEach(
-      (key) => !["name", "total", "date"].includes(key) && projects.add(key)
-    )
+      (key) => !["name", "total", "date"].includes(key) && projects.add(key),
+    ),
   );
   return Array.from(projects);
 }
@@ -298,12 +298,12 @@ function getDaySummary(categories: Category[]) {
       ...prev,
       [cur.name]: cur.total_seconds,
     }),
-    {}
+    {},
   );
 }
 
 export function makeCategorySummaryData(
-  rawSummaries: SummariesResponse[]
+  rawSummaries: SummariesResponse[],
 ): [any[], Record<string, any>] {
   const groupedTotals: Record<string, any> = {};
   const grouped = rawSummaries.map((summary: SummariesResponse) => {
@@ -325,7 +325,7 @@ export function makeCategorySummaryData(
 
 export function mergeDailySummary(
   first: Record<string, number>,
-  second: Record<string, number>
+  second: Record<string, number>,
 ) {
   const result: Record<string, number> = {};
   Object.keys(first).forEach((key) => {
@@ -336,7 +336,7 @@ export function mergeDailySummary(
 }
 
 export function makeCategorySummaryDataForWeekdays(
-  rawSummaries: SummariesResponse[]
+  rawSummaries: SummariesResponse[],
 ): [any[], Record<string, any>] {
   const groupedTotals: Record<string, any> = {};
   const summaryByDay: Record<string, any> = {};
@@ -361,7 +361,7 @@ export function makeCategorySummaryDataForWeekdays(
     // Calculate total for this day
     const total = Object.values(value as Record<string, number>).reduce(
       (sum, val) => sum + val,
-      0
+      0,
     );
     return {
       name: key,
@@ -382,7 +382,7 @@ export function humanizeDate(dateString: string) {
 
 export const formatNumber = (
   value: number,
-  options?: Intl.NumberFormatOptions
+  options?: Intl.NumberFormatOptions,
 ) => {
   if (!options?.currency) {
     delete options?.currency;

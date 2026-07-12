@@ -24,9 +24,7 @@ export default function InstallationInstructions() {
               </li>
               <li className="text-lg">
                 Locate the{" "}
-                <code className="px-1 py-0.5 rounded">
-                  ~/.wakatime.cfg
-                </code>{" "}
+                <code className="px-1 py-0.5 rounded">~/.wakatime.cfg</code>{" "}
                 file on your computer. This is usually located in your root
                 folder. On windows you might have to show hidden files to see
                 it.
@@ -44,8 +42,8 @@ export default function InstallationInstructions() {
                 </a>
               </li>
               <li className="text-lg">
-                Update the{" "}
-                <code className="px-1 py-0.5 rounded">api_url</code> to{" "}
+                Update the <code className="px-1 py-0.5 rounded">api_url</code>{" "}
+                to{" "}
                 <code className="px-1 py-0.5 rounded">
                   https://api.wakana.io/api
                 </code>

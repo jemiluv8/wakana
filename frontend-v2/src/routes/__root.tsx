@@ -24,7 +24,7 @@ import { AuthContext } from "~/types";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
-  auth: AuthContext
+  auth: AuthContext;
 }>()({
   head: () => ({
     meta: [

@@ -1,8 +1,8 @@
-import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/auth')({
+export const Route = createFileRoute("/auth")({
   component: RouteComponent,
-})
+});
 
 export default async function RouteComponent() {
   return (
@@ -34,4 +34,3 @@ export default async function RouteComponent() {
     </div>
   );
 }
-

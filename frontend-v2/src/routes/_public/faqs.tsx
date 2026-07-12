@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 import {
   Accordion,
   AccordionContent,
@@ -7,9 +7,9 @@ import {
 } from "~/components/ui/accordion";
 import { TOP_FAQS } from "~/lib/constants/faqs";
 
-export const Route = createFileRoute('/_public/faqs')({
+export const Route = createFileRoute("/_public/faqs")({
   component: RouteComponent,
-})
+});
 
 // export const metadata = {
 //   title: "FAQ | Wakana",

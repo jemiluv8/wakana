@@ -6,22 +6,20 @@ import { User } from "~/types";
 
 export const meQueryOptions = queryOptions({
   queryKey: ["auth", "me"],
-  queryFn: () =>
-    apiFetch<{ user: User }>("/v1/auth/me"),
+  queryFn: () => apiFetch<{ user: User }>("/v1/auth/me"),
   staleTime: 1000 * 60 * 60, // 1 hour
 });
 
 function hasCookie(request: Request) {
-    const cookieHeader = request.headers.get("cookie");
+  const cookieHeader = request.headers.get("cookie");
 
-    const hasAuthCookie = cookieHeader
-      ?.split(";")
-      .some((cookie) => cookie.trim().startsWith("wakapi_auth="));
+  const hasAuthCookie = cookieHeader
+    ?.split(";")
+    .some((cookie) => cookie.trim().startsWith("wakapi_auth="));
 
-    
-    console.log('hasAuthCookie', hasAuthCookie)
+  console.log("hasAuthCookie", hasAuthCookie);
 
-    return hasAuthCookie
+  return hasAuthCookie;
 }
 
 export const authMiddleware = createMiddleware().server(
@@ -32,16 +30,16 @@ export const authMiddleware = createMiddleware().server(
       });
     }
 
-    return next()
+    return next();
   },
 );
 
 export const isAuthenticated = createMiddleware().server(
   async ({ next, request }) => {
     const authenticated = hasCookie(request);
-    return next({ context: { authenticated }})
+    return next({ context: { authenticated } });
   },
-)
+);
 
 export const getAuthenticated = createServerFn({
   method: "GET",

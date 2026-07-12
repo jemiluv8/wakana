@@ -99,7 +99,7 @@
   --font-default: "Cal Sans", system-ui, sans-serif;
   --font-google-sans-flex:
     "Google Sans Flex", system-ui, sans-serif; /* fallback unless you truly have it */
-    --font-sans: 'Inter Variable', sans-serif;
+  --font-sans: "Inter Variable", sans-serif;
 }
 
 :root {
@@ -155,7 +155,7 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0); 
+  --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);

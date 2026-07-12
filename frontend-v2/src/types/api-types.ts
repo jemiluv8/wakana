@@ -275,19 +275,18 @@ export interface LeaderboardApiResponse {
 }
 
 export class ApiError extends Error {
-  status: number
-  data?: unknown
+  status: number;
+  data?: unknown;
 
   constructor(message: string, status: number, data?: unknown) {
-    super(message)
-    this.name = "ApiError"
-    this.status = status
-    this.data = data
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.data = data;
   }
 }
 
 export interface AuthContext {
   userId: string | null;
-  user?: User; 
+  user?: User;
 }
-

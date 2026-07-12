@@ -1,4 +1,3 @@
-
 export function startGithubLoginFlow() {
   const { clientId, redirectUri, scope } = getGithubConfig();
   const state = crypto.randomUUID();

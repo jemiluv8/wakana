@@ -8,7 +8,7 @@ import {
   Trophy,
   Users,
 } from "lucide-react";
-import { Link } from '@tanstack/react-router'
+import { Link } from "@tanstack/react-router";
 
 import { FadeOnView } from "~/components/custom/fade-on-view";
 import { FeatureCard } from "./feature-card";

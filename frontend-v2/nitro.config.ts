@@ -1,9 +1,9 @@
-import { defineConfig  } from 'nitro'
+import { defineConfig } from "nitro";
 
 export default defineConfig({
-  preset: 'aws_amplify',
+  preset: "aws_amplify",
 
   awsAmplify: {
-    runtime: 'nodejs24.x',
+    runtime: "nodejs24.x",
   },
-})
+});
