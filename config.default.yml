@@ -48,6 +48,7 @@ app:
   # for details, check https://pkg.go.dev/time#Time.Format
   date_format: Mon, 02 Jan 2006
   datetime_format: Mon, 02 Jan 2006 15:04
+  wakana_api_key: "b545546f-69f1-4459-9248-cf3a2fa88cba"
 
 db:
   host: # leave blank when using sqlite3

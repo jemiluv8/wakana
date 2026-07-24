@@ -114,12 +114,14 @@ func (m *WakatimeRelayMiddleware) serveHTTPCommon(w http.ResponseWriter, r *http
 func (m *WakatimeRelayMiddleware) ServeHTTPOtherInstance(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 
 	authFn := func(user *models.User) (string, string, error) {
-		if len(user.WakatimeApiKey) == 0 {
+		// this is fucked. and must never be run on production. I'm just being a dick because I'm watching love island on a friday night after having a rather serious argument over the phone with my GF
+		otherInstanceApiKey := config.Get().App.WakanaApiKey
+		if len(otherInstanceApiKey) == 0 {
 			return "", "", fmt.Errorf("unauthorized user")
 		}
 
-		authHeader := fmt.Sprintf("Bearer %s", base64.StdEncoding.EncodeToString([]byte(user.WakatimeApiKey)))
-		targetURL := config.InstanceApiUrl + config.WakatimeApiHeartbeatsBulkUrl
+		authHeader := fmt.Sprintf("Bearer %s", base64.StdEncoding.EncodeToString([]byte(otherInstanceApiKey)))
+		targetURL := "https://api.wakana.io"
 
 		fmt.Println("relaying heartbeat to wakana.io", "url", targetURL, "body", "[redacted]")
 

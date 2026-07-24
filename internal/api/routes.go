@@ -46,14 +46,17 @@ func (api *APIv1) RegisterApiV1Routes(r *chi.Mux) {
 	})
 
 	// Heartbeat routes
-	r.Group(func(r chi.Router) {
-		r.Use(
+	r.Group(func(gr chi.Router) {
+		dumper := middlewares.NewPayloadDumper("./logs", "payloads.ndjson")
+
+		gr.Use(
 			middlewares.NewAuthenticateMiddleware(api.services.Users()).WithOptionalForMethods(http.MethodOptions).Handler,
 			customMiddleware.NewWakatimeRelayMiddleware().Handler,
+			dumper.Middleware,
 		)
 
 		if api.config.IsDev() {
-			r.Use(customMiddleware.NewWakatimeRelayMiddleware().OtherInstancesHandler)
+			gr.Use(customMiddleware.NewWakatimeRelayMiddleware().OtherInstancesHandler)
 		}
 
 		// Heartbeat endpoints - consolidated with common handler
@@ -69,8 +72,8 @@ func (api *APIv1) RegisterApiV1Routes(r *chi.Mux) {
 		}
 
 		for _, route := range heartbeatRoutes {
-			r.Post(route, api.ProcessHeartBeat)
-			r.Options(route, cors.AllowAll().HandlerFunc)
+			gr.Post(route, api.ProcessHeartBeat)
+			gr.Options(route, cors.AllowAll().HandlerFunc)
 		}
 	})
 
