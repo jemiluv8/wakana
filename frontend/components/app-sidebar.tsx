@@ -1,13 +1,11 @@
 import {
   FolderGit2,
-  Goal,
   Info,
   LayoutDashboardIcon,
   Quote,
   Receipt,
   Settings2,
   SquareActivity,
-  TrendingUpIcon,
   Trophy,
   UsersIcon,
 } from "lucide-react";
@@ -29,11 +27,6 @@ import { AppSidebarLogo } from "./app-sidebar-logo";
 import { NavUser } from "./nav-user";
 
 const SIMPLE_MENU_ITEMS = [
-  // {
-  //   title: "Blog",
-  //   url: "/blog",
-  //   icon: BookOpen,
-  // },
   {
     title: "FAQ",
     url: "/faqs",
@@ -71,24 +64,9 @@ export const MAIN_MENU_ITEMS = [
         icon: LayoutDashboardIcon,
       },
       {
-        title: "Analytics",
-        url: "/analytics",
-        icon: TrendingUpIcon,
-      },
-    ],
-  },
-  {
-    group: "Projects",
-    children: [
-      {
         title: "Projects",
         url: "/projects",
         icon: FolderGit2,
-      },
-      {
-        title: "Goals",
-        url: "/goals",
-        icon: Goal,
       },
     ],
   },
