@@ -11,7 +11,7 @@ import { DashboardTopCharts } from "~/components/dashboard/dashboard-top-charts"
 import { ChartsSkeleton, ProjectsSkeleton, StatsSkeleton, TopChartsSkeleton } from "~/components/custom/section-skeleton/section-skeleton";
 
 export const Route = createFileRoute("/_dashboard/dashboard")({
-  loader: Spinner,
+  pendingComponent: Spinner,
   component: RouteComponent,
 });
 
