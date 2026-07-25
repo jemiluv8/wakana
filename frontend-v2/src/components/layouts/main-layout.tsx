@@ -1,15 +1,12 @@
-import { getAuthenticated } from "~/lib/guards/auth";
-
 import { FadeOnView } from "../custom/fade-on-view";
 import PublicFooter from "../fragments/sections/components/public-footer";
 import { MainHeader } from "./main-header";
 import { PublicMobileHeader } from "./public-mobile-header";
 
-export function MainLayout({ children }: { children: React.ReactNode }) {
-  const authenticated = getAuthenticated();
+export function MainLayout({ children, isLoggedIn }: { children: React.ReactNode, isLoggedIn: boolean }) {
   return (
     <div className="flex flex-col min-h-screen font-rubik antialiased">
-      <MainHeader isLoggedIn={!!authenticated} />
+      <MainHeader isLoggedIn={isLoggedIn} />
       <PublicMobileHeader />
 
       <main className="m-auto md:mx-14 flex flex-1 flex-col px-4 md:px-14 align-middle mb-22">
@@ -20,3 +17,4 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+

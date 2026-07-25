@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { redirect } from "@tanstack/react-router";
+import { getRequest } from "@tanstack/react-start/server"
 import { createMiddleware, createServerFn } from "@tanstack/react-start";
 
 import { User } from "~/types";
@@ -14,6 +15,7 @@ export const meQueryOptions = queryOptions({
 
 function hasCookie(request: Request) {
   const cookieHeader = request.headers.get("cookie");
+  if (!cookieHeader) return false;
 
   const hasAuthCookie = cookieHeader
     ?.split(";")
@@ -39,13 +41,16 @@ export const authMiddleware = createMiddleware().server(
 export const isAuthenticated = createMiddleware().server(
   async ({ next, request }) => {
     const authenticated = hasCookie(request);
-    return next({ context: { authenticated } });
+    return next({ context: { auth: { authenticated } } });
   }
 );
 
-export const getAuthenticated = createServerFn({
+export const getAuthState = createServerFn({
   method: "GET",
 }).handler(async () => {
-  const request = new Request(""); // replaced below
-  return hasCookie(request);
+  const request = getRequest();
+
+  return {
+    authenticated: hasCookie(request),
+  };
 });

@@ -291,4 +291,5 @@ export class ApiError extends Error {
 export interface AuthContext {
   userId: string | null;
   user?: User;
+  authenticated?: boolean;
 }

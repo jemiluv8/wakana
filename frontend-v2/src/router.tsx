@@ -13,6 +13,7 @@ export function getRouter() {
   const queryClient = new QueryClient();
   const auth: AuthContext = {
     userId: null,
+    authenticated: false
   };
 
   const router = createRouter({
