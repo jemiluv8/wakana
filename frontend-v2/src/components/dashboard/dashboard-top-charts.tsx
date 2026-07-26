@@ -10,7 +10,7 @@ interface DashboardTopChartsProps {
   data: SummariesApiResponse;
 }
 
-export async function DashboardTopCharts({ data }: DashboardTopChartsProps) {
+export function DashboardTopCharts({ data }: DashboardTopChartsProps) {
   return (
     <section className="charts-grid-top">
       <div className="chart-box min-h-52">
