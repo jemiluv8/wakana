@@ -23,6 +23,7 @@ export async function apiFetch<T>(
     : await response.text();
 
   if (!response.ok) {
+    console.log("response", response)
     throw new ApiError(
       typeof data === "object" && data !== null && "message" in data
         ? String(data.message)
