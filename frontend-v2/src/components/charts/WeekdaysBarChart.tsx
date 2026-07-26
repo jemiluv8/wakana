@@ -11,6 +11,7 @@ import { StackedTooltipContent } from "./StackedTooltipContent";
 import { SummariesResponse } from "~/types";
 import { COLORS } from "~/lib/constants";
 import { makeCategorySummaryDataForWeekdays } from "~/lib/utils";
+import { X_AXIS_STYLE } from "./utils";
 
 export interface iProps {
   data: SummariesResponse[];
@@ -31,6 +32,7 @@ export function WeekdaysBarChartComponent({ data }: iProps) {
             fontSize={12}
             tickLine={false}
             axisLine={false}
+            style={X_AXIS_STYLE}
           />
           <RechartsTooltip
             content={StackedTooltipContent as any}

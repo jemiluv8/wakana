@@ -11,6 +11,7 @@ import {
 import { StackedTooltipContent } from "./StackedTooltipContent";
 import { SummariesResponse } from "~/types";
 import { convertSecondsToHours, prepareDailyCodingData, transparentize } from "~/lib/utils";
+import { X_AXIS_STYLE } from "./utils";
 
 export interface iProps {
   data: SummariesResponse[];
@@ -32,6 +33,7 @@ export function DailyCodingSummaryLineChart({ data }: iProps) {
           tickLine={true}
           axisLine={true}
           className="chart-x-axis"
+          style={X_AXIS_STYLE}
         />
         <YAxis
           tickFormatter={convertSecondsToHours as any}

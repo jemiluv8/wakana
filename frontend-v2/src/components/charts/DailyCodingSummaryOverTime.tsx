@@ -15,6 +15,7 @@ import { StackedTooltipContent } from "./StackedTooltipContent";
 import { SummariesResponse } from "~/types";
 import { getUniqueProjects, prepareDailyCodingData, transparentize } from "~/lib/utils";
 import { SAMPLE_COLORS } from "~/lib/constants";
+import { X_AXIS_STYLE } from "./utils";
 
 const CustomBarShape = (props: any) => {
   const { x, y, width, height, fill, stroke, strokeWidth } = props;
@@ -119,6 +120,7 @@ export function DailyCodingSummaryOverTimeComponent({ data }: iProps) {
           tickLine={true}
           axisLine={true}
           className="chart-x-axis"
+          style={X_AXIS_STYLE}
         />
         <Tooltip
           wrapperStyle={{ zIndex: 500 }}

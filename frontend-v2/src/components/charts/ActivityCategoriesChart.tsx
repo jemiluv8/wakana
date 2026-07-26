@@ -12,6 +12,7 @@ import { StackedTooltipContentForCategories } from "./StackedTooltipContent";
 import { SummariesResponse } from "~/types";
 import { COLORS } from "~/lib/constants";
 import { makeCategorySummaryData } from "~/lib/utils";
+import { X_AXIS_STYLE } from "./utils";
 
 export interface iProps {
   data: SummariesResponse[];
@@ -35,7 +36,7 @@ export function ActivityCategoriesChartComponent({
             stroke="#8a8e91"
             tickLine={true}
             axisLine={true}
-            className="chart-x-axis"
+            style={X_AXIS_STYLE}
           />
           <RechartsTooltip
             content={StackedTooltipContentForCategories}
