@@ -17,13 +17,11 @@ export function CurrentWorkTime() {
     refetchInterval: 20_000,
   });
 
-  console.log("loading", isLoading);
-
   const todaysCodingTime = data?.cumulative_total.text ?? "- hrs - mins";
 
   return (
     <div
-      className="flex items-center justify-center rounded-lg border border-border px-3 align-middle text-slate-100 shadow"
+      className="flex items-center justify-center rounded-lg border-2 border-gray-800 px-3 align-middle text-slate-100 shadow"
       style={{
         paddingLeft: "10px",
         paddingRight: "10px",
