@@ -59,7 +59,7 @@ export default function ProjectListCard({ project }: { project: ProjectData }) {
 
   return (
     <Link to="/projects/$id" params={{ id: project.id }} className="md:w-full border-border">
-      <Card className="p-1 w-full overflow-hidden shadow-sm duration-300 ease-in-out hover:border-white/15 hover:bg-white/[4%] cursor-pointer">
+      <Card className="p-1 py-2 w-full overflow-hidden shadow-sm duration-300 ease-in-out hover:border-white/15 hover:bg-white/4 cursor-pointer">
         <CardHeader className="relative pb-2">
           <div className="flex justify-between items-start">
             <div className="flex items-center space-x-3">

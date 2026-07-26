@@ -1,3 +1,36 @@
+.hover-view {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.entities-table tr:hover .hover-view {
+  opacity: 1;
+}
+
+.entities-table:hover .hover-view {
+  display: inline-block;
+}
+
+.custom-tooltip-header {
+  font-weight: 500;
+  font-size: 13px;
+  padding: 5px;
+}
+
+.chart-box-sub-title {
+  color: #8a8e91;
+  padding-left: 3px;
+}
+
+.chart-x-axis {
+  color: #8a8e91 !important;
+  font-size: 10px;
+  font-family: sans-serif;
+}
+
+
+
+
 .charts-grid-top {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 3 columns */
