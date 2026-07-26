@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/dchest/captcha"
@@ -46,17 +47,19 @@ func (api *APIv1) RegisterApiV1Routes(r *chi.Mux) {
 	})
 
 	// Heartbeat routes
-	r.Group(func(gr chi.Router) {
+	r.Group(func(r chi.Router) {
 		dumper := middlewares.NewPayloadDumper("./logs", "payloads.ndjson")
 
-		gr.Use(
+		r.Use(
 			middlewares.NewAuthenticateMiddleware(api.services.Users()).WithOptionalForMethods(http.MethodOptions).Handler,
 			customMiddleware.NewWakatimeRelayMiddleware().Handler,
 			dumper.Middleware,
 		)
 
+		fmt.Println("api.config.IsDev()", api.config.IsDev())
+
 		if api.config.IsDev() {
-			gr.Use(customMiddleware.NewWakatimeRelayMiddleware().OtherInstancesHandler)
+			r.Use(customMiddleware.NewWakatimeRelayMiddleware().OtherInstancesHandler)
 		}
 
 		// Heartbeat endpoints - consolidated with common handler
@@ -72,8 +75,8 @@ func (api *APIv1) RegisterApiV1Routes(r *chi.Mux) {
 		}
 
 		for _, route := range heartbeatRoutes {
-			gr.Post(route, api.ProcessHeartBeat)
-			gr.Options(route, cors.AllowAll().HandlerFunc)
+			r.Post(route, api.ProcessHeartBeat)
+			r.Options(route, cors.AllowAll().HandlerFunc)
 		}
 	})
 

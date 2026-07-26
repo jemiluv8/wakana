@@ -58,7 +58,7 @@ export default function ProjectListCard({ project }: { project: ProjectData }) {
   const projectId = truncate(project.name, { length: 15 });
 
   return (
-    <Link to={`/projects/$id`} params={{ id: project.id }} className="md:w-full border-border">
+    <Link to="/projects/$id" params={{ id: project.id }} className="md:w-full border-border">
       <Card className="p-1 w-full overflow-hidden shadow-sm duration-300 ease-in-out hover:border-white/15 hover:bg-white/[4%] cursor-pointer">
         <CardHeader className="relative pb-2">
           <div className="flex justify-between items-start">

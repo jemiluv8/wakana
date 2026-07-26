@@ -48,6 +48,7 @@ func (m *WakatimeRelayMiddleware) Handler(h http.Handler) http.Handler {
 
 // this sends requests against another instance of this server
 func (m *WakatimeRelayMiddleware) OtherInstancesHandler(h http.Handler) http.Handler {
+	fmt.Println("OTHER INSTANCE ALL SET")
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		m.ServeHTTPOtherInstance(w, r, h.ServeHTTP)
 	})
@@ -114,8 +115,9 @@ func (m *WakatimeRelayMiddleware) serveHTTPCommon(w http.ResponseWriter, r *http
 func (m *WakatimeRelayMiddleware) ServeHTTPOtherInstance(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 
 	authFn := func(user *models.User) (string, string, error) {
-		// this is fucked. and must never be run on production. I'm just being a dick because I'm watching love island on a friday night after having a rather serious argument over the phone with my GF
 		otherInstanceApiKey := config.Get().App.WakanaApiKey
+		fmt.Println("otherInstanceApiKey", otherInstanceApiKey)
+		// this is fucked. and must never be run on production. I'm just being a dick because I'm watching love island on a friday night after having a rather serious argument over the phone with my GF
 		if len(otherInstanceApiKey) == 0 {
 			return "", "", fmt.Errorf("unauthorized user")
 		}

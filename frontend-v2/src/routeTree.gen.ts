@@ -30,7 +30,7 @@ import { Route as PublicInstallationRouteImport } from './routes/_public/install
 import { Route as PublicFaqsRouteImport } from './routes/_public/faqs'
 import { Route as PathlessLayoutNestedLayoutRouteImport } from './routes/_pathlessLayout/_nested-layout'
 import { Route as DashboardDashboardRouteImport } from './routes/_dashboard/dashboard'
-import { Route as DashboardProjectsRouteRouteImport } from './routes/_dashboard/projects/route'
+import { Route as DashboardProjectsIndexRouteImport } from './routes/_dashboard/projects/index'
 import { Route as PostsPostIdDeepRouteImport } from './routes/posts_.$postId.deep'
 import { Route as ApiUsersIdRouteImport } from './routes/api/users.$id'
 import { Route as PathlessLayoutNestedLayoutRouteBRouteImport } from './routes/_pathlessLayout/_nested-layout/route-b'
@@ -139,9 +139,9 @@ const DashboardDashboardRoute = DashboardDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
-const DashboardProjectsRouteRoute = DashboardProjectsRouteRouteImport.update({
-  id: '/projects',
-  path: '/projects',
+const DashboardProjectsIndexRoute = DashboardProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 const PostsPostIdDeepRoute = PostsPostIdDeepRouteImport.update({
@@ -167,9 +167,9 @@ const PathlessLayoutNestedLayoutRouteARoute =
     getParentRoute: () => PathlessLayoutNestedLayoutRoute,
   } as any)
 const DashboardProjectsIdRoute = DashboardProjectsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => DashboardProjectsRouteRoute,
+  id: '/projects/$id',
+  path: '/projects/$id',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -179,7 +179,6 @@ export interface FileRoutesByFullPath {
   '/users': typeof UsersRouteRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
-  '/projects': typeof DashboardProjectsRouteRouteWithChildren
   '/dashboard': typeof DashboardDashboardRoute
   '/faqs': typeof PublicFaqsRoute
   '/installation': typeof PublicInstallationRoute
@@ -196,13 +195,13 @@ export interface FileRoutesByFullPath {
   '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
   '/api/users/$id': typeof ApiUsersIdRoute
   '/posts/$postId/deep': typeof PostsPostIdDeepRoute
+  '/projects/': typeof DashboardProjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
-  '/projects': typeof DashboardProjectsRouteRouteWithChildren
   '/dashboard': typeof DashboardDashboardRoute
   '/faqs': typeof PublicFaqsRoute
   '/installation': typeof PublicInstallationRoute
@@ -219,6 +218,7 @@ export interface FileRoutesByTo {
   '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
   '/api/users/$id': typeof ApiUsersIdRoute
   '/posts/$postId/deep': typeof PostsPostIdDeepRoute
+  '/projects': typeof DashboardProjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -231,7 +231,6 @@ export interface FileRoutesById {
   '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
-  '/_dashboard/projects': typeof DashboardProjectsRouteRouteWithChildren
   '/_dashboard/dashboard': typeof DashboardDashboardRoute
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/_public/faqs': typeof PublicFaqsRoute
@@ -249,6 +248,7 @@ export interface FileRoutesById {
   '/_pathlessLayout/_nested-layout/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
   '/api/users/$id': typeof ApiUsersIdRoute
   '/posts_/$postId/deep': typeof PostsPostIdDeepRoute
+  '/_dashboard/projects/': typeof DashboardProjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -259,7 +259,6 @@ export interface FileRouteTypes {
     | '/users'
     | '/deferred'
     | '/redirect'
-    | '/projects'
     | '/dashboard'
     | '/faqs'
     | '/installation'
@@ -276,13 +275,13 @@ export interface FileRouteTypes {
     | '/route-b'
     | '/api/users/$id'
     | '/posts/$postId/deep'
+    | '/projects/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/deferred'
     | '/redirect'
-    | '/projects'
     | '/dashboard'
     | '/faqs'
     | '/installation'
@@ -299,6 +298,7 @@ export interface FileRouteTypes {
     | '/route-b'
     | '/api/users/$id'
     | '/posts/$postId/deep'
+    | '/projects'
   id:
     | '__root__'
     | '/'
@@ -310,7 +310,6 @@ export interface FileRouteTypes {
     | '/_pathlessLayout'
     | '/deferred'
     | '/redirect'
-    | '/_dashboard/projects'
     | '/_dashboard/dashboard'
     | '/_pathlessLayout/_nested-layout'
     | '/_public/faqs'
@@ -328,6 +327,7 @@ export interface FileRouteTypes {
     | '/_pathlessLayout/_nested-layout/route-b'
     | '/api/users/$id'
     | '/posts_/$postId/deep'
+    | '/_dashboard/projects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -493,11 +493,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardDashboardRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/_dashboard/projects': {
-      id: '/_dashboard/projects'
+    '/_dashboard/projects/': {
+      id: '/_dashboard/projects/'
       path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof DashboardProjectsRouteRouteImport
+      fullPath: '/projects/'
+      preLoaderRoute: typeof DashboardProjectsIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/posts_/$postId/deep': {
@@ -530,36 +530,24 @@ declare module '@tanstack/react-router' {
     }
     '/_dashboard/projects/$id': {
       id: '/_dashboard/projects/$id'
-      path: '/$id'
+      path: '/projects/$id'
       fullPath: '/projects/$id'
       preLoaderRoute: typeof DashboardProjectsIdRouteImport
-      parentRoute: typeof DashboardProjectsRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
   }
 }
 
-interface DashboardProjectsRouteRouteChildren {
-  DashboardProjectsIdRoute: typeof DashboardProjectsIdRoute
-}
-
-const DashboardProjectsRouteRouteChildren: DashboardProjectsRouteRouteChildren =
-  {
-    DashboardProjectsIdRoute: DashboardProjectsIdRoute,
-  }
-
-const DashboardProjectsRouteRouteWithChildren =
-  DashboardProjectsRouteRoute._addFileChildren(
-    DashboardProjectsRouteRouteChildren,
-  )
-
 interface DashboardRouteRouteChildren {
-  DashboardProjectsRouteRoute: typeof DashboardProjectsRouteRouteWithChildren
   DashboardDashboardRoute: typeof DashboardDashboardRoute
+  DashboardProjectsIdRoute: typeof DashboardProjectsIdRoute
+  DashboardProjectsIndexRoute: typeof DashboardProjectsIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
-  DashboardProjectsRouteRoute: DashboardProjectsRouteRouteWithChildren,
   DashboardDashboardRoute: DashboardDashboardRoute,
+  DashboardProjectsIdRoute: DashboardProjectsIdRoute,
+  DashboardProjectsIndexRoute: DashboardProjectsIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
