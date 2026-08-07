@@ -6,8 +6,8 @@ export function startGithubLoginFlow() {
 }
 
 export function getGithubConfig() {
-  const clientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
-  const redirectUri = process.env.NEXT_PUBLIC_GITHUB_REDIRECT_URI;
+  const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
+  const redirectUri = import.meta.env.VITE_GITHUB_REDIRECT_URI;
   const scope = "user:email read:user";
   return { clientId, redirectUri, scope };
 }

@@ -2,19 +2,25 @@
 
 import { VITE_PUBLIC_API_URL } from "~/config";
 import { ApiError } from "~/types";
+import { getStoredAuthToken } from "~/lib/auth/storage";
 
 export async function apiFetch<T>(
   url: string,
   options?: RequestInit
 ): Promise<T> {
   const full_url = `${VITE_PUBLIC_API_URL}${url}`;
+  const headers = new Headers(options?.headers);
+  headers.set("Content-Type", "application/json");
+  headers.set("Accept", "application/json");
+
+  const token = getStoredAuthToken();
+  if (token) {
+    headers.set("token", token);
+  }
+
   const response = await fetch(full_url, {
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      ...(options?.headers || {}),
-    },
     ...options,
+    headers,
   });
 
   const contentType = response.headers.get("content-type");
@@ -23,7 +29,6 @@ export async function apiFetch<T>(
     : await response.text();
 
   if (!response.ok) {
-    console.log("response", response)
     throw new ApiError(
       typeof data === "object" && data !== null && "message" in data
         ? String(data.message)

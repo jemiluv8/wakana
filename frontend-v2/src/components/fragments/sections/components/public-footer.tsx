@@ -25,12 +25,12 @@ type FooterSection = {
 const footerSections: FooterSection[] = [
   {
     title: "Get Started",
-    links: [
-      { name: "Setup Guide", href: "/setup", icon: Settings, external: true },
-      { name: "Login", href: "/login", icon: LogIn },
-      { name: "FAQ", href: "/faqs", icon: HelpCircle },
-      { name: "Plugins", href: "/plugins", icon: Code },
-    ],
+      links: [
+        { name: "Setup Guide", href: "/setup", icon: Settings, external: true },
+        { name: "Login", href: "/auth/login", icon: LogIn },
+        { name: "FAQ", href: "/faqs", icon: HelpCircle },
+        { name: "Plugins", href: "/plugins", icon: Code },
+      ],
   },
   {
     title: "Resources",

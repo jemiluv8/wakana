@@ -1,22 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 import { Spinner } from "~/components/custom/spinner/spinner";
 import { DashboardLayout } from "~/components/layouts/dashboard-layout";
-import { authMiddleware, meQueryOptions } from "~/lib/guards/auth";
-import { AuthProvider } from "~/lib/providers/auth-provider";
+import { useAuth } from "~/lib/providers/auth-provider";
 
 export const Route = createFileRoute("/_dashboard")({
-  server: {
-    middleware: [authMiddleware],
-  },
   component: RootComponent,
 });
 
 export function RootComponent() {
-  const { data: data, isLoading, isError } = useQuery(meQueryOptions);
+  const { hydrated, isAuthenticated, user } = useAuth();
 
-  if (isLoading) {
+  if (!hydrated) {
     return (
       <div>
         <Spinner />
@@ -24,17 +19,15 @@ export function RootComponent() {
     );
   }
 
-  if (isError || !data) {
+  if (!isAuthenticated || !user) {
     throw redirect({
       to: "/auth/login",
     });
   }
 
   return (
-    <AuthProvider user={data.user}>
-      <DashboardLayout>
-        <Outlet />
-      </DashboardLayout>
-    </AuthProvider>
+    <DashboardLayout>
+      <Outlet />
+    </DashboardLayout>
   );
 }

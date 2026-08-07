@@ -23,10 +23,9 @@ const prepareEntitiesData = (data: any[], field: string) => {
 };
 
 function RouteComponent() {
-  const { user } = useAuth()
+  const { user } = useAuth();
   const { id } = Route.useParams();
   const search = useSearch({ strict: false }) as any;
-  console.log("id", id);
   const {
     start = format(subDays(new Date(), 7), "yyyy-MM-dd"),
     end = format(new Date(), "yyyy-MM-dd"),
@@ -41,8 +40,6 @@ function RouteComponent() {
   const { data: durationData } = useSuspenseQuery(
     genericQueryOptions<SummariesApiResponse>(url),
   );
-
-  console.log("data", durationData);
   return (
     <main>
       <div className="flex items-center justify-between align-middle mb-4">
@@ -50,7 +47,7 @@ function RouteComponent() {
         <div>
           <img
             className="with-url-src"
-            src={`${VITE_PUBLIC_API_URL}/badge/${user.id}/project:${id}/interval:all_time?label=total`}
+            src={`${VITE_PUBLIC_API_URL}/badge/${user?.id}/project:${id}/interval:all_time?label=total`}
             alt="Badge"
             width={150}
             height={20}

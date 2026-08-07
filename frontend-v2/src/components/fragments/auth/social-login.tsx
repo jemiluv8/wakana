@@ -12,20 +12,26 @@ export function SocialLogin({
   const [isGitHubLoading, setIsGitHubLoading] = React.useState(false);
 
   return (
-    <div className={cn("grid gap-6 my-5", className)} {...props}>
-      <a
-        href={startGithubLoginFlow()}
-        className={cn(buttonVariants({ variant: "secondary" }))}
-        onClick={() => setIsGitHubLoading(true)}
-        aria-disabled={isGitHubLoading}
+    <div className={cn("grid gap-6 my-5 w-full", className)} {...props}>
+      <button
+        type="button"
+        className={cn(
+          buttonVariants({ variant: "outline" }),
+          "h-12 w-full justify-center gap-3 px-4 text-base font-medium sm:h-12"
+        )}
+        onClick={() => {
+          setIsGitHubLoading(true);
+          window.location.href = startGithubLoginFlow();
+        }}
+        disabled={isGitHubLoading}
       >
         {isGitHubLoading ? (
-          <Icons.spinner className="mr-2 size-4 animate-spin" />
+          <Icons.spinner className="size-5 animate-spin" />
         ) : (
-          <Icons.gitHub className="mr-2 size-4" />
+          <Icons.gitHub className="size-5" />
         )}
         Github
-      </a>
+      </button>
     </div>
   );
 }

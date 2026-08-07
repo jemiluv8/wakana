@@ -15,6 +15,7 @@ import { NotFound } from "~/components/NotFound";
 import { Toaster } from "~/components/ui/sonner";
 import { siteConfig } from "~/config/site";
 import { cn } from "~/lib/utils";
+import { AuthProvider } from "~/lib/providers/auth-provider";
 import { ThemeProvider } from "~/providers/theme-provider";
 import appCss from "~/styles/app.css?url";
 import { AuthContext } from "~/types";
@@ -82,9 +83,11 @@ export const Route = createRootRouteWithContext<{
 
 function RootComponent() {
   return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
+    <AuthProvider>
+      <RootDocument>
+        <Outlet />
+      </RootDocument>
+    </AuthProvider>
   );
 }
 

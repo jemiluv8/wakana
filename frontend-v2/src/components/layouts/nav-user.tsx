@@ -6,14 +6,31 @@ import {
   Sparkles,
   User,
 } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 import { SidebarMenu, useSidebar, SidebarMenuItem, SidebarMenuButton } from "../ui/sidebar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useAuth } from "~/lib/providers/auth-provider";
 
 export function NavUser() {
+  const navigate = useNavigate();
   const { isMobile } = useSidebar();
-  const { user } = useAuth();
+  const { user, clearSession } = useAuth();
+
+  if (!user) {
+    return null;
+  }
+
+  const displayName =
+    user.name || user.full_name || user.display_name || user.email;
+
+  const handleLogout = () => {
+    clearSession();
+    void navigate({
+      to: "/auth/login",
+      replace: true,
+    });
+  };
 
   return (
     <SidebarMenu>
@@ -25,11 +42,13 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name || ""} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarImage src={user.avatar} alt={displayName} />
+                <AvatarFallback className="rounded-lg">
+                  {displayName.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
+                <span className="truncate font-semibold">{displayName}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -44,11 +63,13 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarImage src={user.avatar} alt={displayName} />
+                  <AvatarFallback className="rounded-lg">
+                    {displayName.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
+                  <span className="truncate font-semibold">{displayName}</span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
               </div>
@@ -93,14 +114,9 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <a
-                href="/api/session?action=logout"
-                className="flex gap-2 cursor-pointer"
-              >
-                <LogOut />
-                Log out
-              </a>
+            <DropdownMenuItem onClick={handleLogout} className="flex gap-2 cursor-pointer">
+              <LogOut />
+              Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
