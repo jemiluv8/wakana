@@ -18,10 +18,10 @@ export const Route = createFileRoute("/_dashboard/dashboard/about")({
 
 function AboutPage() {
   return (
-    <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-bold mb-8">About Wakana</h1>
+    <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <h1 className="mb-8 text-4xl font-bold">About Wakana</h1>
 
-      <div className="space-y-6 text-gray-600 dark:text-gray-300 leading-relaxed">
+      <div className="space-y-6 leading-relaxed text-gray-600 dark:text-gray-300">
         <p>
           The goal of this project is to provide a self-hosted version of
           wakatime.com that is open source and free to use. We rely on the same
@@ -30,9 +30,10 @@ function AboutPage() {
         </p>
 
         <p>
-          Unlike some of the open source alternatives, we aim for feature parity
-          with wakatime first and foremost. We start with a focus on individual
-          features and then proceed towards enterprise/organizational features.
+          Unlike some of the open source alternatives, we aim for feature
+          parity with wakatime first and foremost. We start with a focus on
+          individual features and then proceed towards
+          enterprise/organizational features.
         </p>
 
         <p>
@@ -44,15 +45,15 @@ function AboutPage() {
           Work on this project was sped up by the open source project at{" "}
           <a
             href="https://github.com/muety/wakapi"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
+            className="text-blue-600 hover:underline dark:text-blue-400"
             target="_blank"
             rel="noopener noreferrer"
           >
             Wakapi
           </a>
-          . We are grateful for their work. We wouldn't have built this quickly
-          without starting off of that base source code. It was minimal but
-          thoughtful and was still packed with a ton of features.
+          . We are grateful for their work. We wouldn&apos;t have built this
+          quickly without starting off of that base source code. It was minimal
+          but thoughtful and was still packed with a ton of features.
         </p>
       </div>
     </div>

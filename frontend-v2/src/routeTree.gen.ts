@@ -50,6 +50,7 @@ import { Route as DashboardDashboardFaqsRouteImport } from './routes/_dashboard/
 import { Route as DashboardDashboardClientsRouteImport } from './routes/_dashboard/dashboard/clients'
 import { Route as DashboardDashboardAboutRouteImport } from './routes/_dashboard/dashboard/about'
 import { Route as DashboardDashboardPluginsStatusRouteImport } from './routes/_dashboard/dashboard/plugins.status'
+import { Route as DashboardDashboardInvoicesIdRouteImport } from './routes/_dashboard/dashboard/invoices.$id'
 import { Route as DashboardDashboardDayDateRouteImport } from './routes/_dashboard/dashboard/day/$date'
 
 const RedirectRoute = RedirectRouteImport.update({
@@ -260,6 +261,12 @@ const DashboardDashboardPluginsStatusRoute =
     path: '/plugins/status',
     getParentRoute: () => DashboardDashboardRoute,
   } as any)
+const DashboardDashboardInvoicesIdRoute =
+  DashboardDashboardInvoicesIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => DashboardDashboardInvoicesRoute,
+  } as any)
 const DashboardDashboardDayDateRoute =
   DashboardDashboardDayDateRouteImport.update({
     id: '/day/$date',
@@ -294,7 +301,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/about': typeof DashboardDashboardAboutRoute
   '/dashboard/clients': typeof DashboardDashboardClientsRoute
   '/dashboard/faqs': typeof DashboardDashboardFaqsRoute
-  '/dashboard/invoices': typeof DashboardDashboardInvoicesRoute
+  '/dashboard/invoices': typeof DashboardDashboardInvoicesRouteWithChildren
   '/dashboard/leaderboards': typeof DashboardDashboardLeaderboardsRoute
   '/dashboard/setup': typeof DashboardDashboardSetupRoute
   '/projects/$id': typeof DashboardProjectsIdRoute
@@ -305,6 +312,7 @@ export interface FileRoutesByFullPath {
   '/posts/$postId/deep': typeof PostsPostIdDeepRoute
   '/projects/': typeof DashboardProjectsIndexRoute
   '/dashboard/day/$date': typeof DashboardDashboardDayDateRoute
+  '/dashboard/invoices/$id': typeof DashboardDashboardInvoicesIdRoute
   '/dashboard/plugins/status': typeof DashboardDashboardPluginsStatusRoute
 }
 export interface FileRoutesByTo {
@@ -331,7 +339,7 @@ export interface FileRoutesByTo {
   '/dashboard/about': typeof DashboardDashboardAboutRoute
   '/dashboard/clients': typeof DashboardDashboardClientsRoute
   '/dashboard/faqs': typeof DashboardDashboardFaqsRoute
-  '/dashboard/invoices': typeof DashboardDashboardInvoicesRoute
+  '/dashboard/invoices': typeof DashboardDashboardInvoicesRouteWithChildren
   '/dashboard/leaderboards': typeof DashboardDashboardLeaderboardsRoute
   '/dashboard/setup': typeof DashboardDashboardSetupRoute
   '/projects/$id': typeof DashboardProjectsIdRoute
@@ -342,6 +350,7 @@ export interface FileRoutesByTo {
   '/posts/$postId/deep': typeof PostsPostIdDeepRoute
   '/projects': typeof DashboardProjectsIndexRoute
   '/dashboard/day/$date': typeof DashboardDashboardDayDateRoute
+  '/dashboard/invoices/$id': typeof DashboardDashboardInvoicesIdRoute
   '/dashboard/plugins/status': typeof DashboardDashboardPluginsStatusRoute
 }
 export interface FileRoutesById {
@@ -376,7 +385,7 @@ export interface FileRoutesById {
   '/_dashboard/dashboard/about': typeof DashboardDashboardAboutRoute
   '/_dashboard/dashboard/clients': typeof DashboardDashboardClientsRoute
   '/_dashboard/dashboard/faqs': typeof DashboardDashboardFaqsRoute
-  '/_dashboard/dashboard/invoices': typeof DashboardDashboardInvoicesRoute
+  '/_dashboard/dashboard/invoices': typeof DashboardDashboardInvoicesRouteWithChildren
   '/_dashboard/dashboard/leaderboards': typeof DashboardDashboardLeaderboardsRoute
   '/_dashboard/dashboard/setup': typeof DashboardDashboardSetupRoute
   '/_dashboard/projects/$id': typeof DashboardProjectsIdRoute
@@ -387,6 +396,7 @@ export interface FileRoutesById {
   '/posts_/$postId/deep': typeof PostsPostIdDeepRoute
   '/_dashboard/projects/': typeof DashboardProjectsIndexRoute
   '/_dashboard/dashboard/day/$date': typeof DashboardDashboardDayDateRoute
+  '/_dashboard/dashboard/invoices/$id': typeof DashboardDashboardInvoicesIdRoute
   '/_dashboard/dashboard/plugins/status': typeof DashboardDashboardPluginsStatusRoute
 }
 export interface FileRouteTypes {
@@ -429,6 +439,7 @@ export interface FileRouteTypes {
     | '/posts/$postId/deep'
     | '/projects/'
     | '/dashboard/day/$date'
+    | '/dashboard/invoices/$id'
     | '/dashboard/plugins/status'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -466,6 +477,7 @@ export interface FileRouteTypes {
     | '/posts/$postId/deep'
     | '/projects'
     | '/dashboard/day/$date'
+    | '/dashboard/invoices/$id'
     | '/dashboard/plugins/status'
   id:
     | '__root__'
@@ -510,6 +522,7 @@ export interface FileRouteTypes {
     | '/posts_/$postId/deep'
     | '/_dashboard/projects/'
     | '/_dashboard/dashboard/day/$date'
+    | '/_dashboard/dashboard/invoices/$id'
     | '/_dashboard/dashboard/plugins/status'
   fileRoutesById: FileRoutesById
 }
@@ -817,6 +830,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardDashboardPluginsStatusRouteImport
       parentRoute: typeof DashboardDashboardRoute
     }
+    '/_dashboard/dashboard/invoices/$id': {
+      id: '/_dashboard/dashboard/invoices/$id'
+      path: '/$id'
+      fullPath: '/dashboard/invoices/$id'
+      preLoaderRoute: typeof DashboardDashboardInvoicesIdRouteImport
+      parentRoute: typeof DashboardDashboardInvoicesRoute
+    }
     '/_dashboard/dashboard/day/$date': {
       id: '/_dashboard/dashboard/day/$date'
       path: '/day/$date'
@@ -827,11 +847,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface DashboardDashboardInvoicesRouteChildren {
+  DashboardDashboardInvoicesIdRoute: typeof DashboardDashboardInvoicesIdRoute
+}
+
+const DashboardDashboardInvoicesRouteChildren: DashboardDashboardInvoicesRouteChildren =
+  {
+    DashboardDashboardInvoicesIdRoute: DashboardDashboardInvoicesIdRoute,
+  }
+
+const DashboardDashboardInvoicesRouteWithChildren =
+  DashboardDashboardInvoicesRoute._addFileChildren(
+    DashboardDashboardInvoicesRouteChildren,
+  )
+
 interface DashboardDashboardRouteChildren {
   DashboardDashboardAboutRoute: typeof DashboardDashboardAboutRoute
   DashboardDashboardClientsRoute: typeof DashboardDashboardClientsRoute
   DashboardDashboardFaqsRoute: typeof DashboardDashboardFaqsRoute
-  DashboardDashboardInvoicesRoute: typeof DashboardDashboardInvoicesRoute
+  DashboardDashboardInvoicesRoute: typeof DashboardDashboardInvoicesRouteWithChildren
   DashboardDashboardLeaderboardsRoute: typeof DashboardDashboardLeaderboardsRoute
   DashboardDashboardSetupRoute: typeof DashboardDashboardSetupRoute
   DashboardDashboardDayDateRoute: typeof DashboardDashboardDayDateRoute
@@ -842,7 +876,7 @@ const DashboardDashboardRouteChildren: DashboardDashboardRouteChildren = {
   DashboardDashboardAboutRoute: DashboardDashboardAboutRoute,
   DashboardDashboardClientsRoute: DashboardDashboardClientsRoute,
   DashboardDashboardFaqsRoute: DashboardDashboardFaqsRoute,
-  DashboardDashboardInvoicesRoute: DashboardDashboardInvoicesRoute,
+  DashboardDashboardInvoicesRoute: DashboardDashboardInvoicesRouteWithChildren,
   DashboardDashboardLeaderboardsRoute: DashboardDashboardLeaderboardsRoute,
   DashboardDashboardSetupRoute: DashboardDashboardSetupRoute,
   DashboardDashboardDayDateRoute: DashboardDashboardDayDateRoute,

@@ -17,6 +17,7 @@ export function DashboardHeader() {
     select: (location) => location.pathname,
   });
   const pathnameParts = pathname.split("/");
+  const breadcrumbParts = pathnameParts.slice(1, pathnameParts.length - 1);
   const currentPage = pathnameParts[pathnameParts.length - 1];
   const currentPageTitle = capitalize(currentPage.replace(/-/g, " "));
 
@@ -27,18 +28,20 @@ export function DashboardHeader() {
         <Separator orientation="vertical" className="mr-2 h-4" />
         <Breadcrumb>
           <BreadcrumbList>
-            {pathnameParts
-              .slice(0, pathnameParts.length - 1)
-              .map((part, index) => (
-                <div className="flex items-center align-center" key={index}>
+            {breadcrumbParts.map((part, index) => {
+              const href = `/${breadcrumbParts.slice(0, index + 1).join("/")}`;
+
+              return (
+                <div className="flex items-center align-center" key={href}>
                   <BreadcrumbItem>
-                    <BreadcrumbLink href={`/${part}`}>
+                    <BreadcrumbLink href={href}>
                       {capitalize(part.replace(/-/g, " "))}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
                 </div>
-              ))}
+              );
+            })}
             <BreadcrumbItem className="font-extrabold">
               <BreadcrumbPage>{currentPageTitle}</BreadcrumbPage>
             </BreadcrumbItem>
