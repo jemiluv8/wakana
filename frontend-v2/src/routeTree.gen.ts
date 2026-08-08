@@ -29,17 +29,28 @@ import { Route as PostsPostIdRouteImport } from './routes/posts.$postId'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ApiUsersRouteImport } from './routes/api/users'
 import { Route as PublicPluginsRouteImport } from './routes/_public/plugins'
+import { Route as PublicLeaderboardsRouteImport } from './routes/_public/leaderboards'
 import { Route as PublicLeaderboardRouteImport } from './routes/_public/leaderboard'
 import { Route as PublicInstallationRouteImport } from './routes/_public/installation'
 import { Route as PublicFaqsRouteImport } from './routes/_public/faqs'
+import { Route as PublicAboutRouteImport } from './routes/_public/about'
 import { Route as PathlessLayoutNestedLayoutRouteImport } from './routes/_pathlessLayout/_nested-layout'
 import { Route as DashboardDashboardRouteImport } from './routes/_dashboard/dashboard'
 import { Route as DashboardProjectsIndexRouteImport } from './routes/_dashboard/projects/index'
 import { Route as PostsPostIdDeepRouteImport } from './routes/posts_.$postId.deep'
 import { Route as ApiUsersIdRouteImport } from './routes/api/users.$id'
+import { Route as PublicPluginsStatusRouteImport } from './routes/_public/plugins.status'
 import { Route as PathlessLayoutNestedLayoutRouteBRouteImport } from './routes/_pathlessLayout/_nested-layout/route-b'
 import { Route as PathlessLayoutNestedLayoutRouteARouteImport } from './routes/_pathlessLayout/_nested-layout/route-a'
 import { Route as DashboardProjectsIdRouteImport } from './routes/_dashboard/projects/$id'
+import { Route as DashboardDashboardSetupRouteImport } from './routes/_dashboard/dashboard/setup'
+import { Route as DashboardDashboardLeaderboardsRouteImport } from './routes/_dashboard/dashboard/leaderboards'
+import { Route as DashboardDashboardInvoicesRouteImport } from './routes/_dashboard/dashboard/invoices'
+import { Route as DashboardDashboardFaqsRouteImport } from './routes/_dashboard/dashboard/faqs'
+import { Route as DashboardDashboardClientsRouteImport } from './routes/_dashboard/dashboard/clients'
+import { Route as DashboardDashboardAboutRouteImport } from './routes/_dashboard/dashboard/about'
+import { Route as DashboardDashboardPluginsStatusRouteImport } from './routes/_dashboard/dashboard/plugins.status'
+import { Route as DashboardDashboardDayDateRouteImport } from './routes/_dashboard/dashboard/day/$date'
 
 const RedirectRoute = RedirectRouteImport.update({
   id: '/redirect',
@@ -138,6 +149,11 @@ const PublicPluginsRoute = PublicPluginsRouteImport.update({
   path: '/plugins',
   getParentRoute: () => PublicRouteRoute,
 } as any)
+const PublicLeaderboardsRoute = PublicLeaderboardsRouteImport.update({
+  id: '/leaderboards',
+  path: '/leaderboards',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
 const PublicLeaderboardRoute = PublicLeaderboardRouteImport.update({
   id: '/leaderboard',
   path: '/leaderboard',
@@ -151,6 +167,11 @@ const PublicInstallationRoute = PublicInstallationRouteImport.update({
 const PublicFaqsRoute = PublicFaqsRouteImport.update({
   id: '/faqs',
   path: '/faqs',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicAboutRoute = PublicAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => PublicRouteRoute,
 } as any)
 const PathlessLayoutNestedLayoutRoute =
@@ -178,6 +199,11 @@ const ApiUsersIdRoute = ApiUsersIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => ApiUsersRoute,
 } as any)
+const PublicPluginsStatusRoute = PublicPluginsStatusRouteImport.update({
+  id: '/status',
+  path: '/status',
+  getParentRoute: () => PublicPluginsRoute,
+} as any)
 const PathlessLayoutNestedLayoutRouteBRoute =
   PathlessLayoutNestedLayoutRouteBRouteImport.update({
     id: '/route-b',
@@ -195,6 +221,51 @@ const DashboardProjectsIdRoute = DashboardProjectsIdRouteImport.update({
   path: '/projects/$id',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardDashboardSetupRoute = DashboardDashboardSetupRouteImport.update({
+  id: '/setup',
+  path: '/setup',
+  getParentRoute: () => DashboardDashboardRoute,
+} as any)
+const DashboardDashboardLeaderboardsRoute =
+  DashboardDashboardLeaderboardsRouteImport.update({
+    id: '/leaderboards',
+    path: '/leaderboards',
+    getParentRoute: () => DashboardDashboardRoute,
+  } as any)
+const DashboardDashboardInvoicesRoute =
+  DashboardDashboardInvoicesRouteImport.update({
+    id: '/invoices',
+    path: '/invoices',
+    getParentRoute: () => DashboardDashboardRoute,
+  } as any)
+const DashboardDashboardFaqsRoute = DashboardDashboardFaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => DashboardDashboardRoute,
+} as any)
+const DashboardDashboardClientsRoute =
+  DashboardDashboardClientsRouteImport.update({
+    id: '/clients',
+    path: '/clients',
+    getParentRoute: () => DashboardDashboardRoute,
+  } as any)
+const DashboardDashboardAboutRoute = DashboardDashboardAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => DashboardDashboardRoute,
+} as any)
+const DashboardDashboardPluginsStatusRoute =
+  DashboardDashboardPluginsStatusRouteImport.update({
+    id: '/plugins/status',
+    path: '/plugins/status',
+    getParentRoute: () => DashboardDashboardRoute,
+  } as any)
+const DashboardDashboardDayDateRoute =
+  DashboardDashboardDayDateRouteImport.update({
+    id: '/day/$date',
+    path: '/day/$date',
+    getParentRoute: () => DashboardDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -204,11 +275,13 @@ export interface FileRoutesByFullPath {
   '/users': typeof UsersRouteRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
-  '/dashboard': typeof DashboardDashboardRoute
+  '/dashboard': typeof DashboardDashboardRouteWithChildren
+  '/about': typeof PublicAboutRoute
   '/faqs': typeof PublicFaqsRoute
   '/installation': typeof PublicInstallationRoute
   '/leaderboard': typeof PublicLeaderboardRoute
-  '/plugins': typeof PublicPluginsRoute
+  '/leaderboards': typeof PublicLeaderboardsRoute
+  '/plugins': typeof PublicPluginsRouteWithChildren
   '/api/users': typeof ApiUsersRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/posts/$postId': typeof PostsPostIdRoute
@@ -218,23 +291,34 @@ export interface FileRoutesByFullPath {
   '/posts/': typeof PostsIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/users/': typeof UsersIndexRoute
+  '/dashboard/about': typeof DashboardDashboardAboutRoute
+  '/dashboard/clients': typeof DashboardDashboardClientsRoute
+  '/dashboard/faqs': typeof DashboardDashboardFaqsRoute
+  '/dashboard/invoices': typeof DashboardDashboardInvoicesRoute
+  '/dashboard/leaderboards': typeof DashboardDashboardLeaderboardsRoute
+  '/dashboard/setup': typeof DashboardDashboardSetupRoute
   '/projects/$id': typeof DashboardProjectsIdRoute
   '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
   '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
+  '/plugins/status': typeof PublicPluginsStatusRoute
   '/api/users/$id': typeof ApiUsersIdRoute
   '/posts/$postId/deep': typeof PostsPostIdDeepRoute
   '/projects/': typeof DashboardProjectsIndexRoute
+  '/dashboard/day/$date': typeof DashboardDashboardDayDateRoute
+  '/dashboard/plugins/status': typeof DashboardDashboardPluginsStatusRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
-  '/dashboard': typeof DashboardDashboardRoute
+  '/dashboard': typeof DashboardDashboardRouteWithChildren
+  '/about': typeof PublicAboutRoute
   '/faqs': typeof PublicFaqsRoute
   '/installation': typeof PublicInstallationRoute
   '/leaderboard': typeof PublicLeaderboardRoute
-  '/plugins': typeof PublicPluginsRoute
+  '/leaderboards': typeof PublicLeaderboardsRoute
+  '/plugins': typeof PublicPluginsRouteWithChildren
   '/api/users': typeof ApiUsersRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/posts/$postId': typeof PostsPostIdRoute
@@ -244,12 +328,21 @@ export interface FileRoutesByTo {
   '/posts': typeof PostsIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/users': typeof UsersIndexRoute
+  '/dashboard/about': typeof DashboardDashboardAboutRoute
+  '/dashboard/clients': typeof DashboardDashboardClientsRoute
+  '/dashboard/faqs': typeof DashboardDashboardFaqsRoute
+  '/dashboard/invoices': typeof DashboardDashboardInvoicesRoute
+  '/dashboard/leaderboards': typeof DashboardDashboardLeaderboardsRoute
+  '/dashboard/setup': typeof DashboardDashboardSetupRoute
   '/projects/$id': typeof DashboardProjectsIdRoute
   '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
   '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
+  '/plugins/status': typeof PublicPluginsStatusRoute
   '/api/users/$id': typeof ApiUsersIdRoute
   '/posts/$postId/deep': typeof PostsPostIdDeepRoute
   '/projects': typeof DashboardProjectsIndexRoute
+  '/dashboard/day/$date': typeof DashboardDashboardDayDateRoute
+  '/dashboard/plugins/status': typeof DashboardDashboardPluginsStatusRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -263,12 +356,14 @@ export interface FileRoutesById {
   '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
-  '/_dashboard/dashboard': typeof DashboardDashboardRoute
+  '/_dashboard/dashboard': typeof DashboardDashboardRouteWithChildren
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
+  '/_public/about': typeof PublicAboutRoute
   '/_public/faqs': typeof PublicFaqsRoute
   '/_public/installation': typeof PublicInstallationRoute
   '/_public/leaderboard': typeof PublicLeaderboardRoute
-  '/_public/plugins': typeof PublicPluginsRoute
+  '/_public/leaderboards': typeof PublicLeaderboardsRoute
+  '/_public/plugins': typeof PublicPluginsRouteWithChildren
   '/api/users': typeof ApiUsersRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/posts/$postId': typeof PostsPostIdRoute
@@ -278,12 +373,21 @@ export interface FileRoutesById {
   '/posts/': typeof PostsIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/users/': typeof UsersIndexRoute
+  '/_dashboard/dashboard/about': typeof DashboardDashboardAboutRoute
+  '/_dashboard/dashboard/clients': typeof DashboardDashboardClientsRoute
+  '/_dashboard/dashboard/faqs': typeof DashboardDashboardFaqsRoute
+  '/_dashboard/dashboard/invoices': typeof DashboardDashboardInvoicesRoute
+  '/_dashboard/dashboard/leaderboards': typeof DashboardDashboardLeaderboardsRoute
+  '/_dashboard/dashboard/setup': typeof DashboardDashboardSetupRoute
   '/_dashboard/projects/$id': typeof DashboardProjectsIdRoute
   '/_pathlessLayout/_nested-layout/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
   '/_pathlessLayout/_nested-layout/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
+  '/_public/plugins/status': typeof PublicPluginsStatusRoute
   '/api/users/$id': typeof ApiUsersIdRoute
   '/posts_/$postId/deep': typeof PostsPostIdDeepRoute
   '/_dashboard/projects/': typeof DashboardProjectsIndexRoute
+  '/_dashboard/dashboard/day/$date': typeof DashboardDashboardDayDateRoute
+  '/_dashboard/dashboard/plugins/status': typeof DashboardDashboardPluginsStatusRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -296,9 +400,11 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/redirect'
     | '/dashboard'
+    | '/about'
     | '/faqs'
     | '/installation'
     | '/leaderboard'
+    | '/leaderboards'
     | '/plugins'
     | '/api/users'
     | '/auth/login'
@@ -309,12 +415,21 @@ export interface FileRouteTypes {
     | '/posts/'
     | '/settings/'
     | '/users/'
+    | '/dashboard/about'
+    | '/dashboard/clients'
+    | '/dashboard/faqs'
+    | '/dashboard/invoices'
+    | '/dashboard/leaderboards'
+    | '/dashboard/setup'
     | '/projects/$id'
     | '/route-a'
     | '/route-b'
+    | '/plugins/status'
     | '/api/users/$id'
     | '/posts/$postId/deep'
     | '/projects/'
+    | '/dashboard/day/$date'
+    | '/dashboard/plugins/status'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -322,9 +437,11 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/redirect'
     | '/dashboard'
+    | '/about'
     | '/faqs'
     | '/installation'
     | '/leaderboard'
+    | '/leaderboards'
     | '/plugins'
     | '/api/users'
     | '/auth/login'
@@ -335,12 +452,21 @@ export interface FileRouteTypes {
     | '/posts'
     | '/settings'
     | '/users'
+    | '/dashboard/about'
+    | '/dashboard/clients'
+    | '/dashboard/faqs'
+    | '/dashboard/invoices'
+    | '/dashboard/leaderboards'
+    | '/dashboard/setup'
     | '/projects/$id'
     | '/route-a'
     | '/route-b'
+    | '/plugins/status'
     | '/api/users/$id'
     | '/posts/$postId/deep'
     | '/projects'
+    | '/dashboard/day/$date'
+    | '/dashboard/plugins/status'
   id:
     | '__root__'
     | '/'
@@ -355,9 +481,11 @@ export interface FileRouteTypes {
     | '/redirect'
     | '/_dashboard/dashboard'
     | '/_pathlessLayout/_nested-layout'
+    | '/_public/about'
     | '/_public/faqs'
     | '/_public/installation'
     | '/_public/leaderboard'
+    | '/_public/leaderboards'
     | '/_public/plugins'
     | '/api/users'
     | '/auth/login'
@@ -368,12 +496,21 @@ export interface FileRouteTypes {
     | '/posts/'
     | '/settings/'
     | '/users/'
+    | '/_dashboard/dashboard/about'
+    | '/_dashboard/dashboard/clients'
+    | '/_dashboard/dashboard/faqs'
+    | '/_dashboard/dashboard/invoices'
+    | '/_dashboard/dashboard/leaderboards'
+    | '/_dashboard/dashboard/setup'
     | '/_dashboard/projects/$id'
     | '/_pathlessLayout/_nested-layout/route-a'
     | '/_pathlessLayout/_nested-layout/route-b'
+    | '/_public/plugins/status'
     | '/api/users/$id'
     | '/posts_/$postId/deep'
     | '/_dashboard/projects/'
+    | '/_dashboard/dashboard/day/$date'
+    | '/_dashboard/dashboard/plugins/status'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -533,6 +670,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicPluginsRouteImport
       parentRoute: typeof PublicRouteRoute
     }
+    '/_public/leaderboards': {
+      id: '/_public/leaderboards'
+      path: '/leaderboards'
+      fullPath: '/leaderboards'
+      preLoaderRoute: typeof PublicLeaderboardsRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
     '/_public/leaderboard': {
       id: '/_public/leaderboard'
       path: '/leaderboard'
@@ -552,6 +696,13 @@ declare module '@tanstack/react-router' {
       path: '/faqs'
       fullPath: '/faqs'
       preLoaderRoute: typeof PublicFaqsRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/about': {
+      id: '/_public/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof PublicAboutRouteImport
       parentRoute: typeof PublicRouteRoute
     }
     '/_pathlessLayout/_nested-layout': {
@@ -589,6 +740,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiUsersIdRouteImport
       parentRoute: typeof ApiUsersRoute
     }
+    '/_public/plugins/status': {
+      id: '/_public/plugins/status'
+      path: '/status'
+      fullPath: '/plugins/status'
+      preLoaderRoute: typeof PublicPluginsStatusRouteImport
+      parentRoute: typeof PublicPluginsRoute
+    }
     '/_pathlessLayout/_nested-layout/route-b': {
       id: '/_pathlessLayout/_nested-layout/route-b'
       path: '/route-b'
@@ -610,17 +768,98 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardProjectsIdRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/_dashboard/dashboard/setup': {
+      id: '/_dashboard/dashboard/setup'
+      path: '/setup'
+      fullPath: '/dashboard/setup'
+      preLoaderRoute: typeof DashboardDashboardSetupRouteImport
+      parentRoute: typeof DashboardDashboardRoute
+    }
+    '/_dashboard/dashboard/leaderboards': {
+      id: '/_dashboard/dashboard/leaderboards'
+      path: '/leaderboards'
+      fullPath: '/dashboard/leaderboards'
+      preLoaderRoute: typeof DashboardDashboardLeaderboardsRouteImport
+      parentRoute: typeof DashboardDashboardRoute
+    }
+    '/_dashboard/dashboard/invoices': {
+      id: '/_dashboard/dashboard/invoices'
+      path: '/invoices'
+      fullPath: '/dashboard/invoices'
+      preLoaderRoute: typeof DashboardDashboardInvoicesRouteImport
+      parentRoute: typeof DashboardDashboardRoute
+    }
+    '/_dashboard/dashboard/faqs': {
+      id: '/_dashboard/dashboard/faqs'
+      path: '/faqs'
+      fullPath: '/dashboard/faqs'
+      preLoaderRoute: typeof DashboardDashboardFaqsRouteImport
+      parentRoute: typeof DashboardDashboardRoute
+    }
+    '/_dashboard/dashboard/clients': {
+      id: '/_dashboard/dashboard/clients'
+      path: '/clients'
+      fullPath: '/dashboard/clients'
+      preLoaderRoute: typeof DashboardDashboardClientsRouteImport
+      parentRoute: typeof DashboardDashboardRoute
+    }
+    '/_dashboard/dashboard/about': {
+      id: '/_dashboard/dashboard/about'
+      path: '/about'
+      fullPath: '/dashboard/about'
+      preLoaderRoute: typeof DashboardDashboardAboutRouteImport
+      parentRoute: typeof DashboardDashboardRoute
+    }
+    '/_dashboard/dashboard/plugins/status': {
+      id: '/_dashboard/dashboard/plugins/status'
+      path: '/plugins/status'
+      fullPath: '/dashboard/plugins/status'
+      preLoaderRoute: typeof DashboardDashboardPluginsStatusRouteImport
+      parentRoute: typeof DashboardDashboardRoute
+    }
+    '/_dashboard/dashboard/day/$date': {
+      id: '/_dashboard/dashboard/day/$date'
+      path: '/day/$date'
+      fullPath: '/dashboard/day/$date'
+      preLoaderRoute: typeof DashboardDashboardDayDateRouteImport
+      parentRoute: typeof DashboardDashboardRoute
+    }
   }
 }
 
+interface DashboardDashboardRouteChildren {
+  DashboardDashboardAboutRoute: typeof DashboardDashboardAboutRoute
+  DashboardDashboardClientsRoute: typeof DashboardDashboardClientsRoute
+  DashboardDashboardFaqsRoute: typeof DashboardDashboardFaqsRoute
+  DashboardDashboardInvoicesRoute: typeof DashboardDashboardInvoicesRoute
+  DashboardDashboardLeaderboardsRoute: typeof DashboardDashboardLeaderboardsRoute
+  DashboardDashboardSetupRoute: typeof DashboardDashboardSetupRoute
+  DashboardDashboardDayDateRoute: typeof DashboardDashboardDayDateRoute
+  DashboardDashboardPluginsStatusRoute: typeof DashboardDashboardPluginsStatusRoute
+}
+
+const DashboardDashboardRouteChildren: DashboardDashboardRouteChildren = {
+  DashboardDashboardAboutRoute: DashboardDashboardAboutRoute,
+  DashboardDashboardClientsRoute: DashboardDashboardClientsRoute,
+  DashboardDashboardFaqsRoute: DashboardDashboardFaqsRoute,
+  DashboardDashboardInvoicesRoute: DashboardDashboardInvoicesRoute,
+  DashboardDashboardLeaderboardsRoute: DashboardDashboardLeaderboardsRoute,
+  DashboardDashboardSetupRoute: DashboardDashboardSetupRoute,
+  DashboardDashboardDayDateRoute: DashboardDashboardDayDateRoute,
+  DashboardDashboardPluginsStatusRoute: DashboardDashboardPluginsStatusRoute,
+}
+
+const DashboardDashboardRouteWithChildren =
+  DashboardDashboardRoute._addFileChildren(DashboardDashboardRouteChildren)
+
 interface DashboardRouteRouteChildren {
-  DashboardDashboardRoute: typeof DashboardDashboardRoute
+  DashboardDashboardRoute: typeof DashboardDashboardRouteWithChildren
   DashboardProjectsIdRoute: typeof DashboardProjectsIdRoute
   DashboardProjectsIndexRoute: typeof DashboardProjectsIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
-  DashboardDashboardRoute: DashboardDashboardRoute,
+  DashboardDashboardRoute: DashboardDashboardRouteWithChildren,
   DashboardProjectsIdRoute: DashboardProjectsIdRoute,
   DashboardProjectsIndexRoute: DashboardProjectsIndexRoute,
 }
@@ -629,18 +868,34 @@ const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
   DashboardRouteRouteChildren,
 )
 
+interface PublicPluginsRouteChildren {
+  PublicPluginsStatusRoute: typeof PublicPluginsStatusRoute
+}
+
+const PublicPluginsRouteChildren: PublicPluginsRouteChildren = {
+  PublicPluginsStatusRoute: PublicPluginsStatusRoute,
+}
+
+const PublicPluginsRouteWithChildren = PublicPluginsRoute._addFileChildren(
+  PublicPluginsRouteChildren,
+)
+
 interface PublicRouteRouteChildren {
+  PublicAboutRoute: typeof PublicAboutRoute
   PublicFaqsRoute: typeof PublicFaqsRoute
   PublicInstallationRoute: typeof PublicInstallationRoute
   PublicLeaderboardRoute: typeof PublicLeaderboardRoute
-  PublicPluginsRoute: typeof PublicPluginsRoute
+  PublicLeaderboardsRoute: typeof PublicLeaderboardsRoute
+  PublicPluginsRoute: typeof PublicPluginsRouteWithChildren
 }
 
 const PublicRouteRouteChildren: PublicRouteRouteChildren = {
+  PublicAboutRoute: PublicAboutRoute,
   PublicFaqsRoute: PublicFaqsRoute,
   PublicInstallationRoute: PublicInstallationRoute,
   PublicLeaderboardRoute: PublicLeaderboardRoute,
-  PublicPluginsRoute: PublicPluginsRoute,
+  PublicLeaderboardsRoute: PublicLeaderboardsRoute,
+  PublicPluginsRoute: PublicPluginsRouteWithChildren,
 }
 
 const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(

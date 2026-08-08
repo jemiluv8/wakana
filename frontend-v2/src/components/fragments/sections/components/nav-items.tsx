@@ -4,7 +4,7 @@ const items = [
   // { name: "Blog", href: "/blog" },
   { name: "Faq", href: "/faqs" },
   { name: "Plugins", href: "/plugins" },
-  { name: "Leaderboard", href: "/leaderboards" },
+  { name: "Leaderboard", href: "/leaderboard" },
   { name: "Sign in", href: "/auth/login" },
 ];
 

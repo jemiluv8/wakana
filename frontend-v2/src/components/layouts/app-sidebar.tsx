@@ -20,27 +20,27 @@ import { AppSidebarLogo } from "./app-sidebar-logo";
 const SIMPLE_MENU_ITEMS = [
   {
     title: "FAQ",
-    url: "/faqs",
+    url: "/dashboard/faqs",
     icon: Quote,
   },
   {
     title: "About",
-    url: "/about",
+    url: "/dashboard/about",
     icon: Info,
   },
   {
     title: "Leaderboards",
-    url: "/leaderboards",
+    url: "/dashboard/leaderboards",
     icon: Trophy,
   },
   {
     title: "Plugin Status",
-    url: "/plugins/status",
+    url: "/dashboard/plugins/status",
     icon: SquareActivity,
   },
   {
     title: "Setup Guide",
-    url: "/setup",
+    url: "/dashboard/setup",
     icon: Settings2,
   },
 ];
@@ -66,12 +66,12 @@ export const MAIN_MENU_ITEMS = [
     children: [
       {
         title: "Clients",
-        url: "/clients",
+        url: "/dashboard/clients",
         icon: UsersIcon,
       },
       {
         title: "Invoices",
-        url: "/invoices",
+        url: "/dashboard/invoices",
         icon: Receipt,
       },
     ],

@@ -32,5 +32,13 @@ export const Route = createFileRoute("/_public/leaderboard")({
 
 function RouteComponent() {
   const data = Route.useLoaderData();
-  return <LeaderBoardTable title="Leaderboard" data={data} />;
+  const search = Route.useSearch();
+
+  return (
+    <LeaderBoardTable
+      title="Leaderboard"
+      data={data}
+      searchParams={search}
+    />
+  );
 }

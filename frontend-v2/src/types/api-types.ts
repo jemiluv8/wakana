@@ -191,6 +191,7 @@ export interface Invoice {
   invoice_summary: string;
   client: Client;
   created_at: string;
+  updated_at?: string;
   start_date: string;
   end_date: string;
   tax: number;

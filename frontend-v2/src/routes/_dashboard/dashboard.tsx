@@ -1,7 +1,12 @@
 import React, { Suspense, useMemo } from "react";
 import { format, subDays } from "date-fns";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, useSearch } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  useLocation,
+  useSearch,
+} from "@tanstack/react-router";
 
 import { apiFetch } from "~/lib/api";
 import { SummariesApiResponse } from "~/types";
@@ -33,6 +38,14 @@ export const Route = createFileRoute("/_dashboard/dashboard")({
 });
 
 function RouteComponent() {
+  const pathname = useLocation({
+    select: (location) => location.pathname,
+  });
+
+  if (pathname !== "/dashboard") {
+    return <Outlet />;
+  }
+
   const { start: rawStart, end: rawEnd } = useSearch({
     strict: false,
   }) as any;
