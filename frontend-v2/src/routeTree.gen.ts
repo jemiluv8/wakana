@@ -13,14 +13,18 @@ import { Route as RedirectRouteImport } from './routes/redirect'
 import { Route as DeferredRouteImport } from './routes/deferred'
 import { Route as PathlessLayoutRouteImport } from './routes/_pathlessLayout'
 import { Route as UsersRouteRouteImport } from './routes/users.route'
+import { Route as SettingsRouteRouteImport } from './routes/settings/route'
 import { Route as PostsRouteRouteImport } from './routes/posts.route'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as PublicRouteRouteImport } from './routes/_public/route'
 import { Route as DashboardRouteRouteImport } from './routes/_dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users.index'
+import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as PostsIndexRouteImport } from './routes/posts.index'
 import { Route as UsersUserIdRouteImport } from './routes/users.$userId'
+import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
+import { Route as SettingsPreferencesRouteImport } from './routes/settings/preferences'
 import { Route as PostsPostIdRouteImport } from './routes/posts.$postId'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ApiUsersRouteImport } from './routes/api/users'
@@ -56,6 +60,11 @@ const UsersRouteRoute = UsersRouteRouteImport.update({
   path: '/users',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRouteRoute = SettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PostsRouteRoute = PostsRouteRouteImport.update({
   id: '/posts',
   path: '/posts',
@@ -84,6 +93,11 @@ const UsersIndexRoute = UsersIndexRouteImport.update({
   path: '/',
   getParentRoute: () => UsersRouteRoute,
 } as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
 const PostsIndexRoute = PostsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -93,6 +107,16 @@ const UsersUserIdRoute = UsersUserIdRouteImport.update({
   id: '/$userId',
   path: '/$userId',
   getParentRoute: () => UsersRouteRoute,
+} as any)
+const SettingsProfileRoute = SettingsProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
+const SettingsPreferencesRoute = SettingsPreferencesRouteImport.update({
+  id: '/preferences',
+  path: '/preferences',
+  getParentRoute: () => SettingsRouteRoute,
 } as any)
 const PostsPostIdRoute = PostsPostIdRouteImport.update({
   id: '/$postId',
@@ -176,6 +200,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/posts': typeof PostsRouteRouteWithChildren
+  '/settings': typeof SettingsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
@@ -187,8 +212,11 @@ export interface FileRoutesByFullPath {
   '/api/users': typeof ApiUsersRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/settings/preferences': typeof SettingsPreferencesRoute
+  '/settings/profile': typeof SettingsProfileRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/posts/': typeof PostsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
   '/users/': typeof UsersIndexRoute
   '/projects/$id': typeof DashboardProjectsIdRoute
   '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
@@ -210,8 +238,11 @@ export interface FileRoutesByTo {
   '/api/users': typeof ApiUsersRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/settings/preferences': typeof SettingsPreferencesRoute
+  '/settings/profile': typeof SettingsProfileRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/posts': typeof PostsIndexRoute
+  '/settings': typeof SettingsIndexRoute
   '/users': typeof UsersIndexRoute
   '/projects/$id': typeof DashboardProjectsIdRoute
   '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
@@ -227,6 +258,7 @@ export interface FileRoutesById {
   '/_public': typeof PublicRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/posts': typeof PostsRouteRouteWithChildren
+  '/settings': typeof SettingsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
   '/deferred': typeof DeferredRoute
@@ -240,8 +272,11 @@ export interface FileRoutesById {
   '/api/users': typeof ApiUsersRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/settings/preferences': typeof SettingsPreferencesRoute
+  '/settings/profile': typeof SettingsProfileRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/posts/': typeof PostsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
   '/users/': typeof UsersIndexRoute
   '/_dashboard/projects/$id': typeof DashboardProjectsIdRoute
   '/_pathlessLayout/_nested-layout/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
@@ -256,6 +291,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/posts'
+    | '/settings'
     | '/users'
     | '/deferred'
     | '/redirect'
@@ -267,8 +303,11 @@ export interface FileRouteTypes {
     | '/api/users'
     | '/auth/login'
     | '/posts/$postId'
+    | '/settings/preferences'
+    | '/settings/profile'
     | '/users/$userId'
     | '/posts/'
+    | '/settings/'
     | '/users/'
     | '/projects/$id'
     | '/route-a'
@@ -290,8 +329,11 @@ export interface FileRouteTypes {
     | '/api/users'
     | '/auth/login'
     | '/posts/$postId'
+    | '/settings/preferences'
+    | '/settings/profile'
     | '/users/$userId'
     | '/posts'
+    | '/settings'
     | '/users'
     | '/projects/$id'
     | '/route-a'
@@ -306,6 +348,7 @@ export interface FileRouteTypes {
     | '/_public'
     | '/auth'
     | '/posts'
+    | '/settings'
     | '/users'
     | '/_pathlessLayout'
     | '/deferred'
@@ -319,8 +362,11 @@ export interface FileRouteTypes {
     | '/api/users'
     | '/auth/login'
     | '/posts/$postId'
+    | '/settings/preferences'
+    | '/settings/profile'
     | '/users/$userId'
     | '/posts/'
+    | '/settings/'
     | '/users/'
     | '/_dashboard/projects/$id'
     | '/_pathlessLayout/_nested-layout/route-a'
@@ -336,6 +382,7 @@ export interface RootRouteChildren {
   PublicRouteRoute: typeof PublicRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   PostsRouteRoute: typeof PostsRouteRouteWithChildren
+  SettingsRouteRoute: typeof SettingsRouteRouteWithChildren
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
   PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
   DeferredRoute: typeof DeferredRoute
@@ -372,6 +419,13 @@ declare module '@tanstack/react-router' {
       path: '/users'
       fullPath: '/users'
       preLoaderRoute: typeof UsersRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/posts': {
@@ -416,6 +470,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersIndexRouteImport
       parentRoute: typeof UsersRouteRoute
     }
+    '/settings/': {
+      id: '/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
     '/posts/': {
       id: '/posts/'
       path: '/'
@@ -429,6 +490,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/users/$userId'
       preLoaderRoute: typeof UsersUserIdRouteImport
       parentRoute: typeof UsersRouteRoute
+    }
+    '/settings/profile': {
+      id: '/settings/profile'
+      path: '/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof SettingsProfileRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
+    '/settings/preferences': {
+      id: '/settings/preferences'
+      path: '/preferences'
+      fullPath: '/settings/preferences'
+      preLoaderRoute: typeof SettingsPreferencesRouteImport
+      parentRoute: typeof SettingsRouteRoute
     }
     '/posts/$postId': {
       id: '/posts/$postId'
@@ -598,6 +673,22 @@ const PostsRouteRouteWithChildren = PostsRouteRoute._addFileChildren(
   PostsRouteRouteChildren,
 )
 
+interface SettingsRouteRouteChildren {
+  SettingsPreferencesRoute: typeof SettingsPreferencesRoute
+  SettingsProfileRoute: typeof SettingsProfileRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
+}
+
+const SettingsRouteRouteChildren: SettingsRouteRouteChildren = {
+  SettingsPreferencesRoute: SettingsPreferencesRoute,
+  SettingsProfileRoute: SettingsProfileRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
+}
+
+const SettingsRouteRouteWithChildren = SettingsRouteRoute._addFileChildren(
+  SettingsRouteRouteChildren,
+)
+
 interface UsersRouteRouteChildren {
   UsersUserIdRoute: typeof UsersUserIdRoute
   UsersIndexRoute: typeof UsersIndexRoute
@@ -660,6 +751,7 @@ const rootRouteChildren: RootRouteChildren = {
   PublicRouteRoute: PublicRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   PostsRouteRoute: PostsRouteRouteWithChildren,
+  SettingsRouteRoute: SettingsRouteRouteWithChildren,
   UsersRouteRoute: UsersRouteRouteWithChildren,
   PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
   DeferredRoute: DeferredRoute,
