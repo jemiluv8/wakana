@@ -28,7 +28,7 @@ export default function InstallationInstructions() {
                 <code className="px-1 py-0.5 rounded">~/.wakatime.cfg</code>{" "}
                 file on your computer. This is usually located in your root
                 folder. On windows you might have to show hidden files to see
-                it.
+                it <code className="px-1 py-0.5 rounded">(Windows: %USERPROFILE%\\.wakatime.cfg)</code>.
               </li>
               <li className="text-lg">
                 Update it with the API key you get in your Wakana dashboard

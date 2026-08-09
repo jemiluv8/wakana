@@ -31,7 +31,6 @@ import { Route as ApiUsersRouteImport } from './routes/api/users'
 import { Route as PublicPluginsRouteImport } from './routes/_public/plugins'
 import { Route as PublicLeaderboardsRouteImport } from './routes/_public/leaderboards'
 import { Route as PublicLeaderboardRouteImport } from './routes/_public/leaderboard'
-import { Route as PublicInstallationRouteImport } from './routes/_public/installation'
 import { Route as PublicFaqsRouteImport } from './routes/_public/faqs'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
 import { Route as PathlessLayoutNestedLayoutRouteImport } from './routes/_pathlessLayout/_nested-layout'
@@ -160,11 +159,6 @@ const PublicLeaderboardRoute = PublicLeaderboardRouteImport.update({
   path: '/leaderboard',
   getParentRoute: () => PublicRouteRoute,
 } as any)
-const PublicInstallationRoute = PublicInstallationRouteImport.update({
-  id: '/installation',
-  path: '/installation',
-  getParentRoute: () => PublicRouteRoute,
-} as any)
 const PublicFaqsRoute = PublicFaqsRouteImport.update({
   id: '/faqs',
   path: '/faqs',
@@ -285,7 +279,6 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardDashboardRouteWithChildren
   '/about': typeof PublicAboutRoute
   '/faqs': typeof PublicFaqsRoute
-  '/installation': typeof PublicInstallationRoute
   '/leaderboard': typeof PublicLeaderboardRoute
   '/leaderboards': typeof PublicLeaderboardsRoute
   '/plugins': typeof PublicPluginsRouteWithChildren
@@ -323,7 +316,6 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardDashboardRouteWithChildren
   '/about': typeof PublicAboutRoute
   '/faqs': typeof PublicFaqsRoute
-  '/installation': typeof PublicInstallationRoute
   '/leaderboard': typeof PublicLeaderboardRoute
   '/leaderboards': typeof PublicLeaderboardsRoute
   '/plugins': typeof PublicPluginsRouteWithChildren
@@ -369,7 +361,6 @@ export interface FileRoutesById {
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/_public/about': typeof PublicAboutRoute
   '/_public/faqs': typeof PublicFaqsRoute
-  '/_public/installation': typeof PublicInstallationRoute
   '/_public/leaderboard': typeof PublicLeaderboardRoute
   '/_public/leaderboards': typeof PublicLeaderboardsRoute
   '/_public/plugins': typeof PublicPluginsRouteWithChildren
@@ -412,7 +403,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/about'
     | '/faqs'
-    | '/installation'
     | '/leaderboard'
     | '/leaderboards'
     | '/plugins'
@@ -450,7 +440,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/about'
     | '/faqs'
-    | '/installation'
     | '/leaderboard'
     | '/leaderboards'
     | '/plugins'
@@ -495,7 +484,6 @@ export interface FileRouteTypes {
     | '/_pathlessLayout/_nested-layout'
     | '/_public/about'
     | '/_public/faqs'
-    | '/_public/installation'
     | '/_public/leaderboard'
     | '/_public/leaderboards'
     | '/_public/plugins'
@@ -695,13 +683,6 @@ declare module '@tanstack/react-router' {
       path: '/leaderboard'
       fullPath: '/leaderboard'
       preLoaderRoute: typeof PublicLeaderboardRouteImport
-      parentRoute: typeof PublicRouteRoute
-    }
-    '/_public/installation': {
-      id: '/_public/installation'
-      path: '/installation'
-      fullPath: '/installation'
-      preLoaderRoute: typeof PublicInstallationRouteImport
       parentRoute: typeof PublicRouteRoute
     }
     '/_public/faqs': {
@@ -917,7 +898,6 @@ const PublicPluginsRouteWithChildren = PublicPluginsRoute._addFileChildren(
 interface PublicRouteRouteChildren {
   PublicAboutRoute: typeof PublicAboutRoute
   PublicFaqsRoute: typeof PublicFaqsRoute
-  PublicInstallationRoute: typeof PublicInstallationRoute
   PublicLeaderboardRoute: typeof PublicLeaderboardRoute
   PublicLeaderboardsRoute: typeof PublicLeaderboardsRoute
   PublicPluginsRoute: typeof PublicPluginsRouteWithChildren
@@ -926,7 +906,6 @@ interface PublicRouteRouteChildren {
 const PublicRouteRouteChildren: PublicRouteRouteChildren = {
   PublicAboutRoute: PublicAboutRoute,
   PublicFaqsRoute: PublicFaqsRoute,
-  PublicInstallationRoute: PublicInstallationRoute,
   PublicLeaderboardRoute: PublicLeaderboardRoute,
   PublicLeaderboardsRoute: PublicLeaderboardsRoute,
   PublicPluginsRoute: PublicPluginsRouteWithChildren,

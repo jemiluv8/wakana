@@ -36,7 +36,7 @@ export function DashboardProjects({ data }: DashboardProjectsProps) {
                   </p>
                   <p className="mt-2 cursor-pointer">
                     You may also checkout{" "}
-                    <Link to="/installation" className="underline">
+                    <Link to="/dashboard/setup" className="underline">
                       Installation Guide
                     </Link>
                   </p>

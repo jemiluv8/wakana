@@ -10,13 +10,6 @@ export function MainHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
 
         <ul className="mx-3 space-x-2 text-sm md:flex font-bold">
           <Link
-            to="/installation"
-            className="inline-flex h-8 items-center px-3 py-2 hover:opacity-70"
-          >
-            Installation
-          </Link>
-
-          <Link
             to="/faqs"
             className="inline-flex h-8 items-center px-3 py-2 hover:opacity-70"
           >

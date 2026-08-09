@@ -3,9 +3,7 @@ import {
   BarChart3,
   Clock,
   FileText,
-  Flag,
   Layers,
-  Repeat,
   Trophy,
   Users,
 } from "lucide-react";
@@ -16,14 +14,6 @@ import { FeatureCard } from "./feature-card";
 import { StatCard } from "./start-card";
 
 const features = [
-  {
-    icon: Flag,
-    title: "Goals",
-    description:
-      "Create and track programming goals with customizable targets. Set daily, weekly, or monthly coding objectives and monitor your progress.",
-    iconColor: "text-blue-400",
-    iconBgColor: "bg-blue-900/30",
-  },
   {
     icon: FileText,
     title: "Invoices",
@@ -41,28 +31,12 @@ const features = [
     iconBgColor: "bg-purple-900/30",
   },
   {
-    icon: Users,
-    title: "Client Management",
-    description:
-      "Create and manage freelance clients with ease. Organize projects by client, track billable hours, and maintain client-specific settings.",
-    iconColor: "text-yellow-400",
-    iconBgColor: "bg-yellow-900/30",
-  },
-  {
     icon: Trophy,
     title: "Public Leaderboards",
     description:
       "See how you measure up against other developers. Compare coding metrics, languages, and productivity with the global developer community.",
     iconColor: "text-red-400",
     iconBgColor: "bg-red-900/30",
-  },
-  {
-    icon: Repeat,
-    title: "Wakatime Relay",
-    description:
-      "Set up Wakatime integration to relay all heartbeats. Perfect for trying our platform while maintaining your existing Wakatime setup and data.",
-    iconColor: "text-teal-400",
-    iconBgColor: "bg-teal-900/30",
   },
 ];
 
@@ -103,12 +77,12 @@ export default function FeaturesSection() {
               Features for Developers and Freelancers
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Observe your coding activity, set goals, track projects, manage
-              clients and gain insights into your productivity effortlessly.
+              Observe your coding activity, track projects, generate invoices,
+              and gain insights into your productivity effortlessly.
             </p>
             <p className="text-gray-400 max-w-2xl mx-auto sr-only">
-              Observe your coding activity, manage clients, create invoice, set
-              productivity goals and observe your work with ease.
+              Observe your coding activity, track projects, generate invoices
+              and observe your work with ease.
             </p>
           </div>
         </FadeOnView>

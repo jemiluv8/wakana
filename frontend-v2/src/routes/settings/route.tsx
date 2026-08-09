@@ -2,6 +2,7 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { useAuth } from "~/lib/providers/auth-provider";
 import { Spinner } from "~/components/custom/spinner/spinner";
 import { SettingsNavigation } from "~/components/settings/settings-navigation";
+import { DashboardLayout } from "~/components/layouts/dashboard-layout";
 
 export const Route = createFileRoute("/settings")({
   component: RouteComponent,
@@ -25,8 +26,8 @@ function RouteComponent() {
   }
 
   return (
-    <div className="flex min-h-screen w-full flex-col">
-      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
+    <DashboardLayout>
+      <div className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
         <div className="mx-auto grid w-full max-w-6xl gap-2">
           <h1 className="text-3xl font-semibold">Settings</h1>
         </div>
@@ -36,8 +37,7 @@ function RouteComponent() {
             <Outlet />
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }
-

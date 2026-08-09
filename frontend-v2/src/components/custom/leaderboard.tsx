@@ -1,6 +1,5 @@
-import { useLocation } from "@tanstack/react-router";
+import { useLocation, Link } from "@tanstack/react-router";
 import { truncate } from "lodash";
-import { HelpCircle } from "lucide-react";
 
 import { COLORS } from "~/lib/constants";
 import { cn, convertSecondsToHoursAndMinutes } from "~/lib/utils";
@@ -15,10 +14,12 @@ function getLanguageColor(language: string): string {
 function TooltipWithProvider({ description }: { description: string }) {
   return (
     <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-          <HelpCircle className="size-4" />
-          </TooltipTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span className="inline-flex cursor-help items-center" aria-hidden="true">
+            ?
+          </span>
+        </TooltipTrigger>
         <TooltipContent>
           <p>{description}</p>
         </TooltipContent>
@@ -36,13 +37,14 @@ function RenderLanguages({ languages }: { languages: string[] }) {
   const lastItem = truncatedArray.pop();
 
   const items = truncatedArray.map((item, index) => (
-    <a
+    <Link
       key={index}
-      href={`${currentPath}?language=${encodeURIComponent(item)}`}
-      className="text-white hover:underline"
+      to={currentPath}
+      search={{ language: item }}
+      className="text-black hover:underline dark:text-white"
     >
       {item},
-    </a>
+    </Link>
   ));
 
   const totalCharacters = truncatedArray.reduce(
@@ -58,12 +60,13 @@ function RenderLanguages({ languages }: { languages: string[] }) {
     <div className="flex" style={{ gap: "1px" }} title={languages.join(", ")}>
       {items}
       {lastItem && (
-        <a
-          href={`${currentPath}?language=${encodeURIComponent(lastItem)}`}
-          className="text-white hover:underline"
+        <Link
+          to={currentPath}
+          search={{ language: lastItem }}
+          className="text-black hover:underline dark:text-white"
         >
           {lastItemText}
-        </a>
+        </Link>
       )}
     </div>
   );
@@ -74,6 +77,19 @@ interface LeaderboardProps {
   data: LeaderboardApiResponse;
   titleClass?: string;
   searchParams?: Record<string, any>;
+}
+
+function rowMapper(
+  dataItem: LeaderboardApiResponse["data"][number],
+  index: number
+) {
+  return {
+    rank: index + 1,
+    programmer: dataItem.user.display_name || "Anonymous User",
+    hours_coded: dataItem.running_total.human_readable_total,
+    daily_average: dataItem.running_total.human_readable_daily_average,
+    languages: dataItem.running_total.languages.map((language) => language.name),
+  };
 }
 
 export function LeaderBoardTable({
@@ -92,13 +108,7 @@ export function LeaderBoardTable({
       users.add(leaderData.user.id);
       return true;
     })
-    .map((item, index) => ({
-      rank: index + 1,
-      programmer: item.user.display_name || "Anonymous User",
-      hours_coded: item.running_total.human_readable_total,
-      daily_average: item.running_total.human_readable_daily_average,
-      languages: item.running_total.languages.map((l) => l.name),
-    }));
+    .map((item, index) => rowMapper(item, index));
 
   const subtitle = searchParams?.language ? `- ${searchParams.language}` : "";
 
@@ -127,9 +137,11 @@ export function LeaderBoardTable({
                   <TooltipWithProvider description="Total hours coded over the last 7 days from Yesterday, using default 15 minute timeout, only showing coding activity from known languages." />
                 </div>
               </th>
-              <th className="flex w-28 items-center gap-2 text-left">
-                Daily Average
-                <TooltipWithProvider description="Average hours coded per day, excluding days with zero coding activity." />
+              <th className="w-28 text-left">
+                <div className="flex items-center gap-2">
+                  Daily Average
+                  <TooltipWithProvider description="Average hours coded per day, excluding days with zero coding activity." />
+                </div>
               </th>
               <th className="min-w-0 text-left">Languages Used</th>
             </tr>

@@ -20,14 +20,14 @@ export function Hero() {
         <FadeOnView delay={0.2}>
           <h1
             className={cn(
-              "sm:flex-center gap-4 py-4 sm:gap-4 md:py-6 lg:text-7xl font-semibold leading-5 tracking-tighter text-secondary-foreground"
+              "sm:flex-center gap-4 py-4 sm:gap-4 md:py-6 font-semibold tracking-tighter text-secondary-foreground text-4xl leading-snug sm:text-5xl md:text-6xl lg:text-7xl"
             )}
           >
             Observe your work in real time
           </h1>
         </FadeOnView>
         <FadeOnView delay={0.4}>
-          <p className="text-muted-foreground md:text-lg">
+          <p className="text-base leading-7 text-muted-foreground sm:text-lg md:text-xl">
             Developer dashboards for insights into your work habits
           </p>
         </FadeOnView>

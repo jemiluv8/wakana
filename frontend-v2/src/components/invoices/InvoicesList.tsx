@@ -3,10 +3,12 @@ import { useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useNavigate, Link } from "@tanstack/react-router";
-import { Eye, FilePenLine, MoreVertical, Plus, Trash2 } from "lucide-react";
+import { CalendarIcon, Eye, FilePenLine, MoreVertical, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
+import { Icons } from "~/components/icons";
 import { Button } from "~/components/ui/button";
+import { Calendar } from "~/components/ui/calendar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +21,8 @@ import { apiFetch } from "~/lib/api";
 import { useAuth } from "~/lib/providers/auth-provider";
 import { convertSecondsToHours, formatNumber, humanizeDate } from "~/lib/utils";
 import type { Client, Invoice } from "~/types";
-import { Input } from "~/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { cn } from "~/lib/utils";
 
 type ClientsResponse = {
   data: Client[];
@@ -29,12 +32,16 @@ type InvoicesResponse = {
   data: Invoice[];
 };
 
-export function InvoicesList() {
+type InvoicesListProps = {
+  createOpen: boolean;
+  setCreateOpen: (open: boolean) => void;
+};
+
+export function InvoicesList({ createOpen, setCreateOpen }: InvoicesListProps) {
   const [filter, setFilter] = useState("");
-  const [createOpen, setCreateOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState<Date | undefined>();
+  const [endDate, setEndDate] = useState<Date | undefined>();
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -66,6 +73,13 @@ export function InvoicesList() {
     return searchableText.includes(search);
   });
 
+  const closeCreateModal = () => {
+    setCreateOpen(false);
+    setSelectedClient("");
+    setStartDate(undefined);
+    setEndDate(undefined);
+  };
+
   const createInvoice = async () => {
     if (!selectedClient || !startDate || !endDate) {
       toast.error("Select a client and date range");
@@ -78,15 +92,15 @@ export function InvoicesList() {
         method: "POST",
         body: JSON.stringify({
           client_id: selectedClient,
-          start_date: new Date(`${startDate}T00:00:00`).toISOString(),
-          end_date: new Date(`${endDate}T23:59:59`).toISOString(),
+          start_date: new Date(format(startDate, "yyyy-MM-dd") + "T00:00:00").toISOString(),
+          end_date: new Date(format(endDate, "yyyy-MM-dd") + "T23:59:59").toISOString(),
         }),
       }
     );
 
     toast.success("Invoice created successfully");
     setInvoiceRows((current) => [response.data, ...current]);
-    setCreateOpen(false);
+    closeCreateModal();
     await navigate({
       to: "/dashboard/invoices/$id",
       params: { id: response.data.id },
@@ -123,14 +137,6 @@ export function InvoicesList() {
           value={filter}
           onChange={(event) => setFilter(event.target.value)}
         />
-        <Button
-          type="button"
-          className="gap-2 whitespace-nowrap"
-          onClick={() => setCreateOpen(true)}
-        >
-          <Plus className="size-4" />
-          Create Invoice
-        </Button>
       </div>
       <div className="rounded-md border">
         <table className="w-full">
@@ -247,13 +253,15 @@ export function InvoicesList() {
                   Pick a client and date range to create the invoice shell.
                 </p>
               </div>
-              <button
+              <Button
                 type="button"
-                className="text-sm text-muted-foreground"
-                onClick={() => setCreateOpen(false)}
+                variant="ghost"
+                size="icon"
+                onClick={closeCreateModal}
+                aria-label="Close create invoice modal"
               >
-                Close
-              </button>
+                <Icons.close className="size-4" />
+              </Button>
             </div>
 
             <div className="space-y-4">
@@ -276,27 +284,70 @@ export function InvoicesList() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block space-y-2">
                   <span className="text-sm font-medium">Start date</span>
-                  <Input
-                    type="date"
-                    value={startDate}
-                    onChange={(event) => setStartDate(event.target.value)}
-                  />
+                  <Popover modal={true}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-between pl-3 text-left font-normal",
+                          !startDate && "text-muted-foreground"
+                        )}
+                      >
+                        {startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
+                        <CalendarIcon className="size-4 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={startDate}
+                        onSelect={(date) => {
+                          setStartDate(date);
+                          if (endDate && date && endDate < date) {
+                            setEndDate(date);
+                          }
+                        }}
+                        disabled={(date: Date) => date > new Date()}
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </label>
                 <label className="block space-y-2">
                   <span className="text-sm font-medium">End date</span>
-                  <Input
-                    type="date"
-                    value={endDate}
-                    onChange={(event) => setEndDate(event.target.value)}
-                  />
+                  <Popover modal={true}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-between pl-3 text-left font-normal",
+                          !endDate && "text-muted-foreground"
+                        )}
+                      >
+                        {endDate ? format(endDate, "PPP") : <span>Pick a date</span>}
+                        <CalendarIcon className="size-4 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={endDate}
+                        onSelect={setEndDate}
+                        disabled={(date: Date) =>
+                          date > new Date() || (startDate ? date < startDate : false)
+                        }
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </label>
               </div>
 
               <div className="flex justify-end gap-2 pt-2">
-                <Button variant="outline" onClick={() => setCreateOpen(false)}>
+                <Button variant="outline" type="button" onClick={closeCreateModal}>
                   Cancel
                 </Button>
-                <Button onClick={createInvoice}>Create</Button>
+                <Button type="button" onClick={createInvoice}>
+                  Create
+                </Button>
               </div>
             </div>
           </div>

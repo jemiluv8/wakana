@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { MoreVertical, Plus, PencilLine, Trash2 } from "lucide-react";
+import { Check, ChevronDown, MoreVertical, Plus, PencilLine, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
+import { Badge } from "~/components/ui/badge";
 import { Icons } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import {
@@ -16,13 +17,17 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Input } from "~/components/ui/input";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { Textarea } from "~/components/ui/textarea";
 import { CURRENCIES } from "~/lib/constants/currencies";
 import { apiFetch } from "~/lib/api";
 import { useAuth } from "~/lib/providers/auth-provider";
@@ -33,25 +38,155 @@ type ClientsResponse = {
   data: Client[];
 };
 
+type ProjectsResponse = {
+  data: Array<{
+    id: string;
+    name: string;
+    urlencoded_name?: string;
+  }>;
+};
+
 type ClientFormState = {
   name: string;
   hourly_rate: string;
   currency: string;
-  projects: string;
+  projects: string[];
 };
 
 const emptyForm = (): ClientFormState => ({
   name: "",
   hourly_rate: "",
   currency: "USD",
-  projects: "",
+  projects: [],
 });
+
+type ProjectOption = {
+  label: string;
+  value: string;
+};
+
+function ProjectMultiSelect({
+  options,
+  value,
+  onChange,
+  placeholder = "Select projects",
+}: {
+  options: ProjectOption[];
+  value: string[];
+  onChange: (value: string[]) => void;
+  placeholder?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [filter, setFilter] = useState("");
+
+  const filteredOptions = useMemo(() => {
+    const search = filter.trim().toLowerCase();
+    if (!search) return options;
+    return options.filter((option) =>
+      [option.label, option.value].join(" ").toLowerCase().includes(search)
+    );
+  }, [filter, options]);
+
+  const selectedLabels = value
+    .map((selected) => options.find((option) => option.value === selected)?.label ?? selected)
+    .filter(Boolean);
+
+  const toggle = (nextValue: string) => {
+    onChange(
+      value.includes(nextValue)
+        ? value.filter((item) => item !== nextValue)
+        : [...value, nextValue]
+    );
+  };
+
+  return (
+    <Popover open={open} onOpenChange={setOpen} modal>
+      <PopoverTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          className="h-auto min-h-10 w-full justify-between gap-3 px-3 py-2 font-normal"
+        >
+          <div className="flex min-w-0 flex-1 flex-wrap gap-1 text-left">
+            {selectedLabels.length ? (
+              selectedLabels.map((label) => (
+                <Badge key={label} variant="secondary" className="max-w-full truncate">
+                  {label}
+                </Badge>
+              ))
+            ) : (
+              <span className="text-muted-foreground">{placeholder}</span>
+            )}
+          </div>
+          <ChevronDown className="size-4 shrink-0 opacity-60" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[320px] p-2" align="start">
+        <Input
+          placeholder="Filter projects"
+          value={filter}
+          onChange={(event) => setFilter(event.target.value)}
+          className="mb-2"
+        />
+        <div className="max-h-64 overflow-auto rounded-md border border-border">
+          {filteredOptions.length ? (
+            filteredOptions.map((option) => {
+              const selected = value.includes(option.value);
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => toggle(option.value)}
+                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-muted"
+                >
+                  <span
+                    className={[
+                      "flex size-4 items-center justify-center rounded border",
+                      selected
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border",
+                    ].join(" ")}
+                  >
+                    <Check className={`size-3.5 ${selected ? "opacity-100" : "opacity-0"}`} />
+                  </span>
+                  <span className="min-w-0 flex-1 truncate">{option.label}</span>
+                </button>
+              );
+            })
+          ) : (
+            <div className="px-3 py-6 text-center text-sm text-muted-foreground">
+              No projects found.
+            </div>
+          )}
+        </div>
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => onChange([])}
+            disabled={!value.length}
+          >
+            Clear
+          </Button>
+          <Button type="button" size="sm" onClick={() => setOpen(false)}>
+            Done
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 export function ClientsList() {
   const { user } = useAuth();
   const { data } = useSuspenseQuery({
     queryKey: ["clients", user?.id ?? null],
     queryFn: () => apiFetch<ClientsResponse>("/v1/users/current/clients"),
+  });
+  const { data: projectsData } = useSuspenseQuery({
+    queryKey: ["projects", user?.id ?? null],
+    queryFn: () => apiFetch<ProjectsResponse>("/v1/users/current/projects"),
   });
 
   const [clients, setClients] = useState<Client[]>(data.data);
@@ -60,6 +195,21 @@ export function ClientsList() {
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState<Client | null>(null);
   const [form, setForm] = useState<ClientFormState>(emptyForm);
+
+  const projectOptions = useMemo<ProjectOption[]>(() => {
+    const existing = form.projects.map((project) => ({
+      label: project,
+      value: project,
+    }));
+    const fromApi = projectsData.data.map((project) => ({
+      label: project.name,
+      value: project.name,
+    }));
+
+    return Array.from(
+      new Map([...existing, ...fromApi].map((project) => [project.value, project])).values()
+    );
+  }, [form.projects, projectsData.data]);
 
   const filteredClients = useMemo(() => {
     const search = filter.toLowerCase();
@@ -83,7 +233,7 @@ export function ClientsList() {
       name: client.name,
       hourly_rate: String(client.hourly_rate),
       currency: client.currency,
-      projects: client.projects.join(", "),
+      projects: client.projects,
     });
     setOpen(true);
   };
@@ -104,10 +254,7 @@ export function ClientsList() {
       name: form.name.trim(),
       hourly_rate: Number(form.hourly_rate || 0),
       currency: form.currency.trim() || "USD",
-      projects: form.projects
-        .split(",")
-        .map((project) => project.trim())
-        .filter(Boolean),
+      projects: form.projects,
     };
 
     try {
@@ -350,18 +497,16 @@ export function ClientsList() {
               </div>
 
               <label className="block space-y-2">
-                <span className="text-sm font-medium">
-                  Projects, comma separated
-                </span>
-                <Textarea
-                  rows={4}
+                <span className="text-sm font-medium">Projects</span>
+                <ProjectMultiSelect
                   value={form.projects}
-                  onChange={(event) =>
+                  onChange={(projects) =>
                     setForm((current) => ({
                       ...current,
-                      projects: event.target.value,
+                      projects,
                     }))
                   }
+                  options={projectOptions}
                 />
               </label>
 

@@ -206,7 +206,7 @@ export default function RouteComponent() {
                   Configure the plugin with your Wakana API settings
                 </p>
                 <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">
-                  Follow our <Link to="/installation">setup guide</Link> for
+                  Follow our <Link to="/dashboard/setup">setup guide</Link> for
                   detailed configuration instructions
                 </p>
               </div>
@@ -233,7 +233,7 @@ export default function RouteComponent() {
             Need help with setup? Check out our comprehensive guide.
           </p>
           <Link
-            to="/installation"
+            to="/dashboard/setup"
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors"
           >
             <Code className="h-4 w-4" />
