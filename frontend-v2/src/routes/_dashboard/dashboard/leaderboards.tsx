@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { z } from "zod";
 
-import { LeaderBoardTable } from "~/components/custom/leaderboard";
+import { LeaderBoardTableV2 } from "~/components/custom/leaderboard";
 import { Spinner } from "~/components/custom/spinner/spinner";
 import { apiFetch } from "~/lib/api";
 import { useAuth } from "~/lib/providers/auth-provider";
@@ -54,8 +54,8 @@ function LeaderboardsPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-6xl py-8 sm:py-12">
-      <LeaderBoardTable
+    <div className="mx-auto w-full max-w-7xl py-12 px-4 sm:px-6 lg:px-8">
+      <LeaderBoardTableV2
         title="Public"
         data={query.data}
         searchParams={{ language }}
