@@ -23,7 +23,7 @@ const prepareEntitiesData = (data: any[], field: string) => {
 };
 
 function RouteComponent() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const { id } = Route.useParams();
   const search = useSearch({ strict: false }) as any;
   const {
@@ -45,13 +45,15 @@ function RouteComponent() {
       <div className="flex items-center justify-between align-middle mb-4">
         <h1 className="text-3xl font-bold">{startCase(id)}</h1>
         <div>
-          <img
-            className="with-url-src"
-            src={`${VITE_PUBLIC_API_URL}/badge/${user?.id}/project:${id}/interval:all_time?label=total`}
-            alt="Badge"
-            width={150}
-            height={20}
-          />
+          {user && token ? (
+            <img
+              className="with-url-src"
+              src={`${VITE_PUBLIC_API_URL}/badge/${user.id}/project:${id}/interval:all_time?label=total&token=${encodeURIComponent(token)}`}
+              alt="Badge"
+              width={150}
+              height={20}
+            />
+          ) : null}
         </div>
       </div>
       <div className="m-0 mb-5 mt-2 text-lg">

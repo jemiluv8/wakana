@@ -162,6 +162,7 @@ export function LeaderBoardTableV2({
     }));
 
   const subtitle = searchParams?.language ? `- ${searchParams.language}` : "";
+  const hasLanguageFilter = Boolean(searchParams?.language);
 
   return (
     <div className="mx-auto w-full">
@@ -172,6 +173,16 @@ export function LeaderBoardTableV2({
         <p className="mt-2 text-muted-foreground">
           {range.text} • {range.start_text} - {range.end_text}
         </p>
+        {hasLanguageFilter ? (
+          <Link
+            to={pathname}
+            search={() => ({})}
+            className="mt-4 inline-flex items-center rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+            aria-label="Clear language filter"
+          >
+            Clear filter
+          </Link>
+        ) : null}
       </div>
 
       <div className="space-y-3 md:hidden">

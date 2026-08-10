@@ -46,6 +46,10 @@ function RouteComponent() {
     return <Outlet />;
   }
 
+  return <DashboardHome />;
+}
+
+function DashboardHome() {
   const { start: rawStart, end: rawEnd } = useSearch({
     strict: false,
   }) as any;
