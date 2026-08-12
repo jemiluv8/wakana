@@ -1,5 +1,5 @@
 {
-  "name": "tanstack-start-example-basic-react-query",
+  "name": "wakana-frontend",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -12,12 +12,6 @@
     "lint:fix": "eslint . --fix",
     "prettify": "prettier --write .",
     "type-check": "tsc --noEmit"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "core-js",
-      "unrs-resolver"
-    ]
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
