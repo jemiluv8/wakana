@@ -1,10 +1,10 @@
+import { Link } from "@tanstack/react-router";
 import { formatDistanceToNow } from "date-fns";
 import { startCase, truncate } from "lodash";
 
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 
 import { ProjectTimeImage } from "./project-time-image";
-import { Link } from "@tanstack/react-router";
 
 interface ProjectData {
   id: string;
@@ -58,20 +58,24 @@ export default function ProjectListCard({ project }: { project: ProjectData }) {
   const projectId = truncate(project.name, { length: 15 });
 
   return (
-    <Link to="/projects/$id" params={{ id: project.id }} className="md:w-full border-border">
-      <Card className="p-1 py-2 w-full overflow-hidden shadow-sm duration-300 ease-in-out hover:border-white/15 hover:bg-white/4 cursor-pointer">
-        <CardHeader className="relative pb-2">
-          <div className="flex justify-between items-start">
-            <div className="flex items-center space-x-3">
+    <Link
+      to="/projects/$id"
+      params={{ id: project.id }}
+      className="block w-full border-border"
+    >
+      <Card className="w-full overflow-hidden border-border/80 p-3 shadow-sm duration-300 ease-in-out hover:border-white/15 hover:bg-white/4 sm:p-4">
+        <CardHeader className="pb-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex min-w-0 items-start gap-3">
               <div
-                className="h-10 w-10 flex items-center justify-center text-white font-semibold flex-shrink-0"
+                className="flex h-10 w-10 flex-shrink-0 items-center justify-center font-semibold text-white"
                 style={{ backgroundColor: getRandomColor(project.name) }}
               >
                 {getProjectInitials(project.name)}
               </div>
-              <div>
+              <div className="min-w-0">
                 <h3
-                  className="text-xl font-semibold tracking-tight"
+                  className="truncate text-lg font-semibold tracking-tight sm:text-xl"
                   title={startCase(project.name)}
                 >
                   {displayName}
@@ -81,18 +85,22 @@ export default function ProjectListCard({ project }: { project: ProjectData }) {
                 </p>
               </div>
             </div>
-            <ProjectTimeImage project={project} />
+            <div className="flex justify-start sm:justify-end">
+              <ProjectTimeImage project={project} />
+            </div>
           </div>
         </CardHeader>
-        <CardContent className="pb-2">
-          <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm">
+        <CardContent className="pb-1">
+          <div className="space-y-3">
+            <div className="flex flex-col gap-1 text-sm sm:flex-row sm:items-center sm:justify-between">
               <span className="text-muted-foreground">Project ID</span>
-              <span className="font-mono">{projectId}</span>
+              <span className="font-mono break-all text-foreground">
+                {projectId}
+              </span>
             </div>
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex flex-col gap-1 text-sm sm:flex-row sm:items-center sm:justify-between">
               <span className="text-muted-foreground">Last updated at</span>
-              <span>{lastUpdatedAt}</span>
+              <span className="text-foreground">{lastUpdatedAt}</span>
             </div>
           </div>
         </CardContent>

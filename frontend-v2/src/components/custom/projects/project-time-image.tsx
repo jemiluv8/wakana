@@ -12,7 +12,7 @@ export function ProjectTimeImage({ project }: { project: Project }) {
   const src = `${VITE_PUBLIC_API_URL}/badge/${user.id}/project:${project.id}/interval:all_time?label=total&token=${encodeURIComponent(token)}`;
   return (
     <img
-      className="with-url-src"
+      className="with-url-src h-auto w-[96px] max-w-full sm:w-[120px]"
       src={src}
       alt="Badge"
       width={120}
