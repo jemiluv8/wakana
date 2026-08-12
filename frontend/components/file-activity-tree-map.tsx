@@ -1,10 +1,9 @@
 "use client";
 
 import { Group } from "@visx/group";
-import { Treemap } from "@visx/hierarchy";
+import { Treemap, hierarchy } from "@visx/hierarchy";
 import { ParentSize } from "@visx/responsive";
 import { scaleOrdinal } from "@visx/scale";
-import { hierarchy } from "d3-hierarchy";
 import truncate from "lodash/truncate";
 import type React from "react";
 import { useMemo, useState } from "react";
@@ -30,14 +29,32 @@ interface TreemapChartProps {
   rawData: FileData[];
 }
 
+interface TreemapNode {
+  name: string;
+  children: TreemapNode[];
+  size?: number;
+  fullPath?: string;
+  timeText?: string;
+  id?: string;
+}
+
+interface HoveredNode {
+  x: number;
+  y: number;
+  name: string;
+  fullPath?: string;
+  timeText?: string;
+  id?: string;
+}
+
 export const FileActivityTreemapVisx: React.FC<TreemapChartProps> = ({
   rawData,
 }) => {
   // State for hover and selection interactions
-  const [hoveredNode, setHoveredNode] = useState<any | null>(null);
+  const [hoveredNode, setHoveredNode] = useState<HoveredNode | null>(null);
   const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
 
-  const data = useMemo(() => {
+  const data = useMemo<TreemapNode>(() => {
     // Process the raw data and deduplicate files
     const fileMap = new Map<string, FileData>();
 
@@ -56,18 +73,8 @@ export const FileActivityTreemapVisx: React.FC<TreemapChartProps> = ({
       .sort((a, b) => b.total_seconds - a.total_seconds)
       .slice(0, 20); // Top 20 files
 
-    // Create a hierarchical structure for the treemap
-    interface HierarchyNode {
-      name: string;
-      children?: HierarchyNode[];
-      size?: number;
-      fullPath?: string;
-      timeText?: string;
-      id?: string;
-    }
-
-    const root: HierarchyNode = { name: "root", children: [] };
-    const folderMap: Record<string, any> = {};
+    const root: TreemapNode = { name: "root", children: [] };
+    const folderMap: Record<string, TreemapNode> = {};
 
     topFiles.forEach((file) => {
       // Split the path into parts
@@ -96,7 +103,7 @@ export const FileActivityTreemapVisx: React.FC<TreemapChartProps> = ({
 
       // Create folder if it doesn't exist
       if (!folderMap[folderId]) {
-        const newFolder = {
+        const newFolder: TreemapNode = {
           name: parentFolder,
           children: [],
           id: folderId,
@@ -113,6 +120,7 @@ export const FileActivityTreemapVisx: React.FC<TreemapChartProps> = ({
         fullPath: file.name,
         timeText,
         id: file.name,
+        children: [],
       });
     });
 
@@ -125,7 +133,7 @@ export const FileActivityTreemapVisx: React.FC<TreemapChartProps> = ({
     range: colors,
   });
 
-  const displayData = useMemo(() => {
+  const displayData = useMemo<TreemapNode>(() => {
     if (!selectedFolder) return data;
 
     return {
@@ -187,9 +195,9 @@ export const FileActivityTreemapVisx: React.FC<TreemapChartProps> = ({
 
           return (
             <svg width={width} height={height}>
-              <Treemap<typeof displayData>
+              <Treemap<TreemapNode>
                 root={hierarchy(displayData)
-                  .sum((d) => (d as any).size || 0)
+                  .sum((d) => d.size || 0)
                   .sort((a, b) => (b.value || 0) - (a.value || 0))}
                 size={[width, height]}
                 padding={3}

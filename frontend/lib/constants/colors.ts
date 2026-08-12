@@ -1,8 +1,5 @@
 export type ColorCategory =
-  | "languages"
-  | "editors"
-  | "operating_systems"
-  | "categories";
+  "languages" | "editors" | "operating_systems" | "categories";
 
 export type ColorCategoryRecord = {
   [K in ColorCategory]?: any;

@@ -48,7 +48,8 @@ export interface MultiSelectOption {
 }
 
 interface MultiSelectProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof multiSelectVariants> {
   options: MultiSelectOption[];
   onValueChange: (value: string[]) => void;

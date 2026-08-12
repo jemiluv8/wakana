@@ -1,9 +1,8 @@
 "use client";
 
 import { Group } from "@visx/group";
-import { Pack } from "@visx/hierarchy";
+import { Pack, hierarchy } from "@visx/hierarchy";
 import { ParentSize } from "@visx/responsive";
-import { hierarchy } from "d3-hierarchy";
 import truncate from "lodash/truncate";
 import React, { useMemo } from "react";
 
@@ -25,17 +24,13 @@ interface FileData {
   text: string;
 }
 
-interface ProcessedFileData {
+interface BubbleNode {
   name: string;
-  parentFolder: string;
-  size: number;
-  timeText: string;
-  fullPath: string;
-}
-
-interface HierarchyNode {
-  name: string;
-  children?: ProcessedFileData[];
+  parentFolder?: string;
+  size?: number;
+  timeText?: string;
+  fullPath?: string;
+  children?: BubbleNode[];
 }
 
 interface BubbleChartProps {
@@ -43,7 +38,7 @@ interface BubbleChartProps {
 }
 
 const FileActivityBubble: React.FC<BubbleChartProps> = ({ rawData }) => {
-  const data = useMemo(() => {
+  const data = useMemo<BubbleNode>(() => {
     const topFiles = rawData
       .filter((d): d is FileData => d.total_seconds > 0)
       .sort((a, b) => b.total_seconds - a.total_seconds)
@@ -75,7 +70,7 @@ const FileActivityBubble: React.FC<BubbleChartProps> = ({ rawData }) => {
     return {
       name: "root",
       children: topFiles,
-    } as HierarchyNode;
+    };
   }, [rawData]);
 
   const getColor = (index: number): string => {
@@ -126,9 +121,9 @@ const FileActivityBubble: React.FC<BubbleChartProps> = ({ rawData }) => {
           return (
             <svg width={width} height={height}>
               <rect width={width} height={height} fill="none" rx={14} />
-              <Pack<HierarchyNode>
+              <Pack<BubbleNode>
                 root={hierarchy(data)
-                  .sum((d) => (d as unknown as ProcessedFileData)?.size || 0)
+                  .sum((d) => d.size || 0)
                   .sort((a, b) => (b.value || 0) - (a.value || 0))}
                 size={[width - 16, height - 16]}
                 padding={7}
@@ -138,15 +133,14 @@ const FileActivityBubble: React.FC<BubbleChartProps> = ({ rawData }) => {
                   return (
                     <Group top={8} left={8}>
                       {circles.map((circle, i) => {
-                        const node =
-                          circle.data as unknown as ProcessedFileData;
+                        const node = circle.data;
                         const fontSize = getFontSize(circle.r);
                         const maxTextLength = Math.floor(
                           (circle.r * 2) / (fontSize * 0.6)
                         ); // Adjust based on font size
 
                         const displayText = truncateFolderName(
-                          node.parentFolder,
+                          node.parentFolder || "",
                           node.name,
                           maxTextLength
                         );

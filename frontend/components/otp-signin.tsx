@@ -52,7 +52,7 @@ const SubmitButton = ({
 };
 
 export function OTPSignIn({ className }: Props) {
-  const [state, formAction] = useFormState(initiateOTPLoginAction, {
+  const [state] = useFormState(initiateOTPLoginAction, {
     message: null,
   });
   const [isSent, setSent] = useState(false);
@@ -209,7 +209,7 @@ export function OTPSignIn({ className }: Props) {
                         "bg-muted/50 border-2 border-border hover:border-border/80",
                         "focus:border-primary focus:ring-0",
                         "focus:outline-2 focus:outline-primary focus:outline-offset-2",
-                        "dark:bg-muted/50 dark:border-border dark:hover:border-border/60 text-primary",
+                        "dark:bg-muted/50 dark:border-border dark:hover:border-border/60 text-primary"
                       )}
                     />
                   ))}

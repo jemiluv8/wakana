@@ -387,7 +387,7 @@ const TimeTrackingVisualization: React.FC<TimeTrackingProps> = ({
 
             {/* Time axis with ticks below labels */}
             <Group top={margin.top - 25}>
-              {timeScale.ticks(tickCount).map((date, i) => {
+              {timeScale.ticks(tickCount).map((date: Date, i: number) => {
                 const x = timeScale(date);
                 const label = getHourLabel(date);
                 const isEdge = i === 0 || i === tickCount - 1;

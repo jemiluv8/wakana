@@ -7,7 +7,7 @@ import { scaleBand, scaleLinear } from "@visx/scale";
 import { scaleOrdinal } from "@visx/scale";
 import { Bar } from "@visx/shape";
 import { defaultStyles, useTooltip, useTooltipInPortal } from "@visx/tooltip";
-import { ScaleBand, ScaleLinear } from "d3-scale";
+import type { ScaleBand, ScaleLinear } from "@visx/vendor/d3-scale";
 import { BarChart2, BarChartHorizontal } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
@@ -327,14 +327,16 @@ function WBarChartComponent({
                 )}
 
                 {sortedData.map((d, i) => {
-                  const barWidth = (xScale as ScaleBand<string>).bandwidth();
+                  const verticalXScale = xScale as ScaleBand<string>;
+                  const verticalYScale = yScale as ScaleLinear<number, number>;
+                  const barWidth = verticalXScale.bandwidth();
                   const barHeight =
                     height -
                     margin.top -
                     margin.bottom -
-                    (yScale as ScaleLinear<number, number>)(d.total);
-                  const barX = xScale(d.key as any);
-                  const barY = (yScale as ScaleLinear<number, number>)(d.total);
+                    verticalYScale(d.total);
+                  const barX = verticalXScale(d.key) ?? 0;
+                  const barY = verticalYScale(d.total) ?? 0;
                   const fill =
                     colorNamespace !== "machines"
                       ? getEntityColor(colorNamespace, d.key)
@@ -394,12 +396,12 @@ function WBarChartComponent({
                 />
 
                 {sortedData.map((d, i) => {
-                  const barHeight = (yScale as ScaleBand<string>).bandwidth();
-                  const barWidth = (xScale as ScaleLinear<number, number>)(
-                    d.total
-                  );
+                  const horizontalYScale = yScale as ScaleBand<string>;
+                  const horizontalXScale = xScale as ScaleLinear<number, number>;
+                  const barHeight = horizontalYScale.bandwidth();
+                  const barWidth = horizontalXScale(d.total) ?? 0;
                   const barX = 0;
-                  const barY = yScale(d.key as any);
+                  const barY = horizontalYScale(d.key) ?? 0;
                   const fill =
                     colorNamespace !== "machines"
                       ? getEntityColor(colorNamespace, d.key)
